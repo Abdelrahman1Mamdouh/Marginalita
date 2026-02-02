@@ -1,0 +1,42 @@
+################################################################################
+# Visual Studio / ASP.NET / C# - CLEAN CONFIGURATION
+################################################################################
+
+# 1. Build and Generated Output 
+# The removal of the leading slash ([Bb]in/, [Oo]bj/) ensures these are ignored 
+# everywhere, including inside the 'Ticketing/' folder.
+[Bb]in/
+[Oo]bj/
+
+# 2. Visual Studio Solution and Project Cache/Settings
+.vs/
+*.pdb
+*.intellisense.js
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.vshost.*
+*.bak
+*.acc
+*.vspcc
+
+# 3. NuGet Packages - IGNORED (Standard Practice)
+# Removing the leading slash ensures it matches inside subfolders.
+packages/
+# We still track the configuration files that tell NuGet what to download:
+!packages.config 
+!*/packages.config
+
+# 4. Resharper/Rider files
+*.DotSettings.user
+.idea/
+_ReSharper.*/
+
+# 5. Publishing and Deployment
+Publish/
+*.pubxml
+*.cscfg
+*.wadcfg
+*.[Pp]ublish/
+TestResults/
