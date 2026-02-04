@@ -1,8 +1,10 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
 
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
+
 <!DOCTYPE html>
 
-<html lang="en">
+<html>
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,6 +46,7 @@
                     AlternateText="Menu"
                     ImageUrl="~/Asset/menuIcon.png"
                     ToolTip="Menu"
+                    OnClick="BtnToggleMenu_Click"
                     CausesValidation="false" />
 
                 <div class="topbar__title">
@@ -60,6 +63,50 @@
                 </div>
             </div>
         </header>
+
+        <!-- Overlay (يغطي الصفحة + يقفل لما تدوس عليه) -->
+        <asp:LinkButton ID="btnOverlay" runat="server"
+            CssClass="sidebar-overlay"
+            OnClick="BtnToggleMenu_Click"
+            CausesValidation="false" />
+
+        <!-- Sidebar -->
+        <asp:Panel ID="pnlSidebar" runat="server" CssClass="sidebar">
+            <div class="sidebar-top">
+                <div>
+                    <div class="sidebar-brand">TimeTrack Pro</div>
+                    <div class="sidebar-sub">Revenue Dashboard</div>
+                </div>
+
+                <asp:LinkButton ID="btnCloseSidebar" runat="server"
+                    CssClass="sidebar-close"
+                    OnClick="BtnToggleMenu_Click"
+                    CausesValidation="false">×</asp:LinkButton>
+            </div>
+
+            <div class="sidebar-nav">
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/dashboard.aspx">
+            <span class="ico">▦</span> Dashboard
+                </asp:HyperLink>
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/dettagliProgetto.aspx">
+            <span class="ico">📄</span> Dettagli
+                </asp:HyperLink>
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Inserimento.aspx">
+            <span class="ico">➕</span> Inserimento
+                </asp:HyperLink>
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/analytics.aspx">
+            <span class="ico">📊</span> Analytics
+                </asp:HyperLink>
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
+            <span class="ico">⚙</span> Settings
+                </asp:HyperLink>
+            </div>
+        </asp:Panel>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
