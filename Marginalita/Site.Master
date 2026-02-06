@@ -64,13 +64,13 @@
             </div>
         </header>
 
-        <!-- Overlay (يغطي الصفحة + يقفل لما تدوس عليه) -->
+       
         <asp:LinkButton ID="btnOverlay" runat="server"
             CssClass="sidebar-overlay"
             OnClick="BtnToggleMenu_Click"
             CausesValidation="false" />
 
-        <!-- Sidebar -->
+        
         <asp:Panel ID="pnlSidebar" runat="server" CssClass="sidebar">
             <div class="sidebar-top">
                 <div>
@@ -93,12 +93,12 @@
             <span class="ico">📄</span> Dettagli
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Inserimento.aspx">
-            <span class="ico">➕</span> Inserimento
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafica.aspx">
+            <span class="ico">➕</span> Anagrafica
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/analytics.aspx">
-            <span class="ico">📊</span> Analytics
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
+            <span class="ico">📊</span> Timesheet
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
