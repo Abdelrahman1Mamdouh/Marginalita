@@ -106,7 +106,7 @@
             <div class="border rounded-3 shadow-sm overflow-hidden">
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
-                    ConnectionString="Data Source=(LocalDB)\SQL2025;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                    ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
                     SelectCommand="SELECT * FROM Progetto"></asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
