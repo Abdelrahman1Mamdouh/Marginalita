@@ -15,21 +15,39 @@ namespace Marginalita
     {
 
         /// <summary>
-        /// Controllo Time.
+        /// Controllo TabellaProgetto.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource Time;
+        protected global::System.Web.UI.WebControls.SqlDataSource TabellaProgetto;
 
         /// <summary>
-        /// Controllo Repeater2.
+        /// Controllo TabellaDipendente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater Repeater2;
+        protected global::System.Web.UI.WebControls.SqlDataSource TabellaDipendente;
+
+        /// <summary>
+        /// Controllo RepDipendente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater RepDipendente;
+
+        /// <summary>
+        /// Controllo RepProgetto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater RepProgetto;
     }
 }
