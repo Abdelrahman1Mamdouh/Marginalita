@@ -13,8 +13,8 @@
 
                 <asp:SqlDataSource ID="DProgetti" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-                    SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"
-                    DeleteCommand="DELETE FROM Progetto WHERE ID = @ID"></asp:SqlDataSource>
+                    SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"></asp:SqlDataSource>
+                   <!-- DeleteCommand="DELETE FROM Progetto WHERE ID = @ID"--> 
                 <asp:ListView ID="LProgetti" DataSourceID="DProgetti" DataKeyName="IDProgetto" runat="server">
 
 
@@ -48,11 +48,11 @@
                                     <asp:Label ID="PLSocieta" runat="Server" Text='<%#Eval("Societa") %>' />
                                 </asp:TableCell>
                                 <asp:TableCell Width="10" runat="server">
-                                    <asp:Button ID="UpPro" runat="server" Text="📝" OnClick="NewProgetto" CommandArgument='<%#Eval("ID") %>' />
+                                    <asp:Button ID="UpPro" runat="server" Text="📝" OnClick="UpPro_Click" CommandArgument='<%#Eval("ID") %>' />
                                 </asp:TableCell>
-                                <asp:TableCell Width="10" runat="server">
+                            <%--    <asp:TableCell Width="10" runat="server">
                                     <asp:Button ID="DelPro" runat="server" Text='<%# "\uD83D\uDDD1" %>' CommandName="DeleteProgetto" CommandArgument='<%#Eval("ID") %>' />
-                                </asp:TableCell>
+                                </asp:TableCell>--%>
                             </asp:TableRow>
 
                         </asp:Table>
@@ -85,12 +85,15 @@
                                 <asp:TableCell Width="80" runat="server">
                                     <asp:Label ID="SLIntestazione" runat="Server" Text='<%#Eval("Intestazione") %>' />
                                 </asp:TableCell>
+                                <asp:TableCell Width="80" runat="server">
+    <asp:Label ID="SLEmail" runat="Server" Text='<%#Eval("Email") %>' />
+</asp:TableCell>
                                 <asp:TableCell Width="10" runat="server">
-                                    <asp:Button ID="UpSoc" runat="server" Text="📝" OnClick="NewSocieta" CommandArgument='<%#Eval("ID") %>' />
+                                    <asp:Button ID="UpSoc" runat="server" Text="📝" OnClick="UpSocieta_Click" CommandArgument='<%#Eval("ID") %>' />
                                 </asp:TableCell>
-                                <asp:TableCell Width="10" runat="server">
+                               <%-- <asp:TableCell Width="10" runat="server">
                                     <asp:Button ID="DelSoc" runat="server" Text='<%# "\uD83D\uDDD1" %>' CommandName="DeleteSocieta" CommandArgument='<%#Eval("ID") %>' />
-                                </asp:TableCell>
+                                </asp:TableCell>--%>
 
 
                             </asp:TableRow>
@@ -131,11 +134,11 @@
                                     <asp:Label ID="DLCostoOrario" runat="Server" Text='<%#Eval("CostoOrario") %>' />
                                 </asp:TableCell>
                                 <asp:TableCell Width="10" runat="server">
-                                    <asp:Button ID="UpDip" runat="server" Text="📝" OnClick="NewDipendente" CommandArgument='<%#Eval("ID") %>' />
+                                    <asp:Button ID="UpDip" runat="server" Text="📝" OnClick="UpDipendente_Click" CommandArgument='<%#Eval("ID") %>' />
                                 </asp:TableCell>
-                                <asp:TableCell Width="10" runat="server">
+                               <%-- <asp:TableCell Width="10" runat="server">
                                     <asp:Button ID="DelDip" runat="server" Text='<%# "\uD83D\uDDD1" %>' CommandName="DeleteDipendente" CommandArgument='<%#Eval("ID") %>' />
-                                </asp:TableCell>
+                                </asp:TableCell>--%>
 
                             </asp:TableRow>
                         </asp:Table>
