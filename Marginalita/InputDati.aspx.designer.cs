@@ -15,6 +15,24 @@ namespace Marginalita
     {
 
         /// <summary>
+        /// Controllo HidID.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HidID;
+
+        /// <summary>
+        /// Controllo DProgetti.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource DProgetti;
+
+        /// <summary>
         /// Controllo DSocieta.
         /// </summary>
         /// <remarks>
@@ -31,6 +49,15 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource DContratto;
+
+        /// <summary>
+        /// Controllo DDipendenti.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource DDipendenti;
 
         /// <summary>
         /// Controllo ViewProgetti.
@@ -285,13 +312,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label LCosto;
 
         /// <summary>
-        /// Controllo Cognome.
+        /// Controllo TCosto.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Cognome;
+        protected global::System.Web.UI.WebControls.TextBox TCosto;
 
         /// <summary>
         /// Controllo ModDip.
