@@ -11,61 +11,43 @@ namespace Marginalita
 {
 
 
-    public partial class SiteMaster
+    public partial class Timesheet
     {
 
         /// <summary>
-        /// Controllo btnMenu.
+        /// Controllo TabellaProgetto.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnMenu;
+        protected global::System.Web.UI.WebControls.SqlDataSource TabellaProgetto;
 
         /// <summary>
-        /// Controllo txtSearch.
+        /// Controllo TabellaDipendente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.SqlDataSource TabellaDipendente;
 
         /// <summary>
-        /// btnOverlay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnOverlay;
-
-        /// <summary>
-        /// pnlSidebar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSidebar;
-
-        /// <summary>
-        /// btnCloseSidebar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCloseSidebar;
-
-        /// <summary>
-        /// MainContent control.
+        /// Controllo RepDipendente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+        protected global::System.Web.UI.WebControls.Repeater RepDipendente;
+
+        /// <summary>
+        /// Controllo RepProgetto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater RepProgetto;
     }
 }

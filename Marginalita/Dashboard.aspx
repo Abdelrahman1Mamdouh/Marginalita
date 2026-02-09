@@ -1,11 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Marginalita.Dashboard" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Marginalita.Dashboard" MasterPageFile="~/Site.Master" Title="DASHBOARD" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <head>
-        <title>DASHBOARD</title>
-        <link href="~/Content/NewCss.css" rel="stylesheet" type="text/css" />
-    </head>
-    <body>
+
+    <div>
         <section class="DSCard-grid">
             <!-- Card 1 -->
             <div class="DSCard-card">
@@ -85,7 +82,6 @@
                     <br />
                 </div>
             </div>
-
         </section>
         
             <section class="mt-5">
