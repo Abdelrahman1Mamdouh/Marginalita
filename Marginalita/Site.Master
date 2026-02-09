@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
 
 <%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 
@@ -66,12 +66,13 @@
             </div>
         </header>
 
+       
         <asp:LinkButton ID="btnOverlay" runat="server"
             CssClass="sidebar-overlay"
             OnClick="BtnToggleMenu_Click"
             CausesValidation="false" />
 
-        <!-- Sidebar -->
+        
         <asp:Panel ID="pnlSidebar" runat="server" CssClass="sidebar">
             <div class="sidebar-top">
                 <div>
@@ -94,12 +95,12 @@
             <span class="ico">📄</span> Dettagli
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Inserimento.aspx">
-            <span class="ico">➕</span> Inserimento
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafica.aspx">
+            <span class="ico">➕</span> Anagrafica
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/analytics.aspx">
-            <span class="ico">📊</span> Analytics
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
+            <span class="ico">📊</span> Timesheet
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
