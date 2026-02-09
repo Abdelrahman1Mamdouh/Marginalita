@@ -100,11 +100,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Timesheet.aspx" />
+    <Content Include="Anagrafiche.aspx" />
     <Content Include="App_Data\dgs.mdf" />
     <Content Include="App_Data\dgs_log.ldf">
       <DependentUpon>dgs.mdf</DependentUpon>
     </Content>
+    <Content Include="InputDati.aspx" />
+    <Content Include="Timesheet.aspx" />
     <Content Include="Asset\menuIcon.png" />
     <Content Include="bin\Antlr3.Runtime.dll" />
     <Content Include="bin\Antlr3.Runtime.pdb" />
@@ -210,7 +212,21 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Anagrafiche.aspx.cs">
+      <DependentUpon>Anagrafiche.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Anagrafiche.aspx.designer.cs">
+      <DependentUpon>Anagrafiche.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="InputDati.aspx.cs">
+      <DependentUpon>InputDati.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InputDati.aspx.designer.cs">
+      <DependentUpon>InputDati.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Timesheet.aspx.cs">
       <DependentUpon>Timesheet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

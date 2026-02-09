@@ -58,7 +58,7 @@
             </div>
             <div class="topbar__right">
                 <div class="search">
-                    <span class="search__icon">🔎</span>
+                    <span class="search__icon">&#128270;</span>
                     <asp:TextBox ID="txtSearch" runat="server"
                         CssClass="search__input"
                         placeholder="Search transactions, customers..." />
@@ -66,13 +66,13 @@
             </div>
         </header>
 
-       
+
         <asp:LinkButton ID="btnOverlay" runat="server"
             CssClass="sidebar-overlay"
             OnClick="BtnToggleMenu_Click"
             CausesValidation="false" />
 
-        
+
         <asp:Panel ID="pnlSidebar" runat="server" CssClass="sidebar">
             <div class="sidebar-top">
                 <div>
@@ -83,28 +83,28 @@
                 <asp:LinkButton ID="btnCloseSidebar" runat="server"
                     CssClass="sidebar-close"
                     OnClick="BtnToggleMenu_Click"
-                    CausesValidation="false">×</asp:LinkButton>
+                    CausesValidation="false">&#10005;</asp:LinkButton>
             </div>
 
             <div class="sidebar-nav">
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/dashboard.aspx">
-            <span class="ico">▦</span> Dashboard
+            <span class="ico">&#9634;</span> Dashboard
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/dettagliProgetto.aspx">
-            <span class="ico">📄</span> Dettagli
+            <span class="ico">&#128196;</span> Dettagli
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafica.aspx">
-            <span class="ico">➕</span> Anagrafica
+            <span class="ico">&#10133;</span> Anagrafica
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
-            <span class="ico">📊</span> Timesheet
+             <span class="ico">&#128202;</span>Timesheet
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
-            <span class="ico">⚙</span> Settings
+            <span class="ico">&#9881;</span> Settings
                 </asp:HyperLink>
             </div>
         </asp:Panel>
