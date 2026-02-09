@@ -96,8 +96,8 @@
             <span class="ico">&#128196;</span> Dettagli
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafica.aspx">
-            <span class="ico">&#10133;</span> Anagrafica
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafiche.aspx">
+            <span class="ico">&#10133;</span> Anagrafiche
                 </asp:HyperLink>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
