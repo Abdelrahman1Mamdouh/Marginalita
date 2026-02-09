@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,10 +13,43 @@ namespace Marginalita
         bool[] vedi = new bool[3];
         protected void Page_Load(object sender, EventArgs e)
         {
-            vedi = (bool[]) Session["vedi"];
+            var dati = (Dictionary<string, string>)Session["evento"];
+            //txtID.Text = dati["ID"];
+            //txtNome.Text = dati["Nome"];
+            //txtBudget.Text = dati["Budget"];
+            //txtDurata.Text = dati["Durata"];
+            //txtDescrizione.Text = dati["Descrizione"];
+            //txtResiduo.Text = dati["Residuo"];
+            //txtMargine.Text = dati["Margine"];
+            //txtSocieta.Text = dati["Societa"];
+        
+
+
+            vedi = (bool[])Session["input"];
             ViewProgetti.Visible = vedi[0];
             ViewSocieta.Visible = vedi[1];
             ViewDipendenti.Visible = vedi[2];
+
+            if (vedi[0] && dati != null)
+            {
+
+                TNomePro.Text = dati["Nome"];
+                TBudget.Text = dati["Budget"];
+                TDurata.Text = dati["Durata"];
+                TDescritione.Text = dati["Descrizione"];
+                DDLSocieta.Text = dati["Societa"];
+            }
+
+            if (vedi[1] && dati != null)
+            {
+
+            }
+
+            if (vedi[2] && dati != null)
+            {
+
+            }
+
         }
 
         protected void ModProgetto(object sender, EventArgs e)
