@@ -18,7 +18,7 @@ namespace Marginalita
         //protected void btnVisualizza_Click(object sender, EventArgs e)
         //{
             
-        //    Response.Redirect("DettagliProgetto.aspx");
+        //    Response.Redirect("dettagliProgetto.aspx");
         //}
 
         private void CalcolaBudget()
