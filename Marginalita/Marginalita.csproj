@@ -105,23 +105,6 @@
       <DependentUpon>dgs.mdf</DependentUpon>
     </Content>
     <Content Include="Asset\menuIcon.png" />
-    <Content Include="bin\Antlr3.Runtime.dll" />
-    <Content Include="bin\Antlr3.Runtime.pdb" />
-    <Content Include="bin\Marginalita.dll" />
-    <Content Include="bin\Marginalita.pdb" />
-    <Content Include="bin\Microsoft.AspNet.FriendlyUrls.dll" />
-    <Content Include="bin\Microsoft.AspNet.FriendlyUrls.xml" />
-    <Content Include="bin\Microsoft.AspNet.Web.Optimization.WebForms.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="bin\Microsoft.ScriptManager.MSAjax.dll" />
-    <Content Include="bin\Microsoft.ScriptManager.WebForms.dll" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\System.Web.Optimization.dll" />
-    <Content Include="bin\System.Web.Optimization.xml" />
-    <Content Include="bin\WebGrease.dll" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -173,7 +156,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="bin\Marginalita.dll.config" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
