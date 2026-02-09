@@ -2,77 +2,117 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
+    <asp:SqlDataSource
+        runat="server" ID="PROG"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+        SelectCommand="SELECT * FROM Progetto WHERE ID = 4"></asp:SqlDataSource>
+
     <div>
-        <section class="DSCard-grid">
-            <!-- App -->
-            <div class="DSCard-card">
-                <div>
-                    <asp:Image ID="LogoApp" runat="server" />
-                </div>
-            </div>
-        </section>
-        <br />
-        <asp:Label ID="lblDettagli" runat="server" Text="Dettagli Progetto" />
-        <section class="DSCard-grid">
-            <!-- Card 1 -->
-            <div class="DSCard-card">
-                <div class="DSCard-text">
-                    <div class="DSCard-label">Budget</div>
-                    <div class="DSCard-value">
-                        <asp:Label ID="lblMRR" runat="server" Text="$250,000" />
+        <asp:FormView ID="FV" DataSourceID="PROG" runat="server" RenderOuterTable="false">
+            <ItemTemplate>
+                <asp:Label runat="server" Text="Nome del Progetto" CssClass="fw-semibold" />
+                <section class="DSCard-grid">
+                    <!-- Nome del App -->
+                    <div class="DSCard-desc">
+                        <div>
+                            <asp:Label ID="lblNomeProgetto" runat="server" CssClass="desc" Text='<%# Eval("Nome") %>' />
+                        </div>
                     </div>
-                </div>
-                <div class="DSCard-icon DSCard-green">
-                    $
-                </div>
-            </div>
+                </section>
 
-            <!-- Card 2 -->
-            <div class="DSCard-card">
-                <div class="DSCard-text">
-                    <div class="DSCard-label">Start Date</div>
-                    <div class="DSCard-value">
-                        <asp:Label ID="lblUsers" runat="server" Text="17 Jun, 2020" />
+                <br />
+
+                <asp:Label ID="lblDettagli" runat="server" Text="Dettagli Progetto" CssClass="fw-semibold" />
+
+                <section class="DSCard-grid">
+                    <!-- Card 1 -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="lblBudget" runat="server" Text="Budget" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("Budget") %>' />
+                            </div>
+                        </div>
+                        <asp:Label Text="$" runat="server" ID="txtMRR" CssClass="DSCard-icon DSCard-green" />
                     </div>
-                </div>
 
-                <div class="DSCard-icon DSCard-pastalblue">
-                    📅
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="DSCard-card">
-                <div class="DSCard-text">
-                    <div class="DSCard-label">End Date</div>
-                    <div class="DSCard-value">
-                        <asp:Label ID="lblGrowth" runat="server" Text="04 Jul, 2020" />
+                    <!-- Card 2 -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="lblStartDate" runat="server" Text="Start Date" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Durata") %>' />
+                            </div>
+                        </div>
+                        <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
                     </div>
-                </div>
 
-                <div class="DSCard-icon DSCard-orange">
-                    📆
-                </div>
-            </div>
-        </section>
-
-        <br />
-
-        <asp:Label ID="lblDescrizione" runat="server" Text="Descrizione" />
-        <section class="DSCard-grid">
-            <!-- Descrizione -->
-            <div class="DSCard-card">
-                <div class="DSCard-text">
-                    <div class="DSCard-label">Budget</div>
-                    <div>
-                        <asp:Label ID="lblDes" runat="server"
-                            Text="You need to develop an application on something like React native, so that it is for Android and iOS. 
-                            There are about 30 screens, the design and layout in the sketch is ready. 
-                            The main pages are login, getting a task, a list of tasks, a map, a history of tasks, calling the camera to complete a task.
-                            The storage and processing server is on our side, there is a ready-made api for the web service that you will need to use." />
+                    <!-- Card 3 -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="lblEndDate" runat="server" Text="End Date" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="lblGrowth" runat="server" Text="04 Jul, 2020" />
+                            </div>
+                        </div>
+                        <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
                     </div>
-                </div>
-            </div>
-        </section>
+                </section>
+
+                <br />
+
+                <asp:Label ID="lblDescrizione" runat="server" Text="Descrizione" CssClass="fw-semibold" />
+                <section class="DSCard-grid">
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="lblDes" runat="server"
+                                Text='<%# Eval("Descrizione") %>' />
+                        </div>
+                    </div>
+                </section>
+                <section class="DSCard-grid">
+                    <!-- TOT ORE-->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="Label4" runat="server" Text="Total Hours" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="lblHoursDone3" runat="server" Text="38:00" CssClass="kpi3-big2" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOT COSTO -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label runat="server" Text="Residuo" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="Label2" runat="server" Text='<%# Eval("Residuo") %>' />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="DSCard-grid">
+                    <!-- CHART MARGINE -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+
+                            <asp:Label runat="server" Text="Margine" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Chart ID="Chart1" runat="server">
+                                    <Series>
+                                        <asp:Series ChartType="Doughnut" Name="Series1">
+                                        </asp:Series>
+                                    </Series>
+                                    <ChartAreas>
+                                        <asp:ChartArea Name="ChartArea1">
+                                        </asp:ChartArea>
+                                    </ChartAreas>
+                                </asp:Chart>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ItemTemplate>
+        </asp:FormView>
     </div>
 </asp:Content>

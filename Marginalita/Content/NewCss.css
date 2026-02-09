@@ -120,16 +120,16 @@ body {
 
 /* ====== DSCard Grid ====== */
 .DSCard-grid {
-    margin: 0 50px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
-    margin: 20px auto 0;
-    justify-content: center;
-/*    padding: 0 20px;*/
+    width: 100%;
+    max-width: 100%; 
+    padding: 0 20px;
+    margin: 20px 0 0; 
+    box-sizing: border-box;
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
     .DSCard-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -149,8 +149,20 @@ body {
     box-shadow: var(--shadow);
     padding: 18px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    min-height: 108px;
+    align-items: flex-start;
+}
+
+.DSCard-desc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 108px;
 }
 
@@ -186,6 +198,14 @@ body {
     color: #dc2626;
 }
 
+.desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    font-size: 26px;
+    font-weight: 700;
+}
 
 /* ====== DashBoard icons ====== */
 .DSCard-icon {
@@ -225,14 +245,12 @@ body {
     color: #F97315;
 }
 
-/* Overlay مع Blur */
 .sidebar-overlay {
     position: fixed;
     inset: 0;
     border: 0;
     padding: 0;
     margin: 0;
-    /* لازم يبقى button/LinkButton شفاف */
     background: rgba(255,255,255,.35);
     /* Blur */
     backdrop-filter: blur(8px);
@@ -254,7 +272,7 @@ body {
 .sidebar {
     position: fixed;
     top: 0;
-    left: -290px; /* مخفي */
+    left: -290px; 
     width: 290px;
     height: 100vh;
     background: #fff;
@@ -344,4 +362,190 @@ body {
     border-top: 1px solid var(--border);
     font-size: 12px;
     color: var(--muted);
+}
+
+
+/* ====== last cards dettagli ====== */
+
+.kpi3-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1280px;
+    margin: 20px auto 40px;
+    padding: 0 20px;
+}
+
+@media(max-width:1100px) {
+    .kpi3-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.kpi3-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 18px 18px 16px;
+    min-height: 320px;
+}
+
+.kpi3-title {
+    font-size: 13px;
+    letter-spacing: .08em;
+    color: var(--muted);
+    font-weight: 800;
+}
+
+.kpi3-main {
+    margin-top: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.kpi3-slash {
+    color: var(--muted);
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.kpi3-sub {
+    color: var(--muted);
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.kpi3-two {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.kpi3-mini {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: .08em;
+}
+
+.kpi3-big {
+    font-size: 40px;
+    font-weight: 900;
+}
+
+.kpi3-big2 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: 4px;
+}
+
+.kpi3-bar {
+    margin-top: 18px;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.kpi3-barfill {
+    height: 100%;
+    width: 0%;
+    background: #22c55e; /* default */
+    border-radius: 999px;
+    transition: width .35s ease;
+}
+
+.kpi3-percent {
+    margin-top: 8px;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.kpi3-foot, .leg {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.kpi3-right {
+    margin-left: auto;
+    font-weight: 900;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-green {
+    background: #22c55e;
+}
+
+.dot-cyan {
+    background: #06b6d4;
+}
+
+.dot-yellow {
+    background: #facc15;
+}
+
+.dot-red {
+    background: #ef4444;
+}
+
+/* Donut (CSS only) */
+.kpi3-donutwrap {
+    margin-top: 10px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.donut {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(#22c55e 0deg, #e5e7eb 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut__center {
+    width: 110px;
+    height: 110px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid var(--border);
+}
+
+.donut__big {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.donut__small {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.kpi3-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
 }

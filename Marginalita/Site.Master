@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
 
 <%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 
@@ -16,7 +16,7 @@
 
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="~/Content/NewCss.css" rel="stylesheet" type="text/css" />
+    <link runat="server" href="~/Content/NewCss.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <form runat="server">
@@ -39,6 +39,8 @@
             </Scripts>
         </asp:ScriptManager>
 
+
+
         <header class="topbar">
             <div class="topbar__left">
                 <asp:ImageButton ID="btnMenu" runat="server"
@@ -51,7 +53,7 @@
 
                 <div class="topbar__title">
                     <h1>Revenue Dashboard</h1>
-                    <p>Time Management App - Program Overview</p>
+                    <asp:Label runat="server" Text=" Time Management App - Program Overview " CssClass="DSCard-label" />
                 </div>
             </div>
             <div class="topbar__right">
@@ -115,9 +117,9 @@
                 <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
             </footer>
         </div>
+        <asp:PlaceHolder runat="server">
+            <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+        </asp:PlaceHolder>
     </form>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
 </body>
 </html>
