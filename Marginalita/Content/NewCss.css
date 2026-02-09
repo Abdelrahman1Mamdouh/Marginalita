@@ -549,3 +549,7 @@ body {
     gap: 10px;
     flex: 1;
 }
+.grid{
+    width:100%;
+}
+

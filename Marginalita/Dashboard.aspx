@@ -9,7 +9,7 @@
                 <div class="DSCard-text">
                     <div class="DSCard-label">Monthly Recurring Revenue</div>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblMRR" runat="server" Text="$105,170" />
+                        <asp:Label ID="lblMRR" runat="server" Text="" />
                     </div>
                     <div class="DSCard-change DSCard-up">
                         ↑
@@ -77,8 +77,87 @@
 
                 <div class="DSCard-icon DSCard-red">
                     👤
+                 
+                    <br />
+                    <br />
                 </div>
             </div>
         </section>
-    </div>
+        
+            <section class="mt-5">
+                <div style="display:flex;justify-content:space-between;">
+                    <asp:Label ID="Label1"
+                        Text="Dashboard Progetti"
+                        runat="server" />
+
+                    <asp:LinkButton ID="LinkButton1"
+                        Text="+ Aggiungi"
+                        runat="server"
+                        CssClass="btn btn-dark" 
+                       >
+
+                    </asp:LinkButton>
+                </div>
+
+             
+            </section>
+
+        <section class="mt-3" style="width: 100%">
+            <div class="border rounded-3 shadow-sm overflow-hidden">
+
+                <asp:SqlDataSource ID="SqlDGS" runat="server"
+                    ConnectionString="Data Source=(LocalDB)\SQL2025;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                    SelectCommand="SELECT * FROM Progetto"></asp:SqlDataSource>
+
+                <asp:GridView ID="GridView1" runat="server"
+                    DataSourceID="SqlDGS"
+                    AutoGenerateColumns="True"
+                    CssClass="table table-striped w-100 text-center">
+
+                    <HeaderStyle CssClass="table-dark" />
+
+                    <Columns>
+
+
+
+                        <%--<asp:BoundField DataField="Nome" HeaderText="Nome" />
+                        <asp:BoundField DataField="Budget" HeaderText="Cognome" />
+                        <asp:BoundField DataField="CostoOrario" HeaderText="Costo Orario" />--%>
+
+                        <asp:TemplateField HeaderText="Margini">
+                            <ItemTemplate>
+                                <div class="progress" role="progressbar" style="height: 20px;">
+                                    <div class="progress-bar <%# 
+                                             Convert.ToInt32(Eval("Budget")) > 2000 ? "bg-danger" : 
+                                             Convert.ToInt32(Eval("Budget")) > 1500 ? "bg-warning" : "bg-success"%>"
+                                        style='<%# "width: " + Eval("Budget") + "%;" %>'>
+                                        <%# Eval("Budget") %>%
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Dettagli">
+                            <ItemTemplate>
+
+                                <asp:LinkButton ID="btnVisualizza" 
+                                                runat="server" 
+                                                CssClass="btn btn-outline-primary" 
+                                                OnClick="btnVisualizza_Click"
+                                                >
+                                             <i class="bi bi-eye"></i> Visualizza
+                                </asp:LinkButton>
+
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                    </Columns>
+                </asp:GridView>
+
+
+            </div>
+        </section>
+
+
+    </body>
 </asp:Content>
