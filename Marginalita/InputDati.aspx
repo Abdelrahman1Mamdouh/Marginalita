@@ -6,15 +6,91 @@
         <section>
             <h1>Inserimento dati</h1>
         </section>
+        <asp:HiddenField ID="HidID" runat="server" />
 
-
-        <asp:SqlDataSource ID="DSocieta" runat="server"
+        <asp:SqlDataSource
+            ID="DProgetti"
+            runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Societa"></asp:SqlDataSource>
+            SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"
+            InsertCommand="INSERT INTO Progetto (Nome, Budget, Durata, Descrizione, Societa) VALUES (@Nome, @Budget, @Durata, @Descrizione, @Societa)"
+            UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione, Societa=@Societa WHERE ID=@ID"
+            DeleteCommand="DELETE FROM Progetto WHERE ID = @ID">
+            <InsertParameters>
+                <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
+                <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
+                <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
+                <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
+                <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
 
-        <asp:SqlDataSource ID="DContratto" runat="server"
+        <asp:SqlDataSource
+            ID="DSocieta"
+            runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Contratto"></asp:SqlDataSource>
+            SelectCommand="SELECT * FROM Societa"
+            InsertCommand="INSERT INTO Societa (Intestazione, Email) VALUES (@Intestazione, @Email)"
+            UpdateCommand="UPDATE Societa SET Intestazione=@Intestazione, Email=@Email WHERE ID=@ID"
+            DeleteCommand="DELETE FROM Societa WHERE ID = @ID">
+            <InsertParameters>
+                <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
+                <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
+                <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+
+        <asp:SqlDataSource
+            ID="DContratto"
+            runat="server"
+            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
+            SelectCommand="SELECT * FROM Contratto"
+            InsertCommand="INSERT INTO Contratto (Tipo, Margine) VALUES (@Tipo, @Margine)"
+            UpdateCommand="UPDATE Contratto SET Tipo=@Tipo, Margine=@Margine WHERE ID=@ID"
+            DeleteCommand="DELETE FROM Contratto WHERE ID = @ID">
+            <InsertParameters>
+                <asp:ControlParameter Name="Tipo" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
+                <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="Tipo" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
+                <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+
+        <asp:SqlDataSource
+            ID="DDipendenti"
+            runat="server"
+            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
+            SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"
+            InsertCommand="INSERT INTO Dipendente (Nome, Cognome, CostoOrario) VALUES (@Nome, @Cognome, @CostoOrario)"
+            UpdateCommand="UPDATE Dipendente SET Nome=@Nome, Cognome=@Cognome, CostoOrario=@CostoOrario WHERE ID=@ID"
+            DeleteCommand="DELETE FROM Dipendente WHERE ID = @ID">
+            <InsertParameters>
+                <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
+                <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
+                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
+                <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
+                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
 
         <div id="ViewProgetti" runat="server">
             <h2>Progetti</h2>
@@ -32,9 +108,10 @@
             <asp:Label ID="LDescritione" TextMode="Multiline" Text="Descritione progetto" runat="server" />
             <asp:TextBox runat="server" ID="TDescritione" />
 
-            <asp:DropDownList ID="DDLSocieta" AutoPostBack="true" DataSourceID="DSocieta" DataTextFiled="Intestazione" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="DDLSocieta" AutoPostBack="true" DataSourceID="DSocieta" DataTextField="Intestazione" DataValueField="ID" runat="server"></asp:DropDownList>
 
-            <asp:DropDownList ID="DDLMargine" AutoPostBack="true" DataSourceID="DContratto" DataTextFiled="Canone" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="DDLMargine" AutoPostBack="true" DataSourceID="DContratto" DataTextField="Tipo" DataValueField="ID" runat="server"></asp:DropDownList>
+
 
 
 
@@ -43,7 +120,6 @@
             <asp:Button ID="ModProg" runat="server" Text="Modifica" OnClick="ModProgetto" />
             <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" />
             <asp:Button ID="EliProg" runat="server" Text="Elimina" OnClick="EliProgetto" />
-
         </div>
 
         <div id="ViewSocieta" runat="server">
@@ -72,14 +148,13 @@
             <asp:TextBox runat="server" ID="TCognome" />
 
             <asp:Label ID="LCosto" Text="Cognome orario" runat="server" />
-            <asp:TextBox runat="server" ID="Cognome" />
+            <asp:TextBox runat="server" ID="TCosto" />
 
 
 
             <asp:Button ID="ModDip" runat="server" Text="Modifica" OnClick="ModDipendenti" />
             <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" />
             <asp:Button ID="EliDip" runat="server" Text="Elimina" OnClick="EliDipendenti" />
-
         </div>
 
     </main>

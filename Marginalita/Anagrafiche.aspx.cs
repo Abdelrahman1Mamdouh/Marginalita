@@ -14,7 +14,7 @@ namespace Marginalita
     {
 
         bool[] vedi = new bool[3];
-        bool[] inputDati = new bool[3];
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["vedi"] == null)
@@ -31,77 +31,144 @@ namespace Marginalita
 
         protected void NewProgetto(object sender, EventArgs e)
         {
-            inputDati[0] = true;
-            inputDati[1] = false;
-            inputDati[2] = false;
+            vedi[0] = true;
+            vedi[1] = false;
+            vedi[2] = false;
 
 
-            Session["evento"] = null;
-            Session["input"] = inputDati;
+            Session["DatiProgetto"] = null;
+            Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }
-        protected void NewProgetto(object sender, ListViewItemEventArgs e)
-        {
-            inputDati[0] = true;
-            inputDati[1] = false;
-            inputDati[2] = false;
-
-            
-            Session["evento"] = new Dictionary<string, string>
-        {
-            { "ID",  e.Item.FindControl("ID").ToString() },
-            { "Nome", ((Label)e.Item.FindControl("PLNome")).Text },
-            { "Budget", ((Label)e.Item.FindControl("PLBudget")).Text },
-            { "Durata",((Label)e.Item.FindControl("PLDurata")).Text },
-            { "Descrizione", ((Label)e.Item.FindControl("PLDescrizione")).Text },
-          
-            { "Societa", ((Label)e.Item.FindControl("PLSocieta")).Text}
-        };
-            Session["input"] = inputDati;
-            Response.Redirect("InputDati.aspx");
-        }
+ 
         protected void NewSocieta(object sender, EventArgs e)
         {
-            inputDati[0] = false;
-            inputDati[1] = true;
-            inputDati[2] = false;
+            vedi[0] = false;
+            vedi[1] = true;
+            vedi[2] = false;
 
             Session["evento"] = null;
-            Session["input"] = inputDati;
+            Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }
-        protected void NewSocieta(object sender, ListViewItemEventArgs e)
-        {
-            inputDati[0] = false;
-            inputDati[1] = true;
-            inputDati[2] = false;
-
-            Session["evento"] = e;
-            Session["input"] = inputDati;
-            Response.Redirect("InputDati.aspx");
-        }
+    
         protected void NewDipendente(object sender, EventArgs e)
         {
-            inputDati[0] = false;
-            inputDati[1] = false;
-            inputDati[2] = true;
+            vedi[0] = false;
+            vedi[1] = false;
+            vedi[2] = true;
 
             Session["evento"] = null;
-            Session["input"] = inputDati;
+            Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }
 
-        protected void NewDipendente(object sender, ListViewItemEventArgs e)
+        protected void UpPro_Click(object sender, EventArgs e)
         {
-            inputDati[0] = false;
-            inputDati[1] = false;
-            inputDati[2] = true;
 
-            Session["evento"] = e;
-            Session["input"] = inputDati;
+            vedi[0] = true;
+            vedi[1] = false;
+            vedi[2] = false;
+
+
+          
+            Session["vedi"] = vedi;
+
+
+            var item = ((Button)sender).NamingContainer as ListViewDataItem;
+            if (item == null)
+                return;
+
+            // Trova la Table (è il primo controllo figlio di item)
+            var table = item.Controls.OfType<Table>().FirstOrDefault();
+            if (table == null || table.Rows.Count == 0)
+                return;
+
+            // Trova la TableRow (è la prima riga della tabella)
+            var row = table.Rows[0];
+
+            // Ora puoi trovare i Label nella TableRow
+            string id = ((Button)sender).CommandArgument;
+            var nome = (row.FindControl("PLNome") as Label)?.Text;
+            var budget = (row.FindControl("PLBudget") as Label)?.Text;
+            var durata = (row.FindControl("PLDurata") as Label)?.Text;
+            var descrizione = (row.FindControl("PLDescrizione") as Label)?.Text;
+            var societa = (row.FindControl("PLSocieta") as Label)?.Text;
+
+            Session["DatiProgetto"] = new Dictionary<string, string>
+            {
+                { "ID", id },
+                { "Nome", nome },
+                { "Budget", budget },
+                { "Durata", durata },
+                { "Descrizione", descrizione },
+                { "Societa", societa },
+            };
             Response.Redirect("InputDati.aspx");
         }
 
+        protected void UpSocieta_Click(object sender, EventArgs e)
+        {
+            vedi[0] = false;
+            vedi[1] = true;
+            vedi[2] = false;
 
+            Session["vedi"] = vedi;
+
+            var item = ((Button)sender).NamingContainer as ListViewDataItem;
+            if (item == null)
+                return;
+
+            var table = item.Controls.OfType<Table>().FirstOrDefault();
+            if (table == null || table.Rows.Count == 0)
+                return;
+
+            var row = table.Rows[0];
+
+            string id = ((Button)sender).CommandArgument;
+            var intestazione = (row.FindControl("SLIntestazione") as Label)?.Text;
+            var email = (row.FindControl("SLEmail") as Label)?.Text;
+
+            Session["DatiProgetto"] = new Dictionary<string, string>
+            {
+                { "ID", id },
+                { "Intestazione", intestazione },
+                { "Email", email }
+            };
+            Response.Redirect("InputDati.aspx");
+        }
+
+        protected void UpDipendente_Click(object sender, EventArgs e)
+        {
+            vedi[0] = false;
+            vedi[1] = false;
+            vedi[2] = true;
+
+            Session["vedi"] = vedi;
+
+            var item = ((Button)sender).NamingContainer as ListViewDataItem;
+            if (item == null)
+                return;
+
+            var table = item.Controls.OfType<Table>().FirstOrDefault();
+            if (table == null || table.Rows.Count == 0)
+                return;
+
+            var row = table.Rows[0];
+
+            string id = ((Button)sender).CommandArgument;
+            var nome = (row.FindControl("DLNome") as Label)?.Text;
+            var cognome = (row.FindControl("DLCognome") as Label)?.Text;
+            var costo = (row.FindControl("DLCostoOrario") as Label)?.Text;
+
+            Session["DatiProgetto"] = new Dictionary<string, string>
+            {
+                { "ID", id },
+                { "Nome", nome },
+                { "Cognome", cognome },
+                { "Costo", costo }
+            };
+            Response.Redirect("InputDati.aspx");
+        }
     }
 }

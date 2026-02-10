@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Marginalita.Dashboard" MasterPageFile="~/Site.Master" Title="DASHBOARD" %>
+﻿
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Marginalita.Dashboard" MasterPageFile="~/Site.Master" Title="DASHBOARD" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -7,7 +8,7 @@
             <!-- Card 1 -->
             <div class="DSCard-card">
                 <div class="DSCard-text">
-                    <div class="DSCard-label">Monthly Recurring Revenue</div>
+                    <div class="DSCard-label">Budget Totale</div>
                     <div class="DSCard-value">
                         <asp:Label ID="lblMRR" runat="server" Text="" />
                     </div>
@@ -26,9 +27,9 @@
             <!-- Card 2 -->
             <div class="DSCard-card">
                 <div class="DSCard-text">
-                    <div class="DSCard-label">Active Users</div>
+                    <div class="DSCard-label">Costo Totale</div>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblUsers" runat="server" Text="5,500" />
+                        <asp:Label ID="lblUsers" runat="server" Text="" />
                     </div>
                     <div class="DSCard-change DSCard-up">
                         ↑
@@ -45,9 +46,9 @@
             <!-- Card 3 -->
             <div class="DSCard-card">
                 <div class="DSCard-text">
-                    <div class="DSCard-label">Revenue Growth</div>
+                    <div class="DSCard-label">Margine Totale</div>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblGrowth" runat="server" Text="118%" />
+                        <asp:Label ID="lblGrowth" runat="server" Text="" />
                     </div>
                     <div class="DSCard-change DSCard-up">
                         ↑
@@ -106,12 +107,15 @@
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                    SelectCommand="SELECT * FROM Progetto"></asp:SqlDataSource>
+                    SelectCommand="SELECT * FROM V_Dash">
+                </asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"
                     AutoGenerateColumns="True"
-                    CssClass="table table-striped w-100 text-center">
+                    CssClass="table table-striped w-100 text-center"
+                   
+                    >
 
                     <HeaderStyle CssClass="table-dark" />
 
@@ -139,10 +143,12 @@
                         <asp:TemplateField HeaderText="Dettagli">
                             <ItemTemplate>
 
-                                <asp:LinkButton ID="btnVisualizza"
-                                    runat="server"
-                                    CssClass="btn btn-outline-primary"
-                                    OnClick="btnVisualizza_Click">
+                                <asp:LinkButton ID="btnVisualizza" 
+                                                runat="server" 
+                                                CssClass="btn btn-outline-primary" 
+                                                OnClick="btnVisualizza_Click"
+                                                CommandArgument='<%# Eval("ID") %>'
+                                                PostBackUrl='<%# "dettagliProgetto.aspx?id=" + Eval("ID") %>'> 
                                              <i class="bi bi-eye"></i> Visualizza
                                 </asp:LinkButton>
 

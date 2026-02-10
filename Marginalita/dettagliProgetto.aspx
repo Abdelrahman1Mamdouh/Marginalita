@@ -2,6 +2,20 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
+    <asp:SqlDataSource
+        runat="server" ID="PROG"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+        SelectCommand="SELECT * 
+                       FROM Progetto AS P
+                       JOIN Original AS O ON O.Progetto = P.ID
+                       WHERE P.ID = @ID">
+
+        <SelectParameters>
+        <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
+        <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
+    </SelectParameters>
+    
+    </asp:SqlDataSource>
 
     <div>
         <asp:FormView ID="FV" DataSourceID="PROG" runat="server" RenderOuterTable="false">
@@ -35,9 +49,9 @@
                     <!-- Card 2 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblStartDate" runat="server" Text="Start Date" CssClass="DSCard-label" />
+                            <asp:Label ID="lblStartDate" runat="server" Text="Data Creazione" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Durata") %>' />
+                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Creata") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
@@ -46,9 +60,9 @@
                     <!-- Card 3 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblEndDate" runat="server" Text="End Date" CssClass="DSCard-label" />
+                            <asp:Label ID="lblEndDate" runat="server" Text="Durata" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblGrowth" runat="server" Text="04 Jul, 2020" />
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Durata") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
@@ -72,7 +86,7 @@
                         <div class="DSCard-text">
                             <asp:Label ID="Label4" runat="server" Text="Total Hours" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblHoursDone3" runat="server" Text="38:00" CssClass="kpi3-big2" />
+                                <asp:Label ID="lblHoursDone3" runat="server" Text="INSERIRE DA QUERY" CssClass="kpi3-big2" />
                             </div>
                         </div>
                     </div>
