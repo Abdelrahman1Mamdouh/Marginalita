@@ -2,10 +2,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <asp:SqlDataSource
-        runat="server" ID="PROG"
-        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
-        SelectCommand="SELECT * FROM Progetto WHERE ID = 4"></asp:SqlDataSource>
 
     <div>
         <asp:FormView ID="FV" DataSourceID="PROG" runat="server" RenderOuterTable="false">

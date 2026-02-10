@@ -83,24 +83,23 @@
                 </div>
             </div>
         </section>
-        
-            <section class="mt-5">
-                <div style="display:flex;justify-content:space-between;">
-                    <asp:Label ID="Label1"
-                        Text="Dashboard Progetti"
-                        runat="server" />
 
-                    <asp:LinkButton ID="LinkButton1"
-                        Text="+ Aggiungi"
-                        runat="server"
-                        CssClass="btn btn-dark" 
-                       >
+        <section class="mt-5">
+            <div style="display: flex; justify-content: space-between;">
+                <asp:Label ID="Label1"
+                    Text="Dashboard Progetti"
+                    runat="server" />
 
-                    </asp:LinkButton>
-                </div>
+                <asp:LinkButton ID="LinkButton1"
+                    Text="+ Aggiungi"
+                    runat="server"
+                    CssClass="btn btn-dark">
 
-             
-            </section>
+                </asp:LinkButton>
+            </div>
+
+
+        </section>
 
         <section class="mt-3" style="width: 100%">
             <div class="border rounded-3 shadow-sm overflow-hidden">
@@ -130,7 +129,7 @@
                                     <div class="progress-bar <%# 
                                              Convert.ToInt32(Eval("Budget")) > 2000 ? "bg-danger" : 
                                              Convert.ToInt32(Eval("Budget")) > 1500 ? "bg-warning" : "bg-success"%>"
-                                        style='<%# "width: " + Eval("Budget") + "%;" %>'>
+                                        style='<%# "width:" + Convert.ToInt32(Eval("Budget")) + "%;" %>'>
                                         <%# Eval("Budget") %>%
                                     </div>
                                 </div>
@@ -140,11 +139,10 @@
                         <asp:TemplateField HeaderText="Dettagli">
                             <ItemTemplate>
 
-                                <asp:LinkButton ID="btnVisualizza" 
-                                                runat="server" 
-                                                CssClass="btn btn-outline-primary" 
-                                                OnClick="btnVisualizza_Click"
-                                                >
+                                <asp:LinkButton ID="btnVisualizza"
+                                    runat="server"
+                                    CssClass="btn btn-outline-primary"
+                                    OnClick="btnVisualizza_Click">
                                              <i class="bi bi-eye"></i> Visualizza
                                 </asp:LinkButton>
 
@@ -157,7 +155,5 @@
 
             </div>
         </section>
-
-
-    </body>
+    </div>
 </asp:Content>

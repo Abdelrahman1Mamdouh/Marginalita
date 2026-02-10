@@ -1,5 +1,4 @@
-﻿
-<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Anagrafiche.aspx.cs" Inherits="Marginalita.Anagrafiche" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Anagrafiche.aspx.cs" Inherits="Marginalita.Anagrafiche" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
