@@ -21,6 +21,19 @@ namespace Marginalita
             Response.Redirect("dettagliProgetto.aspx");
         }
 
+        //protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        //{
+        //    // Verifichiamo che il comando sia quello del nostro pulsante
+        //    if (e.CommandName == "btnVisualizza")
+        //    {
+        //        // Recuperiamo l'ID passato tramite CommandArgument
+        //        string idSelezionato = e.CommandArgument.ToString();
+
+        //        // Reindirizziamo alla pagina Dettagli.aspx passando l'ID
+        //        Response.Redirect("dettagliProgetto.aspx?id=" + idSelezionato);
+        //    }
+        //}
+
         //private void CalcolaBudget()
         //{
 
