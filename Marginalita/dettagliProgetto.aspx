@@ -11,7 +11,6 @@
                        WHERE P.ID = @ID">
 
         <SelectParameters>
-        <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
         <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
     </SelectParameters>
     
