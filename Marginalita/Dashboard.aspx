@@ -10,31 +10,50 @@
                 <div class="DSCard-text">
                     <div class="DSCard-label">Budget Totale</div>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblMRR" runat="server" Text="" />
+
+                        <asp:SqlDataSource ID="SqlDataSourceBudget" runat="server"
+                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                            SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM V_Dash">
+                        </asp:SqlDataSource>
+                            <asp:Repeater ID="rptTotale" runat="server" DataSourceID="SqlDataSourceBudget">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("TotaleBudget", "{0:C}") %>'/>
+                                 </ItemTemplate>
+                            </asp:Repeater>
                     </div>
                     <div class="DSCard-change DSCard-up">
-                        ↑
-                <asp:Label ID="lblMRRChange" runat="server" Text="8.4%" />
-                        <span class="DSCard-muted">vs last month</span>
+                       <%-- ↑--%>
+                <%--<asp:Label ID="lblMRRChange" runat="server" Text="8.4%" />
+                        <span class="DSCard-muted">vs last month</span>--%>
                     </div>
                 </div>
 
                 <div class="DSCard-icon DSCard-blue">
-                    $
+                    €
                 </div>
             </div>
 
             <!-- Card 2 -->
             <div class="DSCard-card">
                 <div class="DSCard-text">
+
+                    <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
+                         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Original">
+                    </asp:SqlDataSource>
+
                     <div class="DSCard-label">Costo Totale</div>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblUsers" runat="server" Text="" />
+                        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="SqlDataSourceCosti">
+                            <ItemTemplate>
+                                 <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("TotaleCosti", "{0:C}") %>' />
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </div>
                     <div class="DSCard-change DSCard-up">
-                        ↑
-                <asp:Label ID="lblUsersChange" runat="server" Text="12.3%" />
-                        <span class="DSCard-muted">vs last month</span>
+                        <%--↑--%>
+                <asp:Label ID="lblUsersChange" runat="server" Text="" />
+                        <%--<span class="DSCard-muted">vs last month</span>--%>
                     </div>
                 </div>
 
@@ -47,13 +66,21 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Margine Totale</div>
+                    <asp:SqlDataSource ID="SqlDataSourceMargini" runat="server"
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                        SelectCommand="SELECT AVG(Margine) AS TotaleMargini FROM Progetto">
+                    </asp:SqlDataSource>
                     <div class="DSCard-value">
-                        <asp:Label ID="lblGrowth" runat="server" Text="" />
+                        <asp:Repeater ID="Repeater2" runat="server" DataSourceID="SqlDataSourceMargini">
+                            <ItemTemplate>
+                                    <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("TotaleMargini")+ "%" %>' />
+                             </ItemTemplate>
+                        </asp:Repeater>
                     </div>
                     <div class="DSCard-change DSCard-up">
-                        ↑
-                <asp:Label ID="lblGrowthChange" runat="server" Text="5.2%" />
-                        <span class="DSCard-muted">vs last month</span>
+                       <%-- ↑--%>
+                <asp:Label ID="lblGrowthChange" runat="server" Text="" />
+                        <%--<span class="DSCard-muted">vs last month</span>--%>
                     </div>
                 </div>
 
@@ -65,22 +92,28 @@
             <!-- Card 4 -->
             <div class="DSCard-card">
                 <div class="DSCard-text">
-                    <div class="DSCard-label">Churn Rate</div>
-                    <div class="DSCard-value">
-                        <asp:Label ID="lblChurn" runat="server" Text="2.8%" />
-                    </div>
-                    <div class="DSCard-change DSCard-down">
-                        ↓
-                <asp:Label ID="lblChurnChange" runat="server" Text="0.5%" />
-                        <span class="DSCard-muted">vs last month</span>
-                    </div>
-                </div>
-
-                <div class="DSCard-icon DSCard-red">
-                    👤
-                 
-                    <br />
-                    <br />
+                    <div class="DSCard-label">Report</div>
+                       <asp:SqlDataSource ID="SqlScadenze" runat="server"
+                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                            SelectCommand="SELECT P.ID, 
+                                                  P.Nome, 
+                                                  P.Budget,
+                                           DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata
+                                           FROM Progetto AS P
+                                           JOIN Original AS O ON P.ID = O.Progetto
+                                           WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() 
+                                           AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE())
+                                           ORDER BY ScadenzaCalcolata ASC">
+                       </asp:SqlDataSource> 
+                    <asp:GridView ID="GridView2" runat="server"
+                        DataSourceID="SqlScadenze"
+                        AutoGenerateColumns="False"
+                        CssClass="table table-striped w-100 text-center">
+                        <Columns>
+                                <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                                <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+                        </Columns>
+                     </asp:GridView>
                 </div>
             </div>
         </section>
