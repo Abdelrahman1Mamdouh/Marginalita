@@ -14,7 +14,7 @@
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
             SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"
             InsertCommand="INSERT INTO Progetto (Nome, Budget, Durata, Descrizione, Societa) VALUES (@Nome, @Budget, @Durata, @Descrizione, @Societa)"
-            UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione, Societa=@Societa WHERE ID=@ID"
+            UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione WHERE ID=@ID"
             DeleteCommand="DELETE FROM Progetto WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
@@ -29,7 +29,6 @@
                 <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
                 <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
-                <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
             </UpdateParameters>
         </asp:SqlDataSource>
 
