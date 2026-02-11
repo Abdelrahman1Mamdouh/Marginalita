@@ -14,8 +14,8 @@
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
             SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"
             InsertCommand="INSERT INTO Progetto (Nome, Budget, Durata, Descrizione, Societa) VALUES (@Nome, @Budget, @Durata, @Descrizione, @Societa)"
-            UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione, Societa=@Societa WHERE ID=@ID"
-            DeleteCommand="DELETE FROM Progetto WHERE ID = @ID">
+            UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione WHERE ID=@ID"
+            DeleteCommand="UPDATE Progetto SET Vista = @Vista WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
                 <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
@@ -29,8 +29,12 @@
                 <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
                 <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
-                <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
+                
             </UpdateParameters>
+              <DeleteParameters>
+      <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                   <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+  </DeleteParameters>
         </asp:SqlDataSource>
 
         <asp:SqlDataSource
@@ -40,7 +44,7 @@
             SelectCommand="SELECT * FROM Societa"
             InsertCommand="INSERT INTO Societa (Intestazione, Email) VALUES (@Intestazione, @Email)"
             UpdateCommand="UPDATE Societa SET Intestazione=@Intestazione, Email=@Email WHERE ID=@ID"
-            DeleteCommand="DELETE FROM Societa WHERE ID = @ID">
+            DeleteCommand="UPDATE Societa SET Vista = @Vista WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
                 <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
@@ -50,26 +54,29 @@
                 <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
                 <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
             </UpdateParameters>
+                        <DeleteParameters>
+             <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                            <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+            </DeleteParameters>
         </asp:SqlDataSource>
 
         <asp:SqlDataSource
             ID="DContratto"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Contratto"
-            InsertCommand="INSERT INTO Contratto (Tipo, Margine) VALUES (@Tipo, @Margine)"
-            UpdateCommand="UPDATE Contratto SET Tipo=@Tipo, Margine=@Margine WHERE ID=@ID"
-            DeleteCommand="DELETE FROM Contratto WHERE ID = @ID">
-            <InsertParameters>
-                <asp:ControlParameter Name="Tipo" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
-                <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
-            </InsertParameters>
-            <UpdateParameters>
-                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
-                <asp:ControlParameter Name="Tipo" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
-                <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedItem.Text" />
-            </UpdateParameters>
+            SelectCommand="SELECT * FROM Contratto">      
         </asp:SqlDataSource>
+
+           <asp:SqlDataSource
+           ID="DFake"
+           runat="server"
+           ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
+           DeleteCommand="UPDATE Original SET Vista = @Vista WHERE ID = @ID">
+                <DeleteParameters>
+                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+</DeleteParameters>
+       </asp:SqlDataSource>
 
         <asp:SqlDataSource
             ID="DDipendenti"
@@ -78,7 +85,7 @@
             SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"
             InsertCommand="INSERT INTO Dipendente (Nome, Cognome, CostoOrario) VALUES (@Nome, @Cognome, @CostoOrario)"
             UpdateCommand="UPDATE Dipendente SET Nome=@Nome, Cognome=@Cognome, CostoOrario=@CostoOrario WHERE ID=@ID"
-            DeleteCommand="DELETE FROM Dipendente WHERE ID = @ID">
+            DeleteCommand="UPDATE Dipendente SET Vista = @Vista WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
@@ -90,6 +97,10 @@
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
                 <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
             </UpdateParameters>
+                        <DeleteParameters>
+    <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                            <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+</DeleteParameters>
         </asp:SqlDataSource>
 
         <div id="ViewProgetti" runat="server">
@@ -102,7 +113,7 @@
             <asp:Label ID="LBudget" Text="Budget progetto" runat="server" />
             <asp:TextBox runat="server" ID="TBudget" />
 
-            <asp:Label ID="LDurata" Text="Durata progetto" runat="server" />
+            <asp:Label ID="LDurata" Text="Durata progetto (settimane)" runat="server" />
             <asp:TextBox runat="server" ID="TDurata" />
 
             <asp:Label ID="LDescritione" TextMode="Multiline" Text="Descritione progetto" runat="server" />
@@ -155,8 +166,9 @@
             <asp:Button ID="ModDip" runat="server" Text="Modifica" OnClick="ModDipendenti" />
             <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" />
             <asp:Button ID="EliDip" runat="server" Text="Elimina" OnClick="EliDipendenti" />
-        </div>
 
+        </div>
+        <asp:Button ID="Ann" runat="server" Text="Annulla" OnClick="Annulla" />
     </main>
 
 </asp:Content>

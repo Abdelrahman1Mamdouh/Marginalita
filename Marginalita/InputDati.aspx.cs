@@ -12,6 +12,7 @@ namespace Marginalita
     {
         bool[] vedi = new bool[3];
         Dictionary<string, string> dati = null;
+        int ProgFin = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             if ( Session["DatiProgetto"] != null)
@@ -20,7 +21,21 @@ namespace Marginalita
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
                 HidID.Value = dati["ID"];
+                SalDip.Visible = false;
+                SalSoc.Visible = false;
+                SalProg.Visible = false;
 
+            }
+            else
+            {
+                ModDip.Visible = false;
+                ModSoc.Visible = false;
+                ModProg.Visible = false;
+                EliDip.Visible = false;
+                EliSoc.Visible = false;
+                EliProg.Visible = false;
+                
+               
             }
 
             if (Session["vedi"] == null)
@@ -31,7 +46,7 @@ namespace Marginalita
                 }
             }
             else
-            vedi = (bool[])Session["vedi"];
+                vedi = (bool[])Session["vedi"];
 
                 if (vedi[0] )
             {
@@ -46,8 +61,7 @@ namespace Marginalita
                     TBudget.Text = dati["Budget"];
                     TDurata.Text = dati["Durata"];
                     TDescritione.Text = dati["Descrizione"];
-                    //   DDLSocieta.Text = dati["Societa"];
-                    //DDLSocieta.DataValueField= dati["Societa"];
+                   
                 }
 
             }
@@ -84,7 +98,7 @@ namespace Marginalita
 
             }
 
-            Session["vedi"] = null;
+            
         }
 
         //Gestione progetti
@@ -104,6 +118,7 @@ namespace Marginalita
         protected void EliProgetto(object sender, EventArgs e)
         {
             DProgetti.Delete();
+            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -124,6 +139,8 @@ namespace Marginalita
         protected void EliSocieta(object sender, EventArgs e)
         {
             DSocieta.Delete();
+            DProgetti.Delete();
+            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -147,6 +164,13 @@ namespace Marginalita
         {
             DDipendenti.Delete();
             
+            Response.Redirect("Anagrafiche.aspx");
+        }
+
+        protected void Annulla(object sender, EventArgs e)
+        {
+            
+
             Response.Redirect("Anagrafiche.aspx");
         }
     }

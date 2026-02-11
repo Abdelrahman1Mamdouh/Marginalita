@@ -51,6 +51,15 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DContratto;
 
         /// <summary>
+        /// Controllo DFake.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource DFake;
+
+        /// <summary>
         /// Controllo DDipendenti.
         /// </summary>
         /// <remarks>
@@ -346,5 +355,14 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button EliDip;
+
+        /// <summary>
+        /// Controllo Ann.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Ann;
     }
 }
