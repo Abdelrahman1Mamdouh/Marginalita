@@ -49,5 +49,20 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater RepProgetto;
+                
+        /// <summary>
+        /// Controllo visualeGiorno.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.RadioButton visualeGiorno;
+
+        /// <summary>
+        /// Controllo visualeSettimana.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.RadioButton visualeSettimana;
+
+        /// <summary>
+        /// Controllo visualeMese.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.RadioButton visualeMese;
     }
 }
