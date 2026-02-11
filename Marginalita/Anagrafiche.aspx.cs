@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +28,18 @@ namespace Marginalita
             ViewProgetti.Visible = vedi[0];
             ViewSocieta.Visible = vedi[1];
             ViewDipendenti.Visible = vedi[2];
+
+            if (vedi[0]) 
+            { AnaView.DataSourceID = "DProgetti";
+              
+            }
+
+            if (vedi[1])
+            { AnaView.DataSourceID = "DSocieta"; }
+
+            if (vedi[2])
+            { AnaView.DataSourceID = "DDipendenti"; }
+
         }
 
         protected void NewProgetto(object sender, EventArgs e)

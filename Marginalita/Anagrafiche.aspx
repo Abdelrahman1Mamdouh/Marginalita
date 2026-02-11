@@ -135,9 +135,8 @@
                                 <asp:TableCell Width="10" runat="server">
                                     <asp:Button ID="UpDip" runat="server" Text="📝" OnClick="UpDipendente_Click" CommandArgument='<%#Eval("ID") %>' />
                                 </asp:TableCell>
-                               <%-- <asp:TableCell Width="10" runat="server">
-                                    <asp:Button ID="DelDip" runat="server" Text='<%# "\uD83D\uDDD1" %>' CommandName="DeleteDipendente" CommandArgument='<%#Eval("ID") %>' />
-                                </asp:TableCell>--%>
+                             
+                                
 
                             </asp:TableRow>
                         </asp:Table>
@@ -150,6 +149,16 @@
 
             </div>
         </asp:Panel>
+
+        <asp:GridView 
+            ID="AnaView"
+            DataSourceID="SqlDGS"
+            AutoGenerateColumns="True"
+            CssClass="table table-striped w-100 text-center"
+            runat="server">
+
+        </asp:GridView>
+
     </main>
 
 </asp:Content>

@@ -60,6 +60,42 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.LinkButton btnCloseSidebar;
 
         /// <summary>
+        /// Controllo AnaButton.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton AnaButton;
+
+        /// <summary>
+        /// Controllo AnProg.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton AnProg;
+
+        /// <summary>
+        /// Controllo AnSoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton AnSoc;
+
+        /// <summary>
+        /// Controllo AnDip.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton AnDip;
+
+        /// <summary>
         /// Controllo MainContent.
         /// </summary>
         /// <remarks>

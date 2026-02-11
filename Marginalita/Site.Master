@@ -92,9 +92,44 @@
             <span class="ico">&#9634;</span> Dashboard
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafiche.aspx">
+            <asp:LinkButton id="AnaButton" 
+               Text="&#10133   Anagrafiche" 
+                
+               OnClick="SubMenu" 
+                Class="sidebar-link"
+               runat="server"/>
+
+                <asp:LinkButton ID="AnProg"
+                    Text="  &#10133   Progetti"
+                    
+                    
+                    Font-Size="12pt"
+                    OnClick="Progetti"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+                <asp:LinkButton ID="AnSoc"
+                    Text="   &#10133   Societa"
+                  
+                    Font-Size="12pt"
+                    OnClick="Societa"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+                <asp:LinkButton ID="AnDip"
+                    Text="   &#10133   Dipendenti"
+                    Font-Size="12pt"
+                    OnClick="Dipendenti"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+
+<%--                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafiche.aspx">
             <span class="ico">&#10133;</span> Anagrafiche
-                </asp:HyperLink>
+                </asp:HyperLink>--%>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
              <span class="ico">&#128202;</span>Timesheet

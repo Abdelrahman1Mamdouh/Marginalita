@@ -13,6 +13,29 @@
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="SELECT ID, Nome, Cognome FROM Dipendente"> 
     </asp:SqlDataSource>
+    
+    <div id="visualeOre">
+        <p>Visualizza per:</p>
+        <asp:RadioButton ID="visualeGiorno" runat="server" 
+            GroupName="PeriodoSelezione" 
+            Text="Giorno" 
+            AutoPostBack="true" 
+            OnCheckedChanged="visualizzaGiorno" 
+            Checked="true" />
+
+        <asp:RadioButton ID="visualeSettimana" runat="server" 
+            GroupName="PeriodoSelezione" 
+            Text="Settimana" 
+            AutoPostBack="true" 
+            OnCheckedChanged="visualizzaSettimana" />
+
+        <asp:RadioButton ID="visualeMese" runat="server" 
+            GroupName="PeriodoSelezione" 
+            Text="Mese" 
+            AutoPostBack="true" 
+            OnCheckedChanged="visualizzaMese" />
+    </div>
+
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <thead>
             <tr>
@@ -31,11 +54,11 @@
                         <td style="padding:5px; font-weight:bold;"><%# Eval("Nome") %>
                             <asp:HiddenField ID="HiddenProgetto" runat="server" Value='<%# Eval("ID") %>' />
                         </td>
-                        <asp:Repeater runat="server" DataSourceID="TabellaDipendente" OnItemDataBound="RepDipendenti_ItemDataBound">
+                        <asp:Repeater runat="server" ID="RepCelle" DataSourceID="TabellaDipendente" OnItemDataBound="RepDipendenti_ItemDataBound">
                             <ItemTemplate>
                                 <td style="padding:5px;">
                                     <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                    <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="8" Columns="1" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
+                                    <asp:TextBox runat="server" ID="InputOre" TextMode="Number" Columns="1" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
                                 </td>
                             </ItemTemplate>
                         </asp:Repeater>
