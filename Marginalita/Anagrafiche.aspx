@@ -13,7 +13,7 @@
                 <asp:SqlDataSource ID="DProgetti" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
                     SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"></asp:SqlDataSource>
-                   <!-- DeleteCommand="DELETE FROM Progetto WHERE ID = @ID"--> 
+                 
                 <asp:ListView ID="LProgetti" DataSourceID="DProgetti" DataKeyName="IDProgetto" runat="server">
 
 

@@ -13,28 +13,20 @@
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="SELECT ID, Nome, Cognome FROM Dipendente"> 
     </asp:SqlDataSource>
-    
-    <div id="visualeOre">
-        <p>Visualizza per:</p>
-        <asp:RadioButton ID="visualeGiorno" runat="server" 
-            GroupName="PeriodoSelezione" 
-            Text="Giorno" 
-            AutoPostBack="true" 
-            OnCheckedChanged="visualizzaGiorno" 
-            Checked="true" />
 
-        <asp:RadioButton ID="visualeSettimana" runat="server" 
-            GroupName="PeriodoSelezione" 
-            Text="Settimana" 
-            AutoPostBack="true" 
-            OnCheckedChanged="visualizzaSettimana" />
+    <asp:SqlDataSource runat="server" ID="DSFake"
+         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+         SelectCommand="SELECT Dipendente, Creata, Ore FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
+    </asp:SqlDataSource>
 
-        <asp:RadioButton ID="visualeMese" runat="server" 
-            GroupName="PeriodoSelezione" 
-            Text="Mese" 
-            AutoPostBack="true" 
-            OnCheckedChanged="visualizzaMese" />
+<div id="inserimentoOre">
+        <p>Inserisci ore per:</p>
+        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true"/>
+        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese"/>
     </div>
+    <br />
+    <br />
 
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <thead>
@@ -54,11 +46,11 @@
                         <td style="padding:5px; font-weight:bold;"><%# Eval("Nome") %>
                             <asp:HiddenField ID="HiddenProgetto" runat="server" Value='<%# Eval("ID") %>' />
                         </td>
-                        <asp:Repeater runat="server" ID="RepCelle" DataSourceID="TabellaDipendente" OnItemDataBound="RepDipendenti_ItemDataBound">
+                        <asp:Repeater runat="server" DataSourceID="TabellaDipendente" OnItemDataBound="RepDipendenti_ItemDataBound">
                             <ItemTemplate>
                                 <td style="padding:5px;">
                                     <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                    <asp:TextBox runat="server" ID="InputOre" TextMode="Number" Columns="1" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
+                                    <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="8" Columns="1" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
                                 </td>
                             </ItemTemplate>
                         </asp:Repeater>
@@ -67,4 +59,25 @@
             </asp:Repeater>
         </tbody>
     </table>
+    <br />
+
+    <div id="visualeOre">
+        <p>Visualizza ore per:</p>
+        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="VisualizzaSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno"/>
+        <asp:RadioButton ID="RadioButton4" runat="server" GroupName="VisualizzaSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="VisualizzaSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" Checked="true"/>
+
+    </div>
+    <br />
+    <br />
+    
+   <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
+       <div id="ViewOre" class="col-33" runat="server">
+    
+       <asp:GridView ID="ViewFake" runat="server"
+         AutoGenerateColumns="false"
+         CssClass="table table-bordered table-fixed">
+     </asp:GridView>
+ </div>
+</asp:Panel>
 </asp:Content>
