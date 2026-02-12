@@ -6,25 +6,27 @@
         <section>
             <h1>Inserimento dati</h1>
         </section>
-        <asp:HiddenField ID="HidID" runat="server" />
+        <asp:HiddenField ID="HID" runat="server" />
+        <asp:HiddenField ID="ProgFin" runat="server" Value="0" />
 
         <asp:SqlDataSource
             ID="DProgetti"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT ID, Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto"
-            InsertCommand="INSERT INTO Progetto (Nome, Budget, Durata, Descrizione, Societa) VALUES (@Nome, @Budget, @Durata, @Descrizione, @Societa)"
+            SelectCommand="SELECT Nome, Budget, Durata, Descrizione, Residuo, Margine, Societa FROM Progetto WHERE Vedi=1"
+            InsertCommand="INSERT INTO Progetto (Nome, Budget, Durata, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Durata, @Descrizione, @Societa, @Margine, 0)"
             UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Durata=@Durata, Descrizione=@Descrizione WHERE ID=@ID"
-            DeleteCommand="UPDATE Progetto SET Vista = @Vista WHERE ID = @ID">
+            DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
                 <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
                 <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
                 <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
+                <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedValue" />
             </InsertParameters>
             <UpdateParameters>
-                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
                 <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
                 <asp:ControlParameter Name="Durata" ControlID="TDurata" PropertyName="Text" />
@@ -32,8 +34,8 @@
                 
             </UpdateParameters>
               <DeleteParameters>
-      <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
-                   <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+      <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
+                   <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
   </DeleteParameters>
         </asp:SqlDataSource>
 
@@ -41,22 +43,22 @@
             ID="DSocieta"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Societa"
+            SelectCommand="SELECT * FROM Societa WHERE Vedi=1"
             InsertCommand="INSERT INTO Societa (Intestazione, Email) VALUES (@Intestazione, @Email)"
             UpdateCommand="UPDATE Societa SET Intestazione=@Intestazione, Email=@Email WHERE ID=@ID"
-            DeleteCommand="UPDATE Societa SET Vista = @Vista WHERE ID = @ID">
+            DeleteCommand="UPDATE Societa SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
                 <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
             </InsertParameters>
             <UpdateParameters>
-                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Intestazione" ControlID="TIntestazione" PropertyName="Text" />
                 <asp:ControlParameter Name="Email" ControlID="TEmail" PropertyName="Text" />
             </UpdateParameters>
                         <DeleteParameters>
-             <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
-                            <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+             <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
+                            <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
             </DeleteParameters>
         </asp:SqlDataSource>
 
@@ -64,17 +66,17 @@
             ID="DContratto"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Contratto">      
+            SelectCommand="SELECT * FROM Contratto Vedi">      
         </asp:SqlDataSource>
 
            <asp:SqlDataSource
            ID="DFake"
            runat="server"
            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-           DeleteCommand="UPDATE Original SET Vista = @Vista WHERE ID = @ID">
+           DeleteCommand="UPDATE Original SET Vedi = @Vedi WHERE Progetto = @ID">
                 <DeleteParameters>
-                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
-                <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+                <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
+                <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
 </DeleteParameters>
        </asp:SqlDataSource>
 
@@ -82,24 +84,24 @@
             ID="DDipendenti"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"
+            SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente Vedi"
             InsertCommand="INSERT INTO Dipendente (Nome, Cognome, CostoOrario) VALUES (@Nome, @Cognome, @CostoOrario)"
             UpdateCommand="UPDATE Dipendente SET Nome=@Nome, Cognome=@Cognome, CostoOrario=@CostoOrario WHERE ID=@ID"
-            DeleteCommand="UPDATE Dipendente SET Vista = @Vista WHERE ID = @ID">
+            DeleteCommand="UPDATE Dipendente SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
                 <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
             </InsertParameters>
             <UpdateParameters>
-                <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
+                <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
                 <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
             </UpdateParameters>
                         <DeleteParameters>
-    <asp:ControlParameter Name="ID" ControlID="HidID" PropertyName="Value" />
-                            <asp:ControlParameter Name="Vista" ControlID="ProgFin" PropertyName="Value" />
+    <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
+                            <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
 </DeleteParameters>
         </asp:SqlDataSource>
 
@@ -113,7 +115,7 @@
             <asp:Label ID="LBudget" Text="Budget progetto" runat="server" />
             <asp:TextBox runat="server" ID="TBudget" />
 
-            <asp:Label ID="LDurata" Text="Durata progetto (settimane)" runat="server" />
+            <asp:Label ID="LDurata" Text="Durata progetto (mesi)" runat="server" />
             <asp:TextBox runat="server" ID="TDurata" />
 
             <asp:Label ID="LDescritione" TextMode="Multiline" Text="Descritione progetto" runat="server" />

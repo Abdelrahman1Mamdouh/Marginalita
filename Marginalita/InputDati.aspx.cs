@@ -12,7 +12,7 @@ namespace Marginalita
     {
         bool[] vedi = new bool[3];
         Dictionary<string, string> dati = null;
-        int ProgFin = 0;
+     
         protected void Page_Load(object sender, EventArgs e)
         {
             if ( Session["DatiProgetto"] != null)
@@ -20,7 +20,7 @@ namespace Marginalita
                  dati = (Dictionary<string, string>)Session["DatiProgetto"];
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
-                HidID.Value = dati["ID"];
+                HID.Value = dati["ID"];
                 SalDip.Visible = false;
                 SalSoc.Visible = false;
                 SalProg.Visible = false;
@@ -35,7 +35,9 @@ namespace Marginalita
                 EliSoc.Visible = false;
                 EliProg.Visible = false;
                 
-               
+
+
+
             }
 
             if (Session["vedi"] == null)
@@ -45,59 +47,64 @@ namespace Marginalita
                     Response.Redirect("Anagrafiche.aspx");
                 }
             }
-            else
+            else {
                 vedi = (bool[])Session["vedi"];
-
-                if (vedi[0] )
+            }
+            // Popola i controlli SOLO al primo caricamento della pagina
+            if (!IsPostBack && Session["DatiProgetto"] != null)
             {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
-
-
-                if (Session["DatiProgetto"] != null)
+                if (vedi[0])
                 {
-                    TNomePro.Text = dati["Nome"];
-                    TBudget.Text = dati["Budget"];
-                    TDurata.Text = dati["Durata"];
-                    TDescritione.Text = dati["Descrizione"];
-                   
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
+
+
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TNomePro.Text = dati["Nome"];
+                        TBudget.Text = dati["Budget"];
+                        TDurata.Text = dati["Durata"];
+                        TDescritione.Text = dati["Descrizione"];
+
+                    }
+
                 }
 
-            }
-
-            if (vedi[1] )
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
-
-                if (Session["DatiProgetto"] != null)
+                if (vedi[1])
                 {
-                    TIntestazione.Text = dati["Intestazione"];
-                    TEmail.Text = dati["Email"];
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
+
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TIntestazione.Text = dati["Intestazione"];
+                        TEmail.Text = dati["Email"];
+                    }
+
+
+
                 }
-         
 
-
-            }
-
-            if (vedi[2] )
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
-
-                if (Session["DatiProgetto"] != null)
+                if (vedi[2])
                 {
-                    TLNomeDip.Text = dati["Nome"];
-                    TCognome.Text = dati["Cognome"];
-                    TCosto.Text = dati["Costo"];
-                }
-                   
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
 
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TLNomeDip.Text = dati["Nome"];
+                        TCognome.Text = dati["Cognome"];
+                        TCosto.Text = dati["Costo"];
+                    }
+
+
+                }
             }
 
+            Session["DatiProgetto"] = null;
             
         }
 
