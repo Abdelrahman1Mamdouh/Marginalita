@@ -24,12 +24,6 @@ namespace Marginalita
             }
         }
 
-        // Metodi per gestire il cambio dei RadioButton (Risolve l'errore di compilazione)
-        protected void visualizzaGiorno(object sender, EventArgs e) { CreaGrigliaFake(); }
-        protected void visualizzaSettimana(object sender, EventArgs e) { CreaGrigliaFake(); }
-        protected void visualizzaMese(object sender, EventArgs e) { CreaGrigliaFake(); }
-
-        
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
             TextBox casellaTesto = (TextBox)sender;
@@ -45,7 +39,6 @@ namespace Marginalita
                     int idDipendente = int.Parse(((HiddenField)cella.FindControl("HiddenDipendente")).Value);
 
                     SalvaDatiConStoredProcedure(idProgetto, idDipendente, (int)oreInserite);
-                    CreaGrigliaFake(); 
                 }
                 else
                 {
@@ -99,93 +92,12 @@ namespace Marginalita
                 comando.Parameters.AddWithValue("@idProgettoOriginale", idProgetto);
                 comando.Parameters.AddWithValue("@idDipendente", idDipendente);
                 comando.Parameters.AddWithValue("@oreInserite", (decimal)ore);
-                comando.Parameters.AddWithValue("@dataAncoraggio", DateTime.Now);
+                comando.Parameters.AddWithValue("@dataAncoraggio", GetTargetMonday());
 
                 connessione.Open();
                 comando.ExecuteNonQuery();
             }
         }
-
-        //CODICE NON FUNZIONANTE 
-        //private void CreaGrigliaFake()
-        //{
-        //    DataView dvDip = TabellaDipendente?.Select(DataSourceSelectArguments.Empty) as DataView;
-        //    if (dvDip == null) return;
-        //    DataTable dipendenti = dvDip.ToTable();
-
-        //    DateTime dataInizio = DateTime.Today;
-        //    DateTime dataFine = DateTimeTime.Today;
-
-        //    if (visualeGiorno.Checked)
-        //    {
-        //        dataInizio = DateTime.Today;
-        //        dataFine = DateTime.Today;
-        //    }
-        //    else if (visualeSettimana.Checked)
-        //    {
-        //        int diff = (7 + (DateTime.Today.DayOfWeek - DayOfWeek.Monday)) % 7;
-        //        dataInizio = DateTime.Today.AddDays(-1 * diff).Date;
-        //        dataFine = dataInizio.AddDays(6);
-        //    }
-        //    else if (visualeMese.Checked)
-        //    {
-        //        dataInizio = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        //        dataFine = dataInizio.AddMonths(1).AddDays(-1);
-        //    }
-
-        //    DataView dvFake = DSFake?.Select(DataSourceSelectArguments.Empty) as DataView;
-        //    DataTable fake = dvFake != null ? dvFakeToTable() : new DataTable();
-
-        //    var valori = new Dixtionary<string, decimal>(StringComparer.Ordinal);
-        //    foreach (DataRow r in fake.Rows)
-        //    {
-        //        if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Costo")) continue;
-        //        DataSetDateTime dt = Convert.ToDatatTime(r["Creata"]).Date;
-
-        //        if (dt >= dataInizio && dt <= dataFine)
-        //        {
-        //            int dipId = Convert.ToInt32(r["Dipendnete"]);
-        //            string key = $"{dipId}_{dt:yyyyMMdd}";
-        //            if (valori.ContainsKey(key)) valori[key] += Convert.ToDecimal(r["Costo"]);
-        //            else volori[key] = Convert.ToDecimal(r["Costo"]);
-        //        }
-        //    }
-
-        //    DataTable matrice = new DatatTable();
-        //    matrice.Columns.Add("Dipendente", typeof(string));
-
-        //    for (int d = giornoInizio; d <= numeroGiorni; d++)
-        //        matrice.Columns.Add(d.ToString(), typeof(decimal));
-
-        //    foreach (DataRow dip in dipendenti.Rows)
-        //    {
-        //        DataRow nr = matrice.NewRow();
-        //        int dipId = Convert.ToInt32(dip["ID"]);
-        //        nr["Dipendente"] = $"{dip["Nome"]} {dip["Cognome"]}";
-
-        //        for (int d = giornoInizio; d <= numeroGiorni; d++)
-        //        {
-        //            string key = $"{dipId}_{d}";
-        //            nr[d.ToString()] = valori.TryGetValue(key, out decimal v) ? (object)v : DBNull.Value;
-        //        }
-        //        maatrice.Rows.Add(nr);
-        //    }
-
-        //    ViewFake.Columns.Clear();
-        //    ViewFake.AutoGenerateColumns = false;
-        //    ViewFake.Columns.Add(new BoundField { DataField = "Dipendente", HearderText = "Dipendente" });
-
-        //    for (int d = giornoInizio; d <= numeroGiorni; d++)
-        //    {
-        //        ViewFake.Columns.Add(new BoundField { DataField = dataFine.ToString(), HearderText = dataFine.ToString(), DatatFormatString = "{0:0.##}" });
-        //    }
-
-        //    ViewFake.RowDataBound -= ViewFake_RowDataBound;
-        //    ViewFake.RowDataBound += ViewFake_RowDataBound;
-        //    ViewFake.DataSource = matrice;
-        //    ViewFake.DataBind();
-        //}
-
         private void CreaGrigliaFake()
         {
             DataView dvDip = TabellaDipendente?.Select(DataSourceSelectArguments.Empty) as DataView;
@@ -197,102 +109,175 @@ namespace Marginalita
 
             int year = DateTime.Now.Year;
             int month = DateTime.Now.Month;
+            int daysInMonth = DateTime.DaysInMonth(year, month);
 
-            int giornoInizio = 1;
-            int numeroGiorni = DateTime.DaysInMonth(year, month);
-
-            if (RadioButton3.Checked) 
-            {
-                giornoInizio = DateTime.Now.Day;
-                numeroGiorni = giornoInizio;
-            }
-            else if (RadioButton4.Checked) 
-            {
-                int diff = (7 + (DateTime.Now.DayOfWeek - DayOfWeek.Monday)) % 7;
-                DateTime lunedi = DateTime.Now.AddDays(-1 * diff);
-                giornoInizio = (lunedi.Month == month) ? lunedi.Day : 1;
-                numeroGiorni = Math.Min(giornoInizio + 6, DateTime.DaysInMonth(year, month));
-            }
-
+            // Aggrega ore per dipendente/giorno (chiave: "{dipId}_{day}")
             var valori = new Dictionary<string, decimal>(StringComparer.Ordinal);
             foreach (DataRow r in fake.Rows)
             {
-                if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Ore")) continue;
-
-                int dipId = Convert.ToInt32(r["Dipendente"]);
-                DateTime dt = Convert.ToDateTime(r["Creata"]);
-
-                if (dt.Year == year && dt.Month == month)
+                try
                 {
-                    string key = $"{dipId}_{dt.Day}";
-                    if (valori.ContainsKey(key)) valori[key] += Convert.ToDecimal(r["Ore"]);
-                    else valori[key] = Convert.ToDecimal(r["Ore"]);
+                    if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Ore"))
+                        continue;
+
+                    int dipId = Convert.ToInt32(r["Dipendente"]);
+                    DateTime dt = Convert.ToDateTime(r["Creata"]);
+                    if (dt.Year != year || dt.Month != month) continue;
+
+                    decimal ore = Convert.ToDecimal(r["Ore"]);
+                    string key = $"{dipId}_{dt.Day - 1}";
+
+                    if (valori.ContainsKey(key)) valori[key] += ore;
+                    else valori[key] = ore;
+                }
+                catch
+                {
+                    // Ignora righe malformate e continua
+                    continue;
                 }
             }
 
-            DataTable matrice = new DataTable();
+            // Costruisce la DataTable:colonna = Dipendente, poi colonne 1..daysInMonth
+            var matrice = new DataTable();
             matrice.Columns.Add("Dipendente", typeof(string));
-            for (int d = giornoInizio; d <= numeroGiorni; d++) matrice.Columns.Add(d.ToString(), typeof(decimal));
+            for (int d = 1; d <= daysInMonth; d++)
+                matrice.Columns.Add(d.ToString(), typeof(decimal));
 
             foreach (DataRow dip in dipendenti.Rows)
             {
-                DataRow nr = matrice.NewRow();
                 int dipId = Convert.ToInt32(dip["ID"]);
-                nr["Dipendente"] = $"{dip["Nome"]} {dip["Cognome"]}";
-                for (int d = giornoInizio; d <= numeroGiorni; d++)
+                string nomeCompleto = dip.Table.Columns.Contains("NomeCompleto")
+                    ? dip["NomeCompleto"].ToString()
+                    : $"{dip["Nome"]} {dip["Cognome"]}";
+
+                DataRow nr = matrice.NewRow();
+                nr["Dipendente"] = nomeCompleto;
+
+                for (int d = 1; d <= daysInMonth; d++)
                 {
                     string key = $"{dipId}_{d}";
-                    nr[d.ToString()] = valori.TryGetValue(key, out decimal v) ? (object)v : DBNull.Value;
+                    nr[d.ToString()] = valori.TryGetValue(key, out decimal oreVal) ? (object)oreVal : DBNull.Value;
                 }
+
                 matrice.Rows.Add(nr);
             }
 
+            // Costruisce colonne GridView dinamiche e associa
             ViewFake.Columns.Clear();
+            ViewFake.AutoGenerateColumns = false;
+
             ViewFake.Columns.Add(new BoundField { DataField = "Dipendente", HeaderText = "Dipendente" });
-            for (int d = giornoInizio; d <= numeroGiorni; d++)
+
+            for (int d = 1; d <= daysInMonth; d++)
             {
-                ViewFake.Columns.Add(new BoundField { DataField = d.ToString(), HeaderText = d.ToString(), DataFormatString = "{0:0.##}" });
+                ViewFake.Columns.Add(new BoundField
+                {
+                    DataField = d.ToString(),
+                    HeaderText = d.ToString(),
+                    DataFormatString = "{0:0.##}",
+                    HtmlEncode = false
+                });
             }
+
+            // Assicura che l'handler non venga registrato più volte
+            ViewFake.RowDataBound -= ViewFake_RowDataBound;
+            ViewFake.RowDataBound += ViewFake_RowDataBound;
 
             ViewFake.DataSource = matrice;
             ViewFake.DataBind();
         }
 
+        // Evento che colora le celle: sabato, domenica, festività
         protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
-{
-    if (e.Row.RowType == DataControlRowType.DataRow && ViewFake.HeaderRow != null)
-    {
-        int year = DateTime.Now.Year;
-        int month = DateTime.Now.Month;
-
-        for (int i = 1; i < e.Row.Cells.Count; i++)
         {
-            string headerText = ViewFake.HeaderRow.Cells[i].Text;
-            if (int.TryParse(headerText, out int giornoReale))
+            if (e.Row.RowType != DataControlRowType.DataRow) return;
+
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+
+            // Ottieni festività del mese (implementazione di esempio)
+            var festivita = GetHolidays(year, month);
+
+            // La prima cella è 'Dipendente' -> le colonne giorno iniziano dall'indice 1
+            for (int d = 1; d <= daysInMonth; d++)
             {
-                try
+                int cellIndex = d; // d=1 => cell 1
+                if (cellIndex >= e.Row.Cells.Count) break;
+
+                DateTime date = new DateTime(year, month, d);
+                TableCell cell = e.Row.Cells[cellIndex];
+
+                if (festivita.Contains(date.Date))
                 {
-                    DateTime dt = new DateTime(year, month, giornoReale);
-                    if (dt.DayOfWeek == DayOfWeek.Saturday) e.Row.Cells[i].BackColor = Color.LightBlue;
-                    else if (dt.DayOfWeek == DayOfWeek.Sunday) e.Row.Cells[i].BackColor = Color.LightCoral;
+                    cell.BackColor = Color.LightGreen; // festività
                 }
-                catch { }
+                else if (date.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    cell.BackColor = Color.LightBlue; // sabato
+                }
+                else if (date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    cell.BackColor = Color.LightCoral; // domenica
+                }
+                else
+                {
+                    cell.BackColor = Color.Beige;
+                }
+
             }
         }
-    }
-}
 
-private HashSet<DateTime> GetHolidays(int year, int month)
+        // Restituisce le festività per l'anno/mese: sostituire con query DB se serve
+        private HashSet<DateTime> GetHolidays(int year, int month)
         {
             var hs = new HashSet<DateTime>();
+
+            // ggiungere festività comuni; sostituire con la lista reale
             try
             {
+
                 hs.Add(new DateTime(year, 1, 1));
+
+                hs.Add(new DateTime(year, 6, 2));
+
                 hs.Add(new DateTime(year, 12, 25));
                 hs.Add(new DateTime(year, 12, 26));
+
             }
-            catch { }
-            return hs;
+            catch
+            {
+                // ignora errori di costruzione date
+            }
+
+            // Filtra solo quelle del mese richiesto
+            var result = new HashSet<DateTime>();
+            foreach (var dt in hs)
+            {
+                if (dt.Year == year && dt.Month == month) result.Add(dt.Date);
+            }
+
+            return result;
+
+            
+        }
+
+        private DateTime GetTargetMonday()
+        {
+            DateTime today = DateTime.Today;
+            int dayOfWeek = (int)today.DayOfWeek;
+
+            // CL: Your "Current Monday" logic (Sunday = 6 days back)
+            int daysToSubtract = (dayOfWeek == 0) ? 6 : dayOfWeek - 1;
+            DateTime CL = today.AddDays(-daysToSubtract);
+
+            // TL: Your "Target Monday" logic (Workdays move back 7 days)
+            DateTime TL = CL;
+            if (dayOfWeek >= 1 && dayOfWeek <= 5)
+            {
+                TL = CL.AddDays(-7);
+            }
+            return TL.Date;
         }
     }
 }

@@ -87,33 +87,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Repeater RepProgetto;
 
         /// <summary>
-        /// Controllo RadioButton3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButton3;
-
-        /// <summary>
-        /// Controllo RadioButton4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButton4;
-
-        /// <summary>
-        /// Controllo RadioButton5.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButton5;
-
-        /// <summary>
         /// Controllo PFake.
         /// </summary>
         /// <remarks>
