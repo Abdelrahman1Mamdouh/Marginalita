@@ -12,6 +12,7 @@ namespace Marginalita
     {
         bool[] vedi = new bool[3];
         Dictionary<string, string> dati = null;
+     
         protected void Page_Load(object sender, EventArgs e)
         {
             if ( Session["DatiProgetto"] != null)
@@ -19,7 +20,23 @@ namespace Marginalita
                  dati = (Dictionary<string, string>)Session["DatiProgetto"];
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
-                HidID.Value = dati["ID"];
+                HID.Value = dati["ID"];
+                SalDip.Visible = false;
+                SalSoc.Visible = false;
+                SalProg.Visible = false;
+
+            }
+            else
+            {
+                ModDip.Visible = false;
+                ModSoc.Visible = false;
+                ModProg.Visible = false;
+                EliDip.Visible = false;
+                EliSoc.Visible = false;
+                EliProg.Visible = false;
+                
+
+
 
             }
 
@@ -30,61 +47,71 @@ namespace Marginalita
                     Response.Redirect("Anagrafiche.aspx");
                 }
             }
-            else
-            vedi = (bool[])Session["vedi"];
+            else {
+                vedi = (bool[])Session["vedi"];
 
-                if (vedi[0] )
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
+               
+            }
 
-
-                if (Session["DatiProgetto"] != null)
+           
+                if (vedi[0])
                 {
-                    TNomePro.Text = dati["Nome"];
-                    TBudget.Text = dati["Budget"];
-                    TDurata.Text = dati["Durata"];
-                    TDescritione.Text = dati["Descrizione"];
-                    //   DDLSocieta.Text = dati["Societa"];
-                    //DDLSocieta.DataValueField= dati["Societa"];
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
+
+
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TNomePro.Text = dati["Nome"];
+                        TBudget.Text = dati["Budget"];
+                        TDurata.Text = dati["Durata"];
+                        TDescritione.Text = dati["Descrizione"];
+
+                    }
+
+                }
+
+            if (!IsPostBack)
+            {
+                if (vedi[1])
+                {
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
+
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TIntestazione.Text = dati["Intestazione"];
+                        TEmail.Text = dati["Email"];
+                    }
+
+
+
+                }
+
+                if (vedi[2])
+                {
+                    ViewProgetti.Visible = vedi[0];
+                    ViewSocieta.Visible = vedi[1];
+                    ViewDipendenti.Visible = vedi[2];
+
+                    if (Session["DatiProgetto"] != null)
+                    {
+                        TLNomeDip.Text = dati["Nome"];
+                        TCognome.Text = dati["Cognome"];
+                        TCosto.Text = dati["Costo"];
+                    }
+
+
                 }
 
             }
 
-            if (vedi[1] )
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
-
-                if (Session["DatiProgetto"] != null)
-                {
-                    TIntestazione.Text = dati["Intestazione"];
-                    TEmail.Text = dati["Email"];
-                }
-         
 
 
-            }
+           
 
-            if (vedi[2] )
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
-
-                if (Session["DatiProgetto"] != null)
-                {
-                    TLNomeDip.Text = dati["Nome"];
-                    TCognome.Text = dati["Cognome"];
-                    TCosto.Text = dati["Costo"];
-                }
-                   
-
-            }
-
-            Session["vedi"] = null;
         }
 
         //Gestione progetti
@@ -104,6 +131,7 @@ namespace Marginalita
         protected void EliProgetto(object sender, EventArgs e)
         {
             DProgetti.Delete();
+            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -124,6 +152,8 @@ namespace Marginalita
         protected void EliSocieta(object sender, EventArgs e)
         {
             DSocieta.Delete();
+            DProgetti.Delete();
+            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -147,6 +177,13 @@ namespace Marginalita
         {
             DDipendenti.Delete();
             
+            Response.Redirect("Anagrafiche.aspx");
+        }
+
+        protected void Annulla(object sender, EventArgs e)
+        {
+            
+
             Response.Redirect("Anagrafiche.aspx");
         }
     }
