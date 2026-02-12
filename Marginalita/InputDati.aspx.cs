@@ -118,7 +118,7 @@ namespace Marginalita
         protected void SalProgetto(object sender, EventArgs e)
         {
             DProgetti.Insert();
-            
+
             Response.Redirect("Anagrafiche.aspx");
         }
 

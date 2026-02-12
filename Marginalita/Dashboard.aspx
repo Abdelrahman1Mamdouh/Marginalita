@@ -90,25 +90,25 @@
             </div>
 
             <!-- Card 4 -->
-<div class="DSCard-card">
-    <div class="DSCard-text">
-        <div class="DSCard-label">Report</div>
-           <asp:SqlDataSource 
-               ID="SqlScadenze" runat="server"
-                ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
-           </asp:SqlDataSource> 
-        <asp:GridView ID="GridView2" runat="server"
-            DataSourceID="SqlScadenze"
-            AutoGenerateColumns="False"
-            CssClass="table table-striped w-100 text-center">
-            <Columns>
-                    <asp:BoundField DataField="Nome" HeaderText="Progetto" />
-                    <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
-            </Columns>
-         </asp:GridView>
-    </div>
-</div>
+            <div class="DSCard-card">
+                <div class="DSCard-text">
+                    <div class="DSCard-label">Report</div>
+                       <asp:SqlDataSource 
+                           ID="SqlScadenze" runat="server"
+                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                            SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
+                       </asp:SqlDataSource> 
+                    <asp:GridView ID="GridView2" runat="server"
+                        DataSourceID="SqlScadenze"
+                        AutoGenerateColumns="False"
+                        CssClass="table table-striped w-100 text-center">
+                        <Columns>
+                                <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                                <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+                        </Columns>
+                     </asp:GridView>
+                </div>
+            </div>
         </section>
 
         <section class="mt-5">

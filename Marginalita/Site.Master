@@ -70,7 +70,7 @@
 
         <asp:LinkButton ID="btnOverlay" runat="server"
             CssClass="sidebar-overlay"
-            OnClick="BtnToggleMenu_Click"
+            OnClick="BtnCloseSidebar_Click"
             CausesValidation="false" />
 
 
@@ -83,7 +83,7 @@
 
                 <asp:LinkButton ID="btnCloseSidebar" runat="server"
                     CssClass="sidebar-close"
-                    OnClick="BtnToggleMenu_Click"
+                    OnClick="BtnCloseSidebar_Click"
                     CausesValidation="false">&#10005;</asp:LinkButton>
             </div>
 
@@ -93,7 +93,7 @@
                 </asp:HyperLink>
 
             <asp:LinkButton id="AnaButton" 
-               Text="&#10133   Anagrafiche" 
+               Text="&#10133    Anagrafiche" 
                 
                OnClick="SubMenu" 
                 Class="sidebar-link"
@@ -125,11 +125,6 @@
                     Visible="false"
                     Class="sidebar-link"
                     runat="server" />
-
-
-<%--                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Anagrafiche.aspx">
-            <span class="ico">&#10133;</span> Anagrafiche
-                </asp:HyperLink>--%>
 
                 <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
              <span class="ico">&#128202;</span>Timesheet

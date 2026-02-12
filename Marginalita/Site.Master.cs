@@ -4,9 +4,7 @@ namespace Marginalita
 {
     public partial class SiteMaster : System.Web.UI.MasterPage
     {
-
         bool[] vedi = new bool[3];
-
 
         private bool IsSidebarOpen
         {
@@ -15,6 +13,11 @@ namespace Marginalita
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                IsSidebarOpen = false;
+            }
+
             ApplySidebar();
         }
         protected void BtnToggleMenu_Click(object sender, EventArgs e)
@@ -22,6 +25,12 @@ namespace Marginalita
             IsSidebarOpen = !IsSidebarOpen;
             ApplySidebar();
         }
+        protected void BtnCloseSidebar_Click(object sender, EventArgs e)
+        {
+            IsSidebarOpen = false;
+            ApplySidebar();
+        }
+
         private void ApplySidebar()
         {
             pnlSidebar.CssClass = IsSidebarOpen ? "sidebar open" : "sidebar";
@@ -29,12 +38,16 @@ namespace Marginalita
             btnOverlay.Visible = IsSidebarOpen;
             btnOverlay.CssClass = IsSidebarOpen ? "sidebar-overlay show" : "sidebar-overlay";
         }
-
-        protected void SubMenu(object sender, EventArgs e) 
+        protected void SubMenu(object sender, EventArgs e)
         {
-            AnProg.Visible = true;
-            AnSoc.Visible = true;
-            AnDip.Visible = true;
+            IsSidebarOpen = true;
+
+            bool show = !AnProg.Visible;
+            AnProg.Visible = show;
+            AnSoc.Visible = show;
+            AnDip.Visible = show;
+
+            ApplySidebar();
         }
 
         protected void Progetti(object sender, EventArgs e)
@@ -44,28 +57,31 @@ namespace Marginalita
             vedi[2] = false;
 
             Session["vedi"] = vedi;
+            IsSidebarOpen = false;
             Response.Redirect("Anagrafiche.aspx");
         }
 
-        protected void Societa(object sender, EventArgs e) 
+        protected void Societa(object sender, EventArgs e)
         {
             vedi[0] = false;
             vedi[1] = true;
             vedi[2] = false;
 
             Session["vedi"] = vedi;
+            IsSidebarOpen = false;
             Response.Redirect("Anagrafiche.aspx");
         }
 
-        protected void Dipendenti(object sender, EventArgs e) 
+        protected void Dipendenti(object sender, EventArgs e)
         {
             vedi[0] = false;
             vedi[1] = false;
             vedi[2] = true;
 
             Session["vedi"] = vedi;
+
+            IsSidebarOpen = false;
             Response.Redirect("Anagrafiche.aspx");
         }
-
     }
 }

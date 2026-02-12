@@ -5,16 +5,42 @@
     <asp:SqlDataSource
         runat="server" ID="PROG"
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
-        SelectCommand="SELECT * 
-                       FROM Progetto AS P
-                       LEFT JOIN Original AS O ON O.Progetto = P.ID
-                       WHERE P.ID = @ID">
+        SelectCommand="
+        SELECT P.ID AS ID,
+        P.Nome As Nome,
+        P.Budget As Budget,
+        P.Descrizione As Descrizione,
+        P.Margine AS ProgettoMargine,
+        P.residuo AS Residuo,
+        C.Margine AS ContrattoMargine,
+        O.Creata AS Creata,
+        P.Durata AS Durata
+        FROM Progetto AS P
+        LEFT JOIN Original AS O ON O.Progetto = P.ID
+        LEFT JOIN Contratto AS C ON C.ID = P.Margine
+        WHERE P.ID = @ID">
+        <SelectParameters>
+            <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
+            <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+
+    </asp:SqlDataSource>
+
+    <asp:SqlDataSource
+        runat="server" ID="ChartMARGINE"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+        SelectCommand=" SELECT V.Label, V.Valore
+                        FROM Progetto 
+                        CROSS APPLY (VALUES 
+                       ('Margine',  CAST(ISNULL(Margine, 0) AS INT)),
+                       ('Restante', 100 - CAST(ISNULL(Margine, 0) AS INT))) V(Label, Valore)
+                       WHERE ID = @ID;">
 
         <SelectParameters>
-        <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
-        <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
-    </SelectParameters>
-    
+            <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
+            <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+
     </asp:SqlDataSource>
 
     <div>
@@ -108,15 +134,29 @@
 
                             <asp:Label runat="server" Text="Margine" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Chart ID="Chart1" runat="server">
+                                <asp:Label runat="server" Text='<%# Eval("ContrattoMargine") %>' />
+                            </div>
+
+                            <div class="DSCard-value">
+                                <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE">
                                     <Series>
-                                        <asp:Series ChartType="Doughnut" Name="Series1">
-                                        </asp:Series>
+                                        <asp:Series Name="Series1"
+                                            ChartType="Doughnut"
+                                            XValueMember="Label"
+                                            YValueMembers="Valore"
+                                            IsValueShownAsLabel="true"
+                                            BorderWidth="0" />
                                     </Series>
+
                                     <ChartAreas>
                                         <asp:ChartArea Name="ChartArea1">
+                                            <Area3DStyle Enable3D="true" />
                                         </asp:ChartArea>
                                     </ChartAreas>
+
+                                    <Legends>
+                                        <asp:Legend Enabled="true" />
+                                    </Legends>
                                 </asp:Chart>
                             </div>
                         </div>
