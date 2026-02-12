@@ -61,7 +61,7 @@ namespace Marginalita
         {
             using (SqlConnection connessione = new SqlConnection(stringaConnessione))
             {
-                string sql = "SELECT Costo FROM Original WHERE Progetto = @p AND Dipendente = @d";
+                string sql = "SELECT Ore FROM Original WHERE Progetto = @p AND Dipendente = @d";
                 SqlCommand comando = new SqlCommand(sql, connessione);
                 comando.Parameters.AddWithValue("@p", idProgetto);
                 comando.Parameters.AddWithValue("@d", idDipendente);

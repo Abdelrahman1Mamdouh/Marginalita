@@ -39,7 +39,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Original">
+                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Original">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
@@ -93,17 +93,10 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Report</div>
-                       <asp:SqlDataSource ID="SqlScadenze" runat="server"
+                       <asp:SqlDataSource 
+                           ID="SqlScadenze" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT P.ID, 
-                                                  P.Nome, 
-                                                  P.Budget,
-                                           DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata
-                                           FROM Progetto AS P
-                                           JOIN Original AS O ON P.ID = O.Progetto
-                                           WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() 
-                                           AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE())
-                                           ORDER BY ScadenzaCalcolata ASC">
+                            SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
