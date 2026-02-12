@@ -33,6 +33,42 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaDipendente;
 
         /// <summary>
+        /// Controllo DSFake.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource DSFake;
+
+        /// <summary>
+        /// Controllo visualeGiorno.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton visualeGiorno;
+
+        /// <summary>
+        /// Controllo visualeSettimana.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton visualeSettimana;
+
+        /// <summary>
+        /// Controllo visualeMese.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton visualeMese;
+
+        /// <summary>
         /// Controllo RepDipendente.
         /// </summary>
         /// <remarks>
@@ -49,20 +85,59 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater RepProgetto;
-                
-        /// <summary>
-        /// Controllo visualeGiorno.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.RadioButton visualeGiorno;
 
         /// <summary>
-        /// Controllo visualeSettimana.
+        /// Controllo RadioButton3.
         /// </summary>
-        protected global::System.Web.UI.WebControls.RadioButton visualeSettimana;
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioButton3;
 
         /// <summary>
-        /// Controllo visualeMese.
+        /// Controllo RadioButton4.
         /// </summary>
-        protected global::System.Web.UI.WebControls.RadioButton visualeMese;
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioButton4;
+
+        /// <summary>
+        /// Controllo RadioButton5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioButton5;
+
+        /// <summary>
+        /// Controllo PFake.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PFake;
+
+        /// <summary>
+        /// Controllo ViewOre.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ViewOre;
+
+        /// <summary>
+        /// Controllo ViewFake.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView ViewFake;
     }
 }

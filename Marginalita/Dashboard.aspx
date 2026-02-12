@@ -39,7 +39,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Original">
+                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Original">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
