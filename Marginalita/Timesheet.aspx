@@ -16,14 +16,14 @@
 
     <asp:SqlDataSource runat="server" ID="DSFake"
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-         SelectCommand="SELECT Dipendente, Creata, Costo FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
+         SelectCommand="SELECT Dipendente, Creata, Ore FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
     </asp:SqlDataSource>
 
 <div id="inserimentoOre">
         <p>Inserisci ore per:</p>
-        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="PeriodoSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true" />
-        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="PeriodoSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
-        <asp:RadioButton ID="visualeMese" runat="server" GroupName="PeriodoSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" />
+        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true"/>
+        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese"/>
     </div>
     <br />
     <br />
@@ -63,10 +63,10 @@
 
     <div id="visualeOre">
         <p>Visualizza ore per:</p>
-        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="PeriodoSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true" />
-        <asp:RadioButton ID="RadioButton4" runat="server" GroupName="PeriodoSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
-        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="PeriodoSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" />
-        <%-- AGGIUNGERE LOGICA - SONO LE 17.50 SORRY --%>
+        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="VisualizzaSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno"/>
+        <asp:RadioButton ID="RadioButton4" runat="server" GroupName="VisualizzaSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="VisualizzaSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" Checked="true"/>
+
     </div>
     <br />
     <br />
