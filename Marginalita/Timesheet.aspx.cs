@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -8,12 +10,23 @@ namespace Marginalita
 {
     public partial class Timesheet : Page
     {
-        string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;";
+        string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
+
+        // Proprietà per determinare il tetto massimo di ore
         private int LimiteCorrente => visualeGiorno.Checked ? 8 : (visualeSettimana.Checked ? 40 : 160);
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                CreaGrigliaFake();
+            }
         }
+
+        // Metodi per gestire il cambio dei RadioButton (Risolve l'errore di compilazione)
+        protected void visualizzaGiorno(object sender, EventArgs e) { CreaGrigliaFake(); }
+        protected void visualizzaSettimana(object sender, EventArgs e) { CreaGrigliaFake(); }
+        protected void visualizzaMese(object sender, EventArgs e) { CreaGrigliaFake(); }
 
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
@@ -30,6 +43,7 @@ namespace Marginalita
                     int idDipendente = int.Parse(((HiddenField)cella.FindControl("HiddenDipendente")).Value);
 
                     SalvaDatiConStoredProcedure(idProgetto, idDipendente, (int)oreInserite);
+                    CreaGrigliaFake(); // Aggiorna il riepilogo
                 }
                 else
                 {
@@ -48,6 +62,7 @@ namespace Marginalita
                 RepeaterItem Progetto = (RepeaterItem)e.Item.Parent.Parent;
                 HiddenField idProgettoHidden = (HiddenField)Progetto.FindControl("HiddenProgetto");
 
+                // Imposta il limite massimo nell'input HTML
                 txtOre.Attributes["max"] = LimiteCorrente.ToString();
 
                 if (idDipendenteHidden != null && idProgettoHidden != null)
@@ -84,29 +99,91 @@ namespace Marginalita
                 comando.ExecuteNonQuery();
             }
         }
-        protected void visualizzaGiorno(object sender, EventArgs e) { }
-        protected void visualizzaSettimana(object sender, EventArgs e) { }
-        protected void visualizzaMese(object sender, EventArgs e) { }
 
-        //private void GestisciColore(TextBox txt, int valore)
-        //{
-        //    txt.CssClass = "ora-base";
+        private void CreaGrigliaFake()
+        {
+            DataView dvDip = TabellaDipendente?.Select(DataSourceSelectArguments.Empty) as DataView;
+            if (dvDip == null) return;
+            DataTable dipendenti = dvDip.ToTable();
 
-        //    if (visualeGiorno.Checked)
-        //    {
-        //        if (valore == 6 || valore == 7) txt.CssClass = "ora-warning";
-        //        else if (valore >= 8) txt.CssClass = "ora-danger";
-        //    }
-        //    else if (visualeSettimana.Checked)
-        //    {
-        //        if (valore >= 35 && valore <= 39) txt.CssClass = "ora-warning";
-        //        else if (valore >= 40) txt.CssClass = "ora-danger";
-        //    }
-        //    else if (visualeMese.Checked)
-        //    {
-        //        if (valore >= 150 && valore <= 159) txt.CssClass = "ora-warning";
-        //        else if (valore >= 160) txt.CssClass = "ora-danger";
-        //    }
-        //}
+            DataView dvFake = DSFake?.Select(DataSourceSelectArguments.Empty) as DataView;
+            DataTable fake = dvFake != null ? dvFake.ToTable() : new DataTable();
+
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+
+            var valori = new Dictionary<string, decimal>(StringComparer.Ordinal);
+            foreach (DataRow r in fake.Rows)
+            {
+                if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Costo")) continue;
+                int dipId = Convert.ToInt32(r["Dipendente"]);
+                DateTime dt = Convert.ToDateTime(r["Creata"]);
+                if (dt.Year == year && dt.Month == month)
+                {
+                    string key = $"{dipId}_{dt.Day}";
+                    if (valori.ContainsKey(key)) valori[key] += Convert.ToDecimal(r["Costo"]);
+                    else valori[key] = Convert.ToDecimal(r["Costo"]);
+                }
+            }
+
+            DataTable matrice = new DataTable();
+            matrice.Columns.Add("Dipendente", typeof(string));
+            for (int d = 1; d <= daysInMonth; d++) matrice.Columns.Add(d.ToString(), typeof(decimal));
+
+            foreach (DataRow dip in dipendenti.Rows)
+            {
+                DataRow nr = matrice.NewRow();
+                int dipId = Convert.ToInt32(dip["ID"]);
+                nr["Dipendente"] = $"{dip["Nome"]} {dip["Cognome"]}";
+                for (int d = 1; d <= daysInMonth; d++)
+                {
+                    string key = $"{dipId}_{d}";
+                    nr[d.ToString()] = valori.TryGetValue(key, out decimal v) ? (object)v : DBNull.Value;
+                }
+                matrice.Rows.Add(nr);
+            }
+
+            ViewFake.Columns.Clear();
+            ViewFake.AutoGenerateColumns = false;
+            ViewFake.Columns.Add(new BoundField { DataField = "Dipendente", HeaderText = "Dipendente" });
+            for (int d = 1; d <= daysInMonth; d++)
+            {
+                ViewFake.Columns.Add(new BoundField { DataField = d.ToString(), HeaderText = d.ToString(), DataFormatString = "{0:0.##}" });
+            }
+
+            ViewFake.RowDataBound -= ViewFake_RowDataBound;
+            ViewFake.RowDataBound += ViewFake_RowDataBound;
+            ViewFake.DataSource = matrice;
+            ViewFake.DataBind();
+        }
+
+        protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int year = DateTime.Now.Year;
+                int month = DateTime.Now.Month;
+                for (int d = 1; d < e.Row.Cells.Count; d++)
+                {
+                    DateTime dt = new DateTime(year, month, d);
+                    if (dt.DayOfWeek == DayOfWeek.Saturday) e.Row.Cells[d].BackColor = Color.LightBlue;
+                    else if (dt.DayOfWeek == DayOfWeek.Sunday) e.Row.Cells[d].BackColor = Color.LightCoral;
+                }
+            }
+        }
+
+        private HashSet<DateTime> GetHolidays(int year, int month)
+        {
+            var hs = new HashSet<DateTime>();
+            try
+            {
+                hs.Add(new DateTime(year, 1, 1));
+                hs.Add(new DateTime(year, 12, 25));
+                hs.Add(new DateTime(year, 12, 26));
+            }
+            catch { }
+            return hs;
+        }
     }
 }
