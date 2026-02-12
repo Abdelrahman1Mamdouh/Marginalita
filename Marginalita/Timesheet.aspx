@@ -13,6 +13,21 @@
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="SELECT ID, Nome, Cognome FROM Dipendente"> 
     </asp:SqlDataSource>
+
+    <asp:SqlDataSource runat="server" ID="DSFake"
+         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+         SelectCommand="SELECT Dipendente, Creata, Ore FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
+    </asp:SqlDataSource>
+
+<div id="inserimentoOre">
+        <p>Inserisci ore per:</p>
+        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true"/>
+        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese"/>
+    </div>
+    <br />
+    <br />
+
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <thead>
             <tr>
@@ -44,4 +59,25 @@
             </asp:Repeater>
         </tbody>
     </table>
+    <br />
+
+    <div id="visualeOre">
+        <p>Visualizza ore per:</p>
+        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="VisualizzaSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno"/>
+        <asp:RadioButton ID="RadioButton4" runat="server" GroupName="VisualizzaSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
+        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="VisualizzaSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" Checked="true"/>
+
+    </div>
+    <br />
+    <br />
+    
+   <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
+       <div id="ViewOre" class="col-33" runat="server">
+    
+       <asp:GridView ID="ViewFake" runat="server"
+         AutoGenerateColumns="false"
+         CssClass="table table-bordered table-fixed">
+     </asp:GridView>
+ </div>
+</asp:Panel>
 </asp:Content>

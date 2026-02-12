@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // <generato automaticamente>
 //     Questo codice è stato generato da uno strumento.
 //
@@ -15,31 +15,40 @@ namespace Marginalita
     {
 
         /// <summary>
-        /// Controllo lblMRR.
+        /// Controllo SqlDataSourceBudget.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMRR;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceBudget;
 
         /// <summary>
-        /// Controllo lblMRRChange.
+        /// Controllo rptTotale.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMRRChange;
+        protected global::System.Web.UI.WebControls.Repeater rptTotale;
 
         /// <summary>
-        /// Controllo lblUsers.
+        /// Controllo SqlDataSourceCosti.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUsers;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceCosti;
+
+        /// <summary>
+        /// Controllo Repeater1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater Repeater1;
 
         /// <summary>
         /// Controllo lblUsersChange.
@@ -51,13 +60,22 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label lblUsersChange;
 
         /// <summary>
-        /// Controllo lblGrowth.
+        /// Controllo SqlDataSourceMargini.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrowth;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceMargini;
+
+        /// <summary>
+        /// Controllo Repeater2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater Repeater2;
 
         /// <summary>
         /// Controllo lblGrowthChange.
@@ -69,22 +87,22 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label lblGrowthChange;
 
         /// <summary>
-        /// Controllo lblChurn.
+        /// Controllo SqlScadenze.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblChurn;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlScadenze;
 
         /// <summary>
-        /// Controllo lblChurnChange.
+        /// Controllo GridView2.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblChurnChange;
+        protected global::System.Web.UI.WebControls.GridView GridView2;
 
         /// <summary>
         /// Controllo Label1.
