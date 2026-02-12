@@ -21,9 +21,9 @@
 
 <div id="inserimentoOre">
         <p>Inserisci ore per:</p>
-        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno" Checked="true"/>
-        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
-        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese"/>
+        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" Checked="true"/>
+        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true"/>
+        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true"/>
     </div>
     <br />
     <br />
@@ -59,17 +59,6 @@
             </asp:Repeater>
         </tbody>
     </table>
-    <br />
-
-    <div id="visualeOre">
-        <p>Visualizza ore per:</p>
-        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="VisualizzaSelezione" Text="Giorno" AutoPostBack="true" OnCheckedChanged="visualizzaGiorno"/>
-        <asp:RadioButton ID="RadioButton4" runat="server" GroupName="VisualizzaSelezione" Text="Settimana" AutoPostBack="true" OnCheckedChanged="visualizzaSettimana" />
-        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="VisualizzaSelezione" Text="Mese" AutoPostBack="true" OnCheckedChanged="visualizzaMese" Checked="true"/>
-
-    </div>
-    <br />
-    <br />
     
    <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
        <div id="ViewOre" class="col-33" runat="server">
