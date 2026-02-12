@@ -49,10 +49,11 @@ namespace Marginalita
             }
             else {
                 vedi = (bool[])Session["vedi"];
+
+               
             }
-            // Popola i controlli SOLO al primo caricamento della pagina
-            if (!IsPostBack && Session["DatiProgetto"] != null)
-            {
+
+           
                 if (vedi[0])
                 {
                     ViewProgetti.Visible = vedi[0];
@@ -71,6 +72,8 @@ namespace Marginalita
 
                 }
 
+            if (!IsPostBack)
+            {
                 if (vedi[1])
                 {
                     ViewProgetti.Visible = vedi[0];
@@ -102,10 +105,13 @@ namespace Marginalita
 
 
                 }
+
             }
 
-            Session["DatiProgetto"] = null;
-            
+
+
+           
+
         }
 
         //Gestione progetti

@@ -40,6 +40,7 @@ namespace Marginalita
             if (vedi[2])
             { AnaView.DataSourceID = "DDipendenti"; }
 
+            
         }
 
         protected void NewProgetto(object sender, EventArgs e)
@@ -60,7 +61,7 @@ namespace Marginalita
             vedi[1] = true;
             vedi[2] = false;
 
-            Session["evento"] = null;
+            Session["DatiProgetto"] = null;
             Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }
@@ -71,7 +72,7 @@ namespace Marginalita
             vedi[1] = false;
             vedi[2] = true;
 
-            Session["evento"] = null;
+            Session["DatiProgetto"] = null;
             Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }

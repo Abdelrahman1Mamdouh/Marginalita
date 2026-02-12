@@ -66,7 +66,7 @@
             ID="DContratto"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT * FROM Contratto Vedi">      
+            SelectCommand="SELECT * FROM Contratto ">      
         </asp:SqlDataSource>
 
            <asp:SqlDataSource
@@ -84,7 +84,7 @@
             ID="DDipendenti"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente Vedi"
+            SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente Vedi=1"
             InsertCommand="INSERT INTO Dipendente (Nome, Cognome, CostoOrario) VALUES (@Nome, @Cognome, @CostoOrario)"
             UpdateCommand="UPDATE Dipendente SET Nome=@Nome, Cognome=@Cognome, CostoOrario=@CostoOrario WHERE ID=@ID"
             DeleteCommand="UPDATE Dipendente SET Vedi = @Vedi WHERE ID = @ID">
