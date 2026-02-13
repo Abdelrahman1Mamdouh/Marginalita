@@ -14,7 +14,7 @@
         P.residuo AS Residuo,
         C.Margine AS ContrattoMargine,
         O.Creata AS Creata,
-        P.Durata AS Durata
+        P.Durata AS Scadenza
         FROM Progetto AS P
         LEFT JOIN Original AS O ON O.Progetto = P.ID
         LEFT JOIN Contratto AS C ON C.ID = P.Margine
@@ -85,9 +85,9 @@
                     <!-- Card 3 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblEndDate" runat="server" Text="Durata" CssClass="DSCard-label" />
+                            <asp:Label ID="lblEndDate" runat="server" Text="Scadenza" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Durata") %>' />
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Scadenza","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />

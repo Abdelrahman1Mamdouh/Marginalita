@@ -96,7 +96,13 @@
                        <asp:SqlDataSource 
                            ID="SqlScadenze" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
+                            SelectCommand="SELECT P.ID, P.Nome, P.Budget,
+                                           P.Durata AS ScadenzaCalcolata
+                                           FROM Progetto AS P
+                                           INNER JOIN Original AS O ON P.ID = O.Progetto
+                                           WHERE P.Durata &gt; = CAST(GETDATE() AS date)
+                                           AND P.Durata &lt; = DATEADD(day, 30, CAST(GETDATE() AS date))
+                                           ORDER BY P.Durata ASC;">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
