@@ -1,20 +1,23 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Marginalita.SiteMaster" %>
+
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html>
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title>Marginalita</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link runat="server" href="~/Content/NewCss.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <form runat="server">
@@ -37,22 +40,102 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Application name</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
+
+
+        <header class="topbar">
+            <div class="topbar__left">
+                <asp:ImageButton ID="btnMenu" runat="server"
+                    CssClass="topbar__menu"
+                    AlternateText="Menu"
+                    ImageUrl="~/Asset/menuIcon.png"
+                    ToolTip="Menu"
+                    OnClick="BtnToggleMenu_Click"
+                    CausesValidation="false" />
+
+                <div class="topbar__title">
+                    <h1>Revenue Dashboard</h1>
+                    <asp:Label runat="server" Text=" Time Management App - Program Overview " CssClass="DSCard-label" />
                 </div>
             </div>
-        </nav>
+            <div class="topbar__right">
+                <div class="search">
+                    <span class="search__icon">&#128270;</span>
+                    <asp:TextBox ID="txtSearch" runat="server"
+                        CssClass="search__input"
+                        placeholder="Search transactions, customers..." />
+                </div>
+            </div>
+        </header>
+
+
+        <asp:LinkButton ID="btnOverlay" runat="server"
+            CssClass="sidebar-overlay"
+            OnClick="BtnCloseSidebar_Click"
+            CausesValidation="false" />
+
+
+        <asp:Panel ID="pnlSidebar" runat="server" CssClass="sidebar">
+            <div class="sidebar-top">
+                <div>
+                    <div class="sidebar-brand">TimeTrack Pro</div>
+                    <div class="sidebar-sub">Revenue Dashboard</div>
+                </div>
+
+                <asp:LinkButton ID="btnCloseSidebar" runat="server"
+                    CssClass="sidebar-close"
+                    OnClick="BtnCloseSidebar_Click"
+                    CausesValidation="false">&#10005;</asp:LinkButton>
+            </div>
+
+            <div class="sidebar-nav">
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/dashboard.aspx">
+            <span class="ico">&#9634;</span> Dashboard
+                </asp:HyperLink>
+
+            <asp:LinkButton id="AnaButton" 
+               Text="&#10133    Anagrafiche" 
+                
+               OnClick="SubMenu" 
+                Class="sidebar-link"
+               runat="server"/>
+
+                <asp:LinkButton ID="AnProg"
+                    Text="  &#10133   Progetti"
+                    
+                    
+                    Font-Size="12pt"
+                    OnClick="Progetti"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+                <asp:LinkButton ID="AnSoc"
+                    Text="   &#10133   Societa"
+                  
+                    Font-Size="12pt"
+                    OnClick="Societa"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+                <asp:LinkButton ID="AnDip"
+                    Text="   &#10133   Dipendenti"
+                    Font-Size="12pt"
+                    OnClick="Dipendenti"
+                    Visible="false"
+                    Class="sidebar-link"
+                    runat="server" />
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/Timesheet.aspx">
+             <span class="ico">&#128202;</span>Timesheet
+                </asp:HyperLink>
+
+                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
+            <span class="ico">&#9881;</span> Settings
+                </asp:HyperLink>
+            </div>
+        </asp:Panel>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -61,9 +144,9 @@
                 <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
             </footer>
         </div>
+        <asp:PlaceHolder runat="server">
+            <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+        </asp:PlaceHolder>
     </form>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
 </body>
 </html>
