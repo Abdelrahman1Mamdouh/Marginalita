@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="dettagliProgetto.aspx.cs" Inherits="Marginalita.dettagliProgetto" MasterPageFile="~/Site.Master" Title="DETTAGLI PROGETTO" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="dettagliProgetto.aspx.cs" Inherits="Marginalita.dettagliProgetto" MasterPageFile="~/Site.Master" Title="DETTAGLI PROGETTO" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -26,21 +26,20 @@
 
     </asp:SqlDataSource>
 
-    <asp:SqlDataSource
-        runat="server" ID="ChartMARGINE"
-        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
-        SelectCommand=" SELECT V.Label, V.Valore
-                        FROM Progetto 
-                        CROSS APPLY (VALUES 
-                       ('Margine',  CAST(ISNULL(Margine, 0) AS INT)),
-                       ('Restante', 100 - CAST(ISNULL(Margine, 0) AS INT))) V(Label, Valore)
-                       WHERE ID = @ID;">
-
+    <asp:SqlDataSource runat="server" ID="ChartMARGINE" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand=" 
+        SELECT V.Label, V.Valore FROM Progetto AS P 
+        LEFT JOIN Contratto AS C ON C.ID = P.Margine 
+        CROSS APPLY (
+        SELECT CAST(ISNULL(C.Margine,0) AS DECIMAL(10,2)) AS MarginePct, 
+        CAST( CASE WHEN ISNULL(P.Budget,0) = 0 THEN 0 ELSE (ISNULL(P.Residuo,0) * 100.0) / P.Budget END AS DECIMAL(10,2)) AS DisponibilePct ) AS Calc
+        CROSS APPLY ( SELECT CAST(100.0 - Calc.MarginePct AS DECIMAL(10,2)) AS LimitePct,
+        CAST( CASE WHEN Calc.DisponibilePct &lt; 0 THEN 0 WHEN Calc.DisponibilePct &gt; (100.0 - Calc.MarginePct) 
+        THEN (100.0 - Calc.MarginePct) ELSE Calc.DisponibilePct END AS DECIMAL(10,2)) AS DisponibileClamped ) AS K
+        CROSS APPLY (VALUES ('Margine', Calc.MarginePct), ('Residuo', K.DisponibileClamped), ('Speso', K.LimitePct - K.DisponibileClamped) )
+        AS V(Label, Valore) WHERE P.ID = @ID; ">
         <SelectParameters>
-            <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
-
     </asp:SqlDataSource>
 
     <div>
@@ -144,6 +143,7 @@
                                             ChartType="Doughnut"
                                             XValueMember="Label"
                                             YValueMembers="Valore"
+                                            LabelFormat="{0:0.##}%"
                                             IsValueShownAsLabel="true"
                                             BorderWidth="0" />
                                     </Series>
