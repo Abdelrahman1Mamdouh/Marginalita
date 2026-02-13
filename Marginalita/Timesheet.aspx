@@ -11,20 +11,20 @@
     
     <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT ID, Nome, Cognome FROM Dipendente"> 
+        SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"> 
     </asp:SqlDataSource>
 
     <asp:SqlDataSource runat="server" ID="DSFake"
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-         SelectCommand="SELECT Dipendente, Creata, Ore FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
+         SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
     </asp:SqlDataSource>
 
-<div id="inserimentoOre">
+<%--<div id="inserimentoOre">
         <p>Inserisci ore per:</p>
         <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" Checked="true"/>
         <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true"/>
         <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true"/>
-    </div>
+    </div>--%>
     <br />
     <br />
 
