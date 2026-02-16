@@ -11,55 +11,43 @@
     
     <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT ID, Nome, Cognome FROM Dipendente"> 
+        SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"> 
     </asp:SqlDataSource>
 
     <asp:SqlDataSource runat="server" ID="DSFake"
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-         SelectCommand="SELECT Dipendente, Creata, Ore FROM Original WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
+         SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())">
     </asp:SqlDataSource>
-
-<div id="inserimentoOre">
-        <p>Inserisci ore per:</p>
-        <asp:RadioButton ID="visualeGiorno" runat="server" GroupName="InserisciSelezione" Text="Giorno" AutoPostBack="true" Checked="true"/>
-        <asp:RadioButton ID="visualeSettimana" runat="server" GroupName="InserisciSelezione" Text="Settimana" AutoPostBack="true"/>
-        <asp:RadioButton ID="visualeMese" runat="server" GroupName="InserisciSelezione" Text="Mese" AutoPostBack="true"/>
-    </div>
     <br />
     <br />
 
-    <table border="1" style="border-collapse: collapse; width: 100%;">
-        <thead>
-            <tr>
-                <th style="padding:5px; background-color:#eee;"> </th>
-                <asp:Repeater ID="RepDipendente" runat="server" DataSourceID="TabellaDipendente">
-                    <ItemTemplate>
-                        <th style="padding:5px;"><%# Eval("Nome") %> <%# Eval("Cognome") %></th>
-                    </ItemTemplate>
-                </asp:Repeater>
-            </tr>
-        </thead>
-        <tbody>
-            <asp:Repeater ID="RepProgetto" runat="server" DataSourceID="TabellaProgetto">
-                <ItemTemplate>
-                    <tr>
-                        <td style="padding:5px; font-weight:bold;"><%# Eval("Nome") %>
-                            <asp:HiddenField ID="HiddenProgetto" runat="server" Value='<%# Eval("ID") %>' />
-                        </td>
-                        <asp:Repeater runat="server" DataSourceID="TabellaDipendente" OnItemDataBound="RepDipendenti_ItemDataBound">
-                            <ItemTemplate>
-                                <td style="padding:5px;">
-                                    <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                    <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="8" Columns="1" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
-                                </td>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tr> 
-                </ItemTemplate>
-            </asp:Repeater>
-        </tbody>
-    </table>
-    
+  <table border="1" style="border-collapse: collapse; width: 60%;">
+    <thead>
+        <tr style="background-color:#eee;">
+            <th style="padding:10px;">Dipendente</th>
+            <th style="padding:10px;">Ore Settimanali</th>
+        </tr>
+    </thead>
+    <tbody>
+        <asp:Repeater ID="RepSingolo" runat="server" DataSourceID="TabellaDipendente">
+            <ItemTemplate>
+                <tr>
+                    <td style="padding:10px; font-weight:bold;">
+                        <%# Eval("Nome") %> <%# Eval("Cognome") %>
+                        <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
+                        <asp:HiddenField ID="HiddenProgettoFisso" runat="server" Value="1" /> 
+                    </td>
+                    <td style="padding:10px;">
+                        <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" 
+                            Columns="5" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
+                    </td>
+                </tr>
+            </ItemTemplate>
+        </asp:Repeater>
+    </tbody>
+</table>
+    <br />
+    <br />
    <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
        <div id="ViewOre" class="col-33" runat="server">
     

@@ -12,9 +12,7 @@ namespace Marginalita
     public partial class Timesheet : Page
     {
         string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
-
-        // Proprietà per determinare il tetto massimo di ore
-        private int LimiteCorrente => visualeGiorno.Checked ? 8 : (visualeSettimana.Checked ? 40 : 160);
+        private int LimiteCorrente => 40;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,24 +25,41 @@ namespace Marginalita
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
             TextBox casellaTesto = (TextBox)sender;
+            string testoInput = casellaTesto.Text.Trim();
 
-            if (decimal.TryParse(casellaTesto.Text, out decimal oreInserite))
+            decimal oreInserite = 0;
+            bool isValido = decimal.TryParse(testoInput, out oreInserite);
+
+            if (testoInput == "" || isValido)
             {
-                if (oreInserite >= 0 && oreInserite <= LimiteCorrente)
+                RepeaterItem riga = (RepeaterItem)casellaTesto.NamingContainer;
+                int idDipendente = int.Parse(((HiddenField)riga.FindControl("HiddenDipendente")).Value);
+
+                // MODIFICA QUI: Metti 10 al posto di 1
+                int idProgettoFisso = 10;
+
+                // Il resto rimane uguale...
+                decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
+
+                // ... chiamata alla procedura
+                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+
+                if (oreInserite + oreGiaSalvate > 40)
                 {
-                    RepeaterItem cella = (RepeaterItem)casellaTesto.NamingContainer;
-                    RepeaterItem riga = (RepeaterItem)cella.Parent.Parent;
-
-                    int idProgetto = int.Parse(((HiddenField)riga.FindControl("HiddenProgetto")).Value);
-                    int idDipendente = int.Parse(((HiddenField)cella.FindControl("HiddenDipendente")).Value);
-
-                    SalvaDatiConStoredProcedure(idProgetto, idDipendente, (int)oreInserite);
+                    decimal oreMassimePossibili = 40 - oreGiaSalvate;
+                    oreInserite = oreMassimePossibili > 0 ? oreMassimePossibili : 0;
+                    casellaTesto.Text = oreInserite.ToString("0.00");
+                    casellaTesto.ForeColor = Color.Red;
                 }
                 else
                 {
-                    casellaTesto.Text = "0";
-                    //casellaTesto.Text = LimiteCorrente.ToString();
+                    casellaTesto.ForeColor = Color.Black;
                 }
+
+                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+
+                if (DSFake != null) DSFake.DataBind();
+                CreaGrigliaFake();
             }
         }
 
@@ -55,15 +70,12 @@ namespace Marginalita
                 TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
                 HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
 
-                RepeaterItem Progetto = (RepeaterItem)e.Item.Parent.Parent;
-                HiddenField idProgettoHidden = (HiddenField)Progetto.FindControl("HiddenProgetto");
+                // MODIFICA QUI: Metti 10
+                string idProgettoFisso = "10";
 
-                // Imposta il limite massimo nell'input HTML
-                txtOre.Attributes["max"] = LimiteCorrente.ToString();
-
-                if (idDipendenteHidden != null && idProgettoHidden != null)
+                if (idDipendenteHidden != null)
                 {
-                    txtOre.Text = RecuperaOreDalDatabase(idProgettoHidden.Value, idDipendenteHidden.Value);
+                    txtOre.Text = RecuperaOreDalDatabase(idProgettoFisso, idDipendenteHidden.Value);
                 }
             }
         }
@@ -82,7 +94,7 @@ namespace Marginalita
             }
         }
 
-        private void SalvaDatiConStoredProcedure(int idProgetto, int idDipendente, int ore)
+        private void SalvaDatiConStoredProcedure(int idProgetto, int idDipendente, decimal ore)
         {
             using (SqlConnection connessione = new SqlConnection(stringaConnessione))
             {
@@ -111,58 +123,60 @@ namespace Marginalita
             int month = DateTime.Now.Month;
             int daysInMonth = DateTime.DaysInMonth(year, month);
 
-            // Aggrega ore per dipendente/giorno (chiave: "{dipId}_{day}")
+            var costMap = new Dictionary<int, decimal>();
+            foreach (DataRow row in dipendenti.Rows)
+            {
+                int id = Convert.ToInt32(row["ID"]);
+                decimal rate = row.IsNull("CostoOrario") ? 0 : Convert.ToDecimal(row["CostoOrario"]);
+                costMap[id] = rate;
+            }
+
             var valori = new Dictionary<string, decimal>(StringComparer.Ordinal);
             foreach (DataRow r in fake.Rows)
             {
                 try
                 {
-                    if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Ore"))
+                    if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Costo"))
                         continue;
 
                     int dipId = Convert.ToInt32(r["Dipendente"]);
                     DateTime dt = Convert.ToDateTime(r["Creata"]);
-                    if (dt.Year != year || dt.Month != month) continue;
+                    decimal totalCosto = Convert.ToDecimal(r["Costo"]);
 
-                    decimal ore = Convert.ToDecimal(r["Ore"]);
-                    string key = $"{dipId}_{dt.Day - 1}";
+                    if (dt.Year == year && dt.Month == month)
+                    {
+                        decimal hourlyRate = costMap.ContainsKey(dipId) ? costMap[dipId] : 0;
+                        decimal oreCalcolate = (hourlyRate > 0) ? (totalCosto / hourlyRate) : 0;
 
-                    if (valori.ContainsKey(key)) valori[key] += ore;
-                    else valori[key] = ore;
+                        string key = $"{dipId}_{dt.Day}";
+                        if (valori.ContainsKey(key)) valori[key] += oreCalcolate;
+                        else valori[key] = oreCalcolate;
+                    }
                 }
-                catch
-                {
-                    // Ignora righe malformate e continua
-                    continue;
-                }
+                catch { continue; }
             }
 
-            // Costruisce la DataTable:colonna = Dipendente, poi colonne 1..daysInMonth
-            var matrice = new DataTable();
+            DataTable matrice = new DataTable();
             matrice.Columns.Add("Dipendente", typeof(string));
             for (int d = 1; d <= daysInMonth; d++)
+            {
                 matrice.Columns.Add(d.ToString(), typeof(decimal));
+            }
 
             foreach (DataRow dip in dipendenti.Rows)
             {
-                int dipId = Convert.ToInt32(dip["ID"]);
-                string nomeCompleto = dip.Table.Columns.Contains("NomeCompleto")
-                    ? dip["NomeCompleto"].ToString()
-                    : $"{dip["Nome"]} {dip["Cognome"]}";
-
                 DataRow nr = matrice.NewRow();
-                nr["Dipendente"] = nomeCompleto;
+                int dipId = Convert.ToInt32(dip["ID"]);
+                nr["Dipendente"] = $"{dip["Nome"]} {dip["Cognome"]}";
 
                 for (int d = 1; d <= daysInMonth; d++)
                 {
                     string key = $"{dipId}_{d}";
-                    nr[d.ToString()] = valori.TryGetValue(key, out decimal oreVal) ? (object)oreVal : DBNull.Value;
+                    nr[d.ToString()] = valori.TryGetValue(key, out decimal v) ? (object)v : DBNull.Value;
                 }
-
                 matrice.Rows.Add(nr);
             }
 
-            // Costruisce colonne GridView dinamiche e associa
             ViewFake.Columns.Clear();
             ViewFake.AutoGenerateColumns = false;
 
@@ -179,7 +193,6 @@ namespace Marginalita
                 });
             }
 
-            // Assicura che l'handler non venga registrato più volte
             ViewFake.RowDataBound -= ViewFake_RowDataBound;
             ViewFake.RowDataBound += ViewFake_RowDataBound;
 
@@ -187,7 +200,6 @@ namespace Marginalita
             ViewFake.DataBind();
         }
 
-        // Evento che colora le celle: sabato, domenica, festività
         protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType != DataControlRowType.DataRow) return;
@@ -196,10 +208,8 @@ namespace Marginalita
             int month = DateTime.Now.Month;
             int daysInMonth = DateTime.DaysInMonth(year, month);
 
-            // Ottieni festività del mese (implementazione di esempio)
             var festivita = GetHolidays(year, month);
 
-            // La prima cella è 'Dipendente' -> le colonne giorno iniziano dall'indice 1
             for (int d = 1; d <= daysInMonth; d++)
             {
                 int cellIndex = d; // d=1 => cell 1
@@ -210,15 +220,15 @@ namespace Marginalita
 
                 if (festivita.Contains(date.Date))
                 {
-                    cell.BackColor = Color.LightGreen; // festività
+                    cell.BackColor = Color.LightGreen;
                 }
                 else if (date.DayOfWeek == DayOfWeek.Saturday)
                 {
-                    cell.BackColor = Color.LightBlue; // sabato
+                    cell.BackColor = Color.LightBlue;
                 }
                 else if (date.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    cell.BackColor = Color.LightCoral; // domenica
+                    cell.BackColor = Color.LightCoral;
                 }
                 else
                 {
@@ -228,12 +238,10 @@ namespace Marginalita
             }
         }
 
-        // Restituisce le festività per l'anno/mese: sostituire con query DB se serve
         private HashSet<DateTime> GetHolidays(int year, int month)
         {
             var hs = new HashSet<DateTime>();
 
-            // ggiungere festività comuni; sostituire con la lista reale
             try
             {
 
@@ -247,10 +255,8 @@ namespace Marginalita
             }
             catch
             {
-                // ignora errori di costruzione date
             }
 
-            // Filtra solo quelle del mese richiesto
             var result = new HashSet<DateTime>();
             foreach (var dt in hs)
             {
@@ -259,7 +265,7 @@ namespace Marginalita
 
             return result;
 
-            
+
         }
 
         private DateTime GetTargetMonday()
@@ -267,17 +273,38 @@ namespace Marginalita
             DateTime today = DateTime.Today;
             int dayOfWeek = (int)today.DayOfWeek;
 
-            // CL: Your "Current Monday" logic (Sunday = 6 days back)
+
             int daysToSubtract = (dayOfWeek == 0) ? 6 : dayOfWeek - 1;
             DateTime CL = today.AddDays(-daysToSubtract);
 
-            // TL: Your "Target Monday" logic (Workdays move back 7 days)
+
             DateTime TL = CL;
             if (dayOfWeek >= 1 && dayOfWeek <= 5)
             {
                 TL = CL.AddDays(-7);
             }
             return TL.Date;
+        }
+
+        private decimal GetWeeklyHoursExcludingCurrent(int idDipendente, int idProgettoEscluso)
+        {
+            using (SqlConnection conn = new SqlConnection(stringaConnessione))
+            {
+
+                string sql = @"SELECT SUM(Ore) FROM Original 
+                       WHERE Dipendente = @d 
+                       AND Progetto != @p 
+                       AND CAST(Creata AS DATE) = CAST(@data AS DATE)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@d", idDipendente);
+                cmd.Parameters.AddWithValue("@p", idProgettoEscluso);
+                cmd.Parameters.AddWithValue("@data", GetTargetMonday());
+
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+            }
         }
     }
 }

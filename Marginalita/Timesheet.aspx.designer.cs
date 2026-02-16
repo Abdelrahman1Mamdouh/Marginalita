@@ -42,49 +42,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DSFake;
 
         /// <summary>
-        /// Controllo visualeGiorno.
+        /// Controllo RepSingolo.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton visualeGiorno;
-
-        /// <summary>
-        /// Controllo visualeSettimana.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton visualeSettimana;
-
-        /// <summary>
-        /// Controllo visualeMese.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton visualeMese;
-
-        /// <summary>
-        /// Controllo RepDipendente.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater RepDipendente;
-
-        /// <summary>
-        /// Controllo RepProgetto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater RepProgetto;
+        protected global::System.Web.UI.WebControls.Repeater RepSingolo;
 
         /// <summary>
         /// Controllo PFake.
