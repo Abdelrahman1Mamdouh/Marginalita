@@ -108,11 +108,6 @@ namespace Marginalita
                 }
 
             }
-
-
-
-
-
         }
 
         //Gestione progetti
@@ -143,7 +138,6 @@ namespace Marginalita
             DSocieta.Insert();
             Response.Redirect("Anagrafiche.aspx");
         }
-
         protected void ModSocieta(object sender, EventArgs e)
         {
             DSocieta.Update();
