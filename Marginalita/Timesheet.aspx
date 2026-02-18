@@ -88,15 +88,21 @@
     </div>
     <br />
     <br />
+
     <div id="gestioneAssenze">
 
-        <asp:Panel ID="PanelAssenze" class="row-cols-sm-auto gridd" runat="server">
-            <asp:ListBox ID="ListaAssenze" runat="server" Width="300px" Height="200px"
-                DataSourceID="TabellaAssenze" 
-                DataTextField="Ore" 
-                DataValueField="ID">
-            </asp:ListBox>
-        </asp:Panel>
+    <asp:Panel ID="PanelAssenze" class="row-cols-sm-auto gridd" runat="server">
+    <asp:GridView ID="GridAssenze" runat="server" DataSourceID="TabellaAssenze" 
+        AutoGenerateColumns="False" DataKeyNames="ID" CssClass="table table-bordered table-striped">
+        <Columns>
+            <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
+            <asp:BoundField DataField="Dipendente" HeaderText="Dipendente" />
+            <asp:BoundField DataField="Motivo" HeaderText="Motivo" />
+            <asp:BoundField DataField="Ore" HeaderText="Ore" />
+            <asp:BoundField DataField="DataAssenze" HeaderText="Data" DataFormatString="{0:dd/MM/yyyy}" />
+        </Columns>
+    </asp:GridView>
+</asp:Panel>
 
         <asp:Label id="LDipendente" Text="Dipendente: " runat="server"/>
         <asp:DropDownList ID="AssenzeDDL" runat="server" 
@@ -121,21 +127,39 @@
 
         <asp:HiddenField ID="hfSelectedDates" runat="server" />
         <asp:Label id="LData" Text="Date: " runat="server"/>
-        <asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" />
+
+       <%--<asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" />--%>
+        <div class="calendar-container" style="position: relative;">
+            <asp:TextBox ID="txtDataVisualizzata" runat="server" ReadOnly="true" placeholder="Seleziona data: " />
+    
+            <asp:LinkButton ID="btnApriCalendario" runat="server" OnClick="btnApriCalendario_Click" Text="📅" />
+
+            <asp:Panel ID="pnlCalendario" runat="server" Visible="false" 
+                style="position:absolute; z-index:1000; background:white; border:1px solid #ccc;">
+                <asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" />
+            </asp:Panel>
+        </div>
+        </div>
 
         <asp:Button id="InvioAssenze" Text="Invio" OnClick="Assenze_Click" runat="server"/>
 
         <br />
         <br />
     </div>
+
     <div id="gestioneCostiEsterni">
-        <asp:Panel ID="PanelCostiEsterni" class="row-cols-sm-auto gridd" runat="server">
-            <asp:ListBox ID="ListaCostiEsterni" runat="server" Width="300px" Height="200px"
-                DataSourceID="CostiEsterni" 
-                DataTextField="Costo" 
-                DataValueField="ID">
-            </asp:ListBox>
-        </asp:Panel>
+     
+    <asp:Panel ID="PanelCostiEsterni" class="row-cols-sm-auto gridd" runat="server">
+    <asp:GridView ID="GridCostiEsterni" runat="server" DataSourceID="CostiEsterni" 
+        AutoGenerateColumns="False" DataKeyNames="ID" CssClass="table table-bordered table-striped">
+        <Columns>
+            <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
+            <asp:BoundField DataField="Costo" HeaderText="Costo" />
+            <asp:BoundField DataField="Fornitore" HeaderText="Fornitore" />
+            <asp:BoundField DataField="Descrizione" HeaderText="Descrizione" />
+        </Columns>
+    </asp:GridView>
+</asp:Panel>
 
         <asp:Label id="LIntestazione" Text="Intestazione: " runat="server"/>
         <asp:TextBox runat="server" ID="TIntestazione" AutoPostBack="true"/>
@@ -150,7 +174,9 @@
         <br />
         <br />
     </div>
+
     <div id="ViewOre" class="col-33" runat="server">
+
            <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
                <asp:GridView ID="ViewFake" runat="server"
                  AutoGenerateColumns="false"

@@ -87,13 +87,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Panel PanelAssenze;
 
         /// <summary>
-        /// Controllo ListaAssenze.
+        /// Controllo GridAssenze.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox ListaAssenze;
+        protected global::System.Web.UI.WebControls.GridView GridAssenze;
 
         /// <summary>
         /// Controllo LDipendente.
@@ -168,6 +168,33 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label LData;
 
         /// <summary>
+        /// Controllo txtDataVisualizzata.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDataVisualizzata;
+
+        /// <summary>
+        /// Controllo btnApriCalendario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnApriCalendario;
+
+        /// <summary>
+        /// Controllo pnlCalendario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCalendario;
+
+        /// <summary>
         /// Controllo CDurata.
         /// </summary>
         /// <remarks>
@@ -195,13 +222,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Panel PanelCostiEsterni;
 
         /// <summary>
-        /// Controllo ListaCostiEsterni.
+        /// Controllo GridCostiEsterni.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox ListaCostiEsterni;
+        protected global::System.Web.UI.WebControls.GridView GridCostiEsterni;
 
         /// <summary>
         /// Controllo LIntestazione.

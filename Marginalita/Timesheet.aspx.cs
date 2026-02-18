@@ -201,9 +201,9 @@ namespace Marginalita
 
         private void GrigliaAssenze()
         {
-            if (ListaAssenze != null && TabellaAssenze != null)
+            if (GridAssenze != null && TabellaAssenze != null)
             {
-                ListaAssenze.DataBind();
+                GridAssenze.DataBind();
             }
         }
 
@@ -227,10 +227,10 @@ namespace Marginalita
         }
         private void GrigliaCostiEsterni()
         {
-            if (CostiEsterni != null && ListaCostiEsterni != null)
+            if (CostiEsterni != null && GridCostiEsterni != null)
             {
                 CostiEsterni.DataBind();
-                ListaCostiEsterni.DataBind();
+                GridCostiEsterni.DataBind();
             }
         }
         protected void Assenze_Click(object sender, EventArgs e)
@@ -238,7 +238,9 @@ namespace Marginalita
             string idDipendenteStr = AssenzeDDL.SelectedValue;
             string motivo = MotivoDDL.SelectedValue;
             string oreStr = OreAssenze.Text;
-            DateTime dataSelezionata = CDurata.SelectedDate;
+            DateTime dataSelezionata = CDurata
+                
+                .SelectedDate;
 
             if (string.IsNullOrEmpty(idDipendenteStr) || idDipendenteStr == "0" ||
                 string.IsNullOrEmpty(motivo) || string.IsNullOrEmpty(oreStr) ||
@@ -400,27 +402,14 @@ namespace Marginalita
             }
         }
 
+        protected void btnApriCalendario_Click(object sender, EventArgs e)
+        {
+            pnlCalendario.Visible = !pnlCalendario.Visible;
+        }
         protected void CDurata_SelectionChanged(object sender, EventArgs e)
         {
-            List<DateTime> currentList = SelectedDatesList;
-
-            DateTime selectedDate = CDurata.SelectedDate.Date;
-
-            if (currentList.Contains(selectedDate))
-            {
-                currentList.Remove(selectedDate);
-            }
-            else
-            {
-                currentList.Add(selectedDate);
-            }
-            SelectedDatesList = currentList;
-
-            CDurata.SelectedDates.Clear();
-            foreach (DateTime d in currentList)
-            {
-                CDurata.SelectedDates.Add(d);
-            }
+            txtDataVisualizzata.Text = CDurata.SelectedDate.ToShortDateString();
+            pnlCalendario.Visible = false;
         }
 
         protected void Page_PreRender(object sender, EventArgs e)
