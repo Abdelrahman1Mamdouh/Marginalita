@@ -238,9 +238,7 @@ namespace Marginalita
             string idDipendenteStr = AssenzeDDL.SelectedValue;
             string motivo = MotivoDDL.SelectedValue;
             string oreStr = OreAssenze.Text;
-            DateTime dataSelezionata = CDurata
-                
-                .SelectedDate;
+            DateTime dataSelezionata = CDurata.SelectedDate;
 
             if (string.IsNullOrEmpty(idDipendenteStr) || idDipendenteStr == "0" ||
                 string.IsNullOrEmpty(motivo) || string.IsNullOrEmpty(oreStr) ||
@@ -249,7 +247,7 @@ namespace Marginalita
                 return;
             }
 
-            int idDipendente = int.Parse(idDipendenteStr);
+            int idDipendente = int.Parse(AssenzeDDL.SelectedValue);
             decimal ore = decimal.Parse(oreStr);
             int idProgettoFisso = 10;
 

@@ -52,6 +52,11 @@
             </InsertParameters>
      </asp:SqlDataSource>
 
+     <asp:SqlDataSource runat="server" ID="VistaAssenti" 
+         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+         SelectCommand="SELECT ID, Dipendente, Motivo, Ore, DateAssenze FROM VistaAssenti">
+    </asp:SqlDataSource>
+
     <asp:SqlDataSource runat="server" ID="TabellaMotivo" 
     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
     SelectCommand="SELECT ID, Descrizione FROM Motivo"> 
@@ -92,7 +97,7 @@
     <div id="gestioneAssenze">
 
     <asp:Panel ID="PanelAssenze" class="row-cols-sm-auto gridd" runat="server">
-    <asp:GridView ID="GridAssenze" runat="server" DataSourceID="TabellaAssenze" 
+    <asp:GridView ID="GridAssenze" runat="server" DataSourceID="VistaAssenti" 
         AutoGenerateColumns="False" DataKeyNames="ID" CssClass="table table-bordered table-striped">
         <Columns>
             <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
@@ -105,12 +110,14 @@
 </asp:Panel>
 
         <asp:Label id="LDipendente" Text="Dipendente: " runat="server"/>
-        <asp:DropDownList ID="AssenzeDDL" runat="server" 
+                <asp:DropDownList ID="AssenzeDDL" runat="server" 
             DataSourceID="TabellaDipendente" 
-            DataTextField="Cognome" 
-            DataValueField="ID" 
+            DataTextField="Nome" 
+<%--            DataValueField="ID"--%>
+            DataKeyNames="ID"
+            AppendDataBoundItems="true"
             AutoPostBack="true">
-            <asp:ListItem Selected="True" Value="">Scegli dipendente: </asp:ListItem>
+            <asp:ListItem Selected="True" Value="0">Scegli dipendente: </asp:ListItem>
         </asp:DropDownList>
 
         <asp:Label id="LMotivo" Text="Motivo: " runat="server"/>
@@ -128,7 +135,6 @@
         <asp:HiddenField ID="hfSelectedDates" runat="server" />
         <asp:Label id="LData" Text="Date: " runat="server"/>
 
-       <%--<asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" />--%>
         <div class="calendar-container" style="position: relative;">
             <asp:TextBox ID="txtDataVisualizzata" runat="server" ReadOnly="true" placeholder="Seleziona data: " />
     
@@ -145,7 +151,7 @@
 
         <br />
         <br />
-    </div>
+    
 
     <div id="gestioneCostiEsterni">
      

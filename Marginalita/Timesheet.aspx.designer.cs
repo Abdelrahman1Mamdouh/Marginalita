@@ -60,6 +60,15 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaAssenze;
 
         /// <summary>
+        /// Controllo VistaAssenti.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource VistaAssenti;
+
+        /// <summary>
         /// Controllo TabellaMotivo.
         /// </summary>
         /// <remarks>
@@ -103,15 +112,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LDipendente;
-
-        /// <summary>
-        /// Controllo AssenzeDDL.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AssenzeDDL;
 
         /// <summary>
         /// Controllo LMotivo.
