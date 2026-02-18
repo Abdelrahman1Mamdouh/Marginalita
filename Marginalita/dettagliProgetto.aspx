@@ -7,7 +7,7 @@
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
         SelectCommand="SELECT * 
                        FROM Progetto AS P
-                       LEFT JOIN Original AS O ON O.Progetto = P.ID
+                       LEFT JOIN Fake AS O ON O.Progetto = P.ID
                        WHERE P.ID = @ID">
 
         <SelectParameters>

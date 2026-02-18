@@ -39,7 +39,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Original">
+                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
@@ -96,7 +96,7 @@
            <asp:SqlDataSource 
                ID="SqlScadenze" runat="server"
                 ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
+                SelectCommand="SELECT P.ID, P.Nome, P.Budget, P.Durata AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Fake AS O ON P.ID = O.Progetto WHERE P.Durata >= GETDATE() AND P.Durata <= DATEADD(day, 30, GETDATE()) ORDER BY P.Durata ASC">
            </asp:SqlDataSource> 
         <asp:GridView ID="GridView2" runat="server"
             DataSourceID="SqlScadenze"

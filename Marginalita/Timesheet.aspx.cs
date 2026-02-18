@@ -19,6 +19,8 @@ namespace Marginalita
             if (!IsPostBack)
             {
                 CreaGrigliaFake();
+                GrigliaCostiEsterni();
+                GrigliaAssenze();
             }
         }
 
@@ -35,13 +37,10 @@ namespace Marginalita
                 RepeaterItem riga = (RepeaterItem)casellaTesto.NamingContainer;
                 int idDipendente = int.Parse(((HiddenField)riga.FindControl("HiddenDipendente")).Value);
 
-                // MODIFICA QUI: Metti 10 al posto di 1
                 int idProgettoFisso = 10;
 
-                // Il resto rimane uguale...
                 decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
 
-                // ... chiamata alla procedura
                 SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
 
                 if (oreInserite + oreGiaSalvate > 40)
@@ -62,7 +61,6 @@ namespace Marginalita
                 CreaGrigliaFake();
             }
         }
-
         protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -70,7 +68,7 @@ namespace Marginalita
                 TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
                 HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
 
-                // MODIFICA QUI: Metti 10
+
                 string idProgettoFisso = "10";
 
                 if (idDipendenteHidden != null)
@@ -84,7 +82,7 @@ namespace Marginalita
         {
             using (SqlConnection connessione = new SqlConnection(stringaConnessione))
             {
-                string sql = "SELECT Ore FROM Original WHERE Progetto = @p AND Dipendente = @d";
+                string sql = "SELECT Ore FROM Fake WHERE Progetto = @p AND Dipendente = @d";
                 SqlCommand comando = new SqlCommand(sql, connessione);
                 comando.Parameters.AddWithValue("@p", idProgetto);
                 comando.Parameters.AddWithValue("@d", idDipendente);
@@ -101,10 +99,11 @@ namespace Marginalita
                 SqlCommand comando = new SqlCommand("DivideAndConquer", connessione);
                 comando.CommandType = CommandType.StoredProcedure;
 
-                comando.Parameters.AddWithValue("@idProgettoOriginale", idProgetto);
-                comando.Parameters.AddWithValue("@idDipendente", idDipendente);
-                comando.Parameters.AddWithValue("@oreInserite", (decimal)ore);
-                comando.Parameters.AddWithValue("@dataAncoraggio", GetTargetMonday());
+                comando.Parameters.Add("@idProgettoOriginale", SqlDbType.Int).Value = idProgetto;
+                comando.Parameters.Add("@idDipendente", SqlDbType.Int).Value = idDipendente;
+                comando.Parameters.Add("@oreInserite", SqlDbType.Decimal).Value = ore;
+
+                comando.Parameters.Add("@dataAncoraggio", SqlDbType.DateTime).Value = GetTargetMonday();
 
                 connessione.Open();
                 comando.ExecuteNonQuery();
@@ -200,6 +199,85 @@ namespace Marginalita
             ViewFake.DataBind();
         }
 
+        private void GrigliaAssenze()
+        {
+            if (ListaAssenze != null && TabellaAssenze != null)
+            {
+                ListaAssenze.DataBind();
+            }
+        }
+
+        private void SalvaAssenzaSuDB(int idProgetto, int idDipendente, decimal ore, DateTime data)
+        {
+            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
+            {
+                string sql = "INSERT INTO OreAssenze (Progetto, Dipendente, Ore, DataAssenze, Motivo) VALUES (@p, @d, @o, @date, @m)";
+
+                SqlCommand comando = new SqlCommand(sql, connessione);
+
+                comando.Parameters.AddWithValue("@p", idProgetto);
+                comando.Parameters.AddWithValue("@d", idDipendente);
+                comando.Parameters.AddWithValue("@o", ore);
+                comando.Parameters.AddWithValue("@date", data);
+
+                comando.Parameters.AddWithValue("@m", MotivoDDL.SelectedValue);
+                connessione.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+        private void GrigliaCostiEsterni()
+        {
+            if (CostiEsterni != null && ListaCostiEsterni != null)
+            {
+                CostiEsterni.DataBind();
+                ListaCostiEsterni.DataBind();
+            }
+        }
+        protected void Assenze_Click(object sender, EventArgs e)
+        {
+            string idDipendenteStr = AssenzeDDL.SelectedValue;
+            string motivo = MotivoDDL.SelectedValue;
+            string oreStr = OreAssenze.Text;
+            DateTime dataSelezionata = CDurata.SelectedDate;
+
+            if (string.IsNullOrEmpty(idDipendenteStr) || idDipendenteStr == "0" ||
+                string.IsNullOrEmpty(motivo) || string.IsNullOrEmpty(oreStr) ||
+                dataSelezionata == DateTime.MinValue)
+            {
+                return;
+            }
+
+            int idDipendente = int.Parse(idDipendenteStr);
+            decimal ore = decimal.Parse(oreStr);
+            int idProgettoFisso = 10;
+
+            SalvaAssenzaSuDB(idProgettoFisso, idDipendente, ore, dataSelezionata);
+
+            OreAssenze.Text = "";
+            MotivoDDL.SelectedIndex = 0;
+            AssenzeDDL.SelectedIndex = 0;
+
+            CreaGrigliaFake();
+            GrigliaAssenze();
+        }
+
+        protected void Extra_Click(object sender, EventArgs e)
+        {
+            string fornitore = TIntestazione.Text.Trim();
+            string descrizione = TDescrizione.Text.Trim();
+            decimal importo = 0;
+
+            if (decimal.TryParse(TImporto.Text, out importo) && !string.IsNullOrEmpty(fornitore))
+            {
+                CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+                CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+                CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString().Replace(",", ".");
+                CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
+
+                CostiEsterni.Insert();
+                GrigliaCostiEsterni();
+            }
+        }
         protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType != DataControlRowType.DataRow) return;
@@ -291,7 +369,7 @@ namespace Marginalita
             using (SqlConnection conn = new SqlConnection(stringaConnessione))
             {
 
-                string sql = @"SELECT SUM(Ore) FROM Original 
+                string sql = @"SELECT SUM(Ore) FROM Fake
                        WHERE Dipendente = @d 
                        AND Progetto != @p 
                        AND CAST(Creata AS DATE) = CAST(@data AS DATE)";
@@ -304,6 +382,53 @@ namespace Marginalita
                 conn.Open();
                 object result = cmd.ExecuteScalar();
                 return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+            }
+        }
+        private List<DateTime> SelectedDatesList
+        {
+            get
+            {
+                if (ViewState["SelectedDatesList"] == null)
+                {
+                    return new List<DateTime>();
+                }
+                return (List<DateTime>)ViewState["SelectedDatesList"];
+            }
+            set
+            {
+                ViewState["SelectedDatesList"] = value;
+            }
+        }
+
+        protected void CDurata_SelectionChanged(object sender, EventArgs e)
+        {
+            List<DateTime> currentList = SelectedDatesList;
+
+            DateTime selectedDate = CDurata.SelectedDate.Date;
+
+            if (currentList.Contains(selectedDate))
+            {
+                currentList.Remove(selectedDate);
+            }
+            else
+            {
+                currentList.Add(selectedDate);
+            }
+            SelectedDatesList = currentList;
+
+            CDurata.SelectedDates.Clear();
+            foreach (DateTime d in currentList)
+            {
+                CDurata.SelectedDates.Add(d);
+            }
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            CDurata.SelectedDates.Clear();
+            foreach (DateTime d in SelectedDatesList)
+            {
+                CDurata.SelectedDates.Add(d);
             }
         }
     }
