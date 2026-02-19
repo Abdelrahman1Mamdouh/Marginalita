@@ -19,7 +19,7 @@
 
 
                     <ItemTemplate>
-                        <asp:Table runat="server">
+                        <asp:Table runat="server" CssClass="table w-100 text-center">
 
                             <asp:TableRow ID="DPro" HorizontalAlign="Center" VerticalAlign="Middle" runat="server">
                                 <asp:TableCell Width="10" runat="server">
@@ -61,7 +61,7 @@
 
                 </asp:ListView>
 
-                <asp:Button ID="NewProg" runat="server" Text="New" OnClick="NewProgetto" />
+                <asp:Button ID="NewProg" runat="server" Text="New" OnClick="NewProgetto" CssClass="btn btn-dark" />
 
 
             </div>
@@ -75,7 +75,7 @@
                 <asp:ListView ID="LSocieta" DataSourceID="DSocieta" DataKeyName="IDSocieta" runat="server">
 
                     <ItemTemplate>
-                        <asp:Table ID="Stable" runat="server">
+                        <asp:Table ID="Stable" runat="server" CssClass="table w-100 text-center">
 
                             <asp:TableRow runat="server">
                                 <asp:TableCell Width="10" runat="server">
@@ -102,7 +102,7 @@
 
                 </asp:ListView>
 
-                <asp:Button ID="NewSoc" runat="server" Text="New" OnClick="NewSocieta" />
+                <asp:Button ID="NewSoc" runat="server" Text="New" OnClick="NewSocieta" CssClass="btn btn-dark"/>
 
             </div>
 
@@ -117,7 +117,7 @@
                 <asp:ListView ID="LDipendenti" DataSourceID="DDipendenti" DataKeyName="IDDipendenti" runat="server">
 
                     <ItemTemplate>
-                        <asp:Table ID="Dtable" runat="server">
+                        <asp:Table ID="Dtable" runat="server" CssClass="table w-100 text-center">
 
                             <asp:TableRow runat="server">
                                 <asp:TableCell Width="10" runat="server">
@@ -145,7 +145,7 @@
 
                 </asp:ListView>
 
-                <asp:Button ID="NewDip" runat="server" Text="New" OnClick="NewDipendente" />
+                <asp:Button ID="NewDip" runat="server" Text="New" OnClick="NewDipendente" CssClass="btn btn-dark" />
 
             </div>
         </asp:Panel>
@@ -154,8 +154,12 @@
             ID="AnaView"
             DataSourceID="SqlDGS"
             AutoGenerateColumns="True"
-            CssClass="table table-striped w-100 text-center"
+            CssClass="table table-striped w-100 text-center mt-5"
             runat="server">
+
+             <HeaderStyle CssClass="table-dark" />
+
+
 
         </asp:GridView>
 

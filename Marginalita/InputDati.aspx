@@ -104,7 +104,7 @@
             </DeleteParameters>
         </asp:SqlDataSource>
 
-        <div id="ViewProgetti" runat="server">
+        <div id="ViewProgetti" runat="server" style="display:flex;flex-direction:column">
             <h2>Progetti</h2>
 
 
@@ -130,11 +130,11 @@
 
 
             <asp:Button ID="ModProg" runat="server" Text="Modifica" OnClick="ModProgetto" />
-            <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" />
+            <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px"/>
             <asp:Button ID="EliProg" runat="server" Text="Elimina" OnClick="EliProgetto" />
         </div>
 
-        <div id="ViewSocieta" runat="server">
+        <div id="ViewSocieta" runat="server" style="display:flex;flex-direction:column">
             <h2>Societa</h2>
 
             <asp:Label ID="LIntestazione" Text="Intestazione societa" runat="server" />
@@ -144,12 +144,12 @@
             <asp:TextBox runat="server" ID="TEmail" />
 
             <asp:Button ID="ModSoc" runat="server" Text="Modifica" OnClick="ModSocieta" />
-            <asp:Button ID="SalSoc" runat="server" Text="Salva" OnClick="SalSocieta" />
+            <asp:Button ID="SalSoc" runat="server" Text="Salva" OnClick="SalSocieta" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px" />
             <asp:Button ID="EliSoc" runat="server" Text="Elimina" OnClick="EliSocieta" />
         </div>
 
 
-        <div id="ViewDipendenti" runat="server">
+        <div id="ViewDipendenti" runat="server" style="display:flex;flex-direction:column">
 
             <h2>Dipendenti</h2>
 
@@ -165,11 +165,11 @@
 
 
             <asp:Button ID="ModDip" runat="server" Text="Modifica" OnClick="ModDipendenti" />
-            <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" />
+            <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px"/>
             <asp:Button ID="EliDip" runat="server" Text="Elimina" OnClick="EliDipendenti" />
 
         </div>
-        <asp:Button ID="Ann" runat="server" Text="Annulla" OnClick="Annulla" />
+        <asp:Button ID="Ann" runat="server" Text="Annulla" OnClick="Annulla" style="border:2px solid red;padding:5px 10px;background-color:transparent; border-radius:5px;color:red"/>
     </main>
 
 </asp:Content>

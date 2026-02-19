@@ -36,8 +36,9 @@
                 <div class="DSCard-text">
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
-                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                        SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake"></asp:SqlDataSource>
+                         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Fake">
+                    </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
                     <div class="DSCard-value">
@@ -88,16 +89,18 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Report</div>
-                    <asp:SqlDataSource
-                        ID="SqlScadenze" runat="server"
-                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                        SelectCommand="SELECT P.ID, P.Nome, P.Budget,
-                                           P.Durata AS ScadenzaCalcolata
-                                           FROM Progetto AS P
-                                           INNER JOIN Fake AS F ON P.ID = F.Progetto
-                                           WHERE P.Durata &gt; = CAST(GETDATE() AS date)
-                                           AND P.Durata &lt; = DATEADD(day, 30, CAST(GETDATE() AS date))
-                                           ORDER BY P.Durata ASC;"></asp:SqlDataSource>
+                       <asp:SqlDataSource 
+                           ID="SqlScadenze" runat="server"
+                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                            SelectCommand="SELECT ID, 
+                                            Nome, 
+                                            Budget, 
+                                            DataScadenza
+                                            FROM Progetto
+                                            WHERE DataScadenza &gt; = CAST(GETDATE() AS DATE) 
+                                            AND DataScadenza &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
+                                            ORDER BY DataScadenza ASC">
+                       </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
                         AutoGenerateColumns="False"
@@ -120,7 +123,8 @@
                 <asp:LinkButton ID="LinkButton1"
                     Text="+ Aggiungi"
                     runat="server"
-                    CssClass="btn btn-dark">
+                    CssClass="btn btn-dark"
+                    OnClick="Aggiungi_Progetti">
 
                 </asp:LinkButton>
             </div>

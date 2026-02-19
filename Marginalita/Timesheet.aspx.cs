@@ -12,8 +12,6 @@ namespace Marginalita
     public partial class Timesheet : Page
     {
         string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
-
-        // Proprietà per determinare il tetto massimo di ore
         private int LimiteCorrente => 40;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -21,6 +19,8 @@ namespace Marginalita
             if (!IsPostBack)
             {
                 CreaGrigliaFake();
+                GrigliaCostiEsterni();
+                GrigliaAssenze();
             }
         }
 
@@ -29,29 +29,24 @@ namespace Marginalita
             TextBox casellaTesto = (TextBox)sender;
             string testoInput = casellaTesto.Text.Trim();
 
-           
             decimal oreInserite = 0;
             bool isValido = decimal.TryParse(testoInput, out oreInserite);
 
             if (testoInput == "" || isValido)
             {
-                
-                RepeaterItem cella = (RepeaterItem)casellaTesto.NamingContainer;
-                RepeaterItem riga = (RepeaterItem)cella.Parent.Parent;
+                RepeaterItem riga = (RepeaterItem)casellaTesto.NamingContainer;
+                int idDipendente = int.Parse(((HiddenField)riga.FindControl("HiddenDipendente")).Value);
 
-                int idProgetto = int.Parse(((HiddenField)riga.FindControl("HiddenProgetto")).Value);
-                int idDipendente = int.Parse(((HiddenField)cella.FindControl("HiddenDipendente")).Value);
+                int idProgettoFisso = 10;
 
-                
-                decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgetto);
+                decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
+
+                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
 
                 if (oreInserite + oreGiaSalvate > 40)
                 {
-                    
                     decimal oreMassimePossibili = 40 - oreGiaSalvate;
                     oreInserite = oreMassimePossibili > 0 ? oreMassimePossibili : 0;
-
-                   
                     casellaTesto.Text = oreInserite.ToString("0.00");
                     casellaTesto.ForeColor = Color.Red;
                 }
@@ -60,20 +55,12 @@ namespace Marginalita
                     casellaTesto.ForeColor = Color.Black;
                 }
 
-                
-                SalvaDatiConStoredProcedure(idProgetto, idDipendente, oreInserite);
+                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
 
-                
-                DSFake.DataBind();
+                if (DSFake != null) DSFake.DataBind();
                 CreaGrigliaFake();
             }
-            else
-            {
-                
-                casellaTesto.Text = "0.00";
-            }
         }
-
         protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -81,15 +68,12 @@ namespace Marginalita
                 TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
                 HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
 
-                RepeaterItem Progetto = (RepeaterItem)e.Item.Parent.Parent;
-                HiddenField idProgettoHidden = (HiddenField)Progetto.FindControl("HiddenProgetto");
 
-                // Imposta il limite massimo nell'input HTML
-                txtOre.Attributes["max"] = LimiteCorrente.ToString();
+                string idProgettoFisso = "10";
 
-                if (idDipendenteHidden != null && idProgettoHidden != null)
+                if (idDipendenteHidden != null)
                 {
-                    txtOre.Text = RecuperaOreDalDatabase(idProgettoHidden.Value, idDipendenteHidden.Value);
+                    txtOre.Text = RecuperaOreDalDatabase(idProgettoFisso, idDipendenteHidden.Value);
                 }
             }
         }
@@ -98,7 +82,7 @@ namespace Marginalita
         {
             using (SqlConnection connessione = new SqlConnection(stringaConnessione))
             {
-                string sql = "SELECT Ore FROM Original WHERE Progetto = @p AND Dipendente = @d";
+                string sql = "SELECT Ore FROM Fake WHERE Progetto = @p AND Dipendente = @d";
                 SqlCommand comando = new SqlCommand(sql, connessione);
                 comando.Parameters.AddWithValue("@p", idProgetto);
                 comando.Parameters.AddWithValue("@d", idDipendente);
@@ -115,10 +99,11 @@ namespace Marginalita
                 SqlCommand comando = new SqlCommand("DivideAndConquer", connessione);
                 comando.CommandType = CommandType.StoredProcedure;
 
-                comando.Parameters.AddWithValue("@idProgettoOriginale", idProgetto);
-                comando.Parameters.AddWithValue("@idDipendente", idDipendente);
-                comando.Parameters.AddWithValue("@oreInserite", (decimal)ore);
-                comando.Parameters.AddWithValue("@dataAncoraggio", GetTargetMonday());
+                comando.Parameters.Add("@idProgettoOriginale", SqlDbType.Int).Value = idProgetto;
+                comando.Parameters.Add("@idDipendente", SqlDbType.Int).Value = idDipendente;
+                comando.Parameters.Add("@oreInserite", SqlDbType.Decimal).Value = ore;
+
+                comando.Parameters.Add("@dataAncoraggio", SqlDbType.DateTime).Value = GetTargetMonday();
 
                 connessione.Open();
                 comando.ExecuteNonQuery();
@@ -139,17 +124,14 @@ namespace Marginalita
             int month = DateTime.Now.Month;
             int daysInMonth = DateTime.DaysInMonth(year, month);
 
-            // 3. Map Employee ID to their CostoOrario
             var costMap = new Dictionary<int, decimal>();
             foreach (DataRow row in dipendenti.Rows)
             {
                 int id = Convert.ToInt32(row["ID"]);
-                // Using decimal to ensure we don't lose precision in the division later
                 decimal rate = row.IsNull("CostoOrario") ? 0 : Convert.ToDecimal(row["CostoOrario"]);
                 costMap[id] = rate;
             }
 
-            // 4. Aggregate and Convert Cost back to Hours
             var valori = new Dictionary<string, decimal>(StringComparer.Ordinal);
             foreach (DataRow r in fake.Rows)
             {
@@ -162,10 +144,8 @@ namespace Marginalita
                     DateTime dt = Convert.ToDateTime(r["Creata"]);
                     decimal totalCosto = Convert.ToDecimal(r["Costo"]);
 
-                    // Only process data for the current month view
                     if (dt.Year == year && dt.Month == month)
                     {
-                        // REVERSE MATH: Hours = Cost / Hourly Rate
                         decimal hourlyRate = costMap.ContainsKey(dipId) ? costMap[dipId] : 0;
                         decimal oreCalcolate = (hourlyRate > 0) ? (totalCosto / hourlyRate) : 0;
 
@@ -177,7 +157,6 @@ namespace Marginalita
                 catch { continue; }
             }
 
-            // 5. Build the Display Matrix (Monthly Table)
             DataTable matrice = new DataTable();
             matrice.Columns.Add("Dipendente", typeof(string));
             for (int d = 1; d <= daysInMonth; d++)
@@ -199,7 +178,6 @@ namespace Marginalita
                 matrice.Rows.Add(nr);
             }
 
-            // 6. Configure GridView Columns and Bind
             ViewFake.Columns.Clear();
             ViewFake.AutoGenerateColumns = false;
 
@@ -218,7 +196,6 @@ namespace Marginalita
                 });
             }
 
-            // Re-attach the row coloring for weekends and bind
             ViewFake.RowDataBound -= ViewFake_RowDataBound;
             ViewFake.RowDataBound += ViewFake_RowDataBound;
 
@@ -226,7 +203,85 @@ namespace Marginalita
             ViewFake.DataBind();
         }
 
-        // Evento che colora le celle: sabato, domenica, festività
+        private void GrigliaAssenze()
+        {
+            if (GridAssenze != null && TabellaAssenze != null)
+            {
+                GridAssenze.DataBind();
+            }
+        }
+
+        private void SalvaAssenzaSuDB(int idProgetto, int idDipendente, decimal ore, DateTime data)
+        {
+            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
+            {
+                string sql = "INSERT INTO OreAssenze (Progetto, Dipendente, Ore, DataAssenze, Motivo) VALUES (@p, @d, @o, @date, @m)";
+
+                SqlCommand comando = new SqlCommand(sql, connessione);
+
+                comando.Parameters.AddWithValue("@p", idProgetto);
+                comando.Parameters.AddWithValue("@d", idDipendente);
+                comando.Parameters.AddWithValue("@o", ore);
+                comando.Parameters.AddWithValue("@date", data);
+
+                comando.Parameters.AddWithValue("@m", MotivoDDL.SelectedValue);
+                connessione.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+        private void GrigliaCostiEsterni()
+        {
+            if (CostiEsterni != null && GridCostiEsterni != null)
+            {
+                CostiEsterni.DataBind();
+                GridCostiEsterni.DataBind();
+            }
+        }
+        protected void Assenze_Click(object sender, EventArgs e)
+        {
+            string idDipendenteStr = AssenzeDDL.SelectedValue;
+            string motivo = MotivoDDL.SelectedValue;
+            string oreStr = OreAssenze.Text;
+            DateTime dataSelezionata = CDurata.SelectedDate;
+
+            if (string.IsNullOrEmpty(idDipendenteStr) || idDipendenteStr == "0" ||
+                string.IsNullOrEmpty(motivo) || string.IsNullOrEmpty(oreStr) ||
+                dataSelezionata == DateTime.MinValue)
+            {
+                return;
+            }
+
+            int idDipendente = int.Parse(AssenzeDDL.SelectedValue);
+            decimal ore = decimal.Parse(oreStr);
+            int idProgettoFisso = 10;
+
+            SalvaAssenzaSuDB(idProgettoFisso, idDipendente, ore, dataSelezionata);
+
+            OreAssenze.Text = "";
+            MotivoDDL.SelectedIndex = 0;
+            AssenzeDDL.SelectedIndex = 0;
+
+            CreaGrigliaFake();
+            GrigliaAssenze();
+        }
+
+        protected void Extra_Click(object sender, EventArgs e)
+        {
+            string fornitore = TIntestazione.Text.Trim();
+            string descrizione = TDescrizione.Text.Trim();
+            decimal importo = 0;
+
+            if (decimal.TryParse(TImporto.Text, out importo) && !string.IsNullOrEmpty(fornitore))
+            {
+                CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+                CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+                CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString().Replace(",", ".");
+                CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
+
+                CostiEsterni.Insert();
+                GrigliaCostiEsterni();
+            }
+        }
         protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType != DataControlRowType.DataRow) return;
@@ -235,10 +290,8 @@ namespace Marginalita
             int month = DateTime.Now.Month;
             int daysInMonth = DateTime.DaysInMonth(year, month);
 
-            // Ottieni festività del mese (implementazione di esempio)
             var festivita = GetHolidays(year, month);
 
-            // La prima cella è 'Dipendente' -> le colonne giorno iniziano dall'indice 1
             for (int d = 1; d <= daysInMonth; d++)
             {
                 int cellIndex = d; // d=1 => cell 1
@@ -249,15 +302,15 @@ namespace Marginalita
 
                 if (festivita.Contains(date.Date))
                 {
-                    cell.BackColor = Color.LightGreen; // festività
+                    cell.BackColor = Color.LightGreen;
                 }
                 else if (date.DayOfWeek == DayOfWeek.Saturday)
                 {
-                    cell.BackColor = Color.LightBlue; // sabato
+                    cell.BackColor = Color.LightBlue;
                 }
                 else if (date.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    cell.BackColor = Color.LightCoral; // domenica
+                    cell.BackColor = Color.LightCoral;
                 }
                 else
                 {
@@ -267,12 +320,10 @@ namespace Marginalita
             }
         }
 
-        // Restituisce le festività per l'anno/mese: sostituire con query DB se serve
         private HashSet<DateTime> GetHolidays(int year, int month)
         {
             var hs = new HashSet<DateTime>();
 
-            // ggiungere festività comuni; sostituire con la lista reale
             try
             {
 
@@ -286,10 +337,8 @@ namespace Marginalita
             }
             catch
             {
-                // ignora errori di costruzione date
             }
 
-            // Filtra solo quelle del mese richiesto
             var result = new HashSet<DateTime>();
             foreach (var dt in hs)
             {
@@ -298,7 +347,7 @@ namespace Marginalita
 
             return result;
 
-            
+
         }
 
         private DateTime GetTargetMonday()
@@ -306,11 +355,11 @@ namespace Marginalita
             DateTime today = DateTime.Today;
             int dayOfWeek = (int)today.DayOfWeek;
 
-            
+
             int daysToSubtract = (dayOfWeek == 0) ? 6 : dayOfWeek - 1;
             DateTime CL = today.AddDays(-daysToSubtract);
 
-            
+
             DateTime TL = CL;
             if (dayOfWeek >= 1 && dayOfWeek <= 5)
             {
@@ -323,8 +372,8 @@ namespace Marginalita
         {
             using (SqlConnection conn = new SqlConnection(stringaConnessione))
             {
-                
-                string sql = @"SELECT SUM(Ore) FROM Original 
+
+                string sql = @"SELECT SUM(Ore) FROM Fake
                        WHERE Dipendente = @d 
                        AND Progetto != @p 
                        AND CAST(Creata AS DATE) = CAST(@data AS DATE)";
@@ -332,11 +381,45 @@ namespace Marginalita
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@d", idDipendente);
                 cmd.Parameters.AddWithValue("@p", idProgettoEscluso);
-                cmd.Parameters.AddWithValue("@data", GetTargetMonday()); 
+                cmd.Parameters.AddWithValue("@data", GetTargetMonday());
 
                 conn.Open();
                 object result = cmd.ExecuteScalar();
                 return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+            }
+        }
+        private List<DateTime> SelectedDatesList
+        {
+            get
+            {
+                if (ViewState["SelectedDatesList"] == null)
+                {
+                    return new List<DateTime>();
+                }
+                return (List<DateTime>)ViewState["SelectedDatesList"];
+            }
+            set
+            {
+                ViewState["SelectedDatesList"] = value;
+            }
+        }
+
+        protected void btnApriCalendario_Click(object sender, EventArgs e)
+        {
+            pnlCalendario.Visible = !pnlCalendario.Visible;
+        }
+        protected void CDurata_SelectionChanged(object sender, EventArgs e)
+        {
+            txtDataVisualizzata.Text = CDurata.SelectedDate.ToShortDateString();
+            pnlCalendario.Visible = false;
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            CDurata.SelectedDates.Clear();
+            foreach (DateTime d in SelectedDatesList)
+            {
+                CDurata.SelectedDates.Add(d);
             }
         }
     }

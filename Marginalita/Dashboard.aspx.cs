@@ -10,6 +10,10 @@ namespace Marginalita
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+
+        bool[] vedi = new bool[3];
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -20,5 +24,48 @@ namespace Marginalita
 
             Response.Redirect("dettagliProgetto.aspx");
         }
+
+
+        public void Aggiungi_Progetti(object sender, EventArgs e)
+        {
+
+            vedi[0] = true;
+            vedi[1] = false;
+            vedi[2] = false;
+
+            Session["vedi"] = vedi;
+            
+            Response.Redirect("InputDati.aspx");
+           
+        }
+        //protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        //{
+        //    // Verifichiamo che il comando sia quello del nostro pulsante
+        //    if (e.CommandName == "btnVisualizza")
+        //    {
+        //        // Recuperiamo l'ID passato tramite CommandArgument
+        //        string idSelezionato = e.CommandArgument.ToString();
+
+        //        // Reindirizziamo alla pagina Dettagli.aspx passando l'ID
+        //        Response.Redirect("dettagliProgetto.aspx?id=" + idSelezionato);
+        //    }
+        //}
+
+        //private void CalcolaBudget()
+        //{
+
+        //    //E' UNA PROVA Questo metodo mi somma tutti i budget inserendo la somma nel primo riquadro della dashboard
+        //    string connString = @"Data Source=(LocalDB)\SQL2025;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True";
+        //    using (SqlConnection conn = new SqlConnection(connString))
+        //    {
+        //        // Query SQL per effettuare la somma di tutti i budget di tutti i progetti 
+        //        string query = "SELECT SUM(Budget) FROM Progetto";
+        //        SqlCommand cmd = new SqlCommand(query, conn);
+
+        //        conn.Open();
+        //        int count = (int)cmd.ExecuteScalar(); // Restituisce il primo valore della prima riga
+        //        //lblMRR.Text = count.ToString();
+        //    }
+        //}
     }
 }
