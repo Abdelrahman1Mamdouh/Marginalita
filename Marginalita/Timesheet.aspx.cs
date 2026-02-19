@@ -111,10 +111,12 @@ namespace Marginalita
         }
         private void CreaGrigliaFake()
         {
+            // 1. Retrieve Employee Data (to get Hourly Costs for reverse math)
             DataView dvDip = TabellaDipendente?.Select(DataSourceSelectArguments.Empty) as DataView;
             if (dvDip == null) return;
             DataTable dipendenti = dvDip.ToTable();
 
+            // 2. Retrieve Shredded Data from the Fake Table
             DataView dvFake = DSFake?.Select(DataSourceSelectArguments.Empty) as DataView;
             DataTable fake = dvFake != null ? dvFake.ToTable() : new DataTable();
 
@@ -179,15 +181,17 @@ namespace Marginalita
             ViewFake.Columns.Clear();
             ViewFake.AutoGenerateColumns = false;
 
+            // First Column: Employee Name
             ViewFake.Columns.Add(new BoundField { DataField = "Dipendente", HeaderText = "Dipendente" });
 
+            // Dynamic Columns: Days 1 to 31
             for (int d = 1; d <= daysInMonth; d++)
             {
                 ViewFake.Columns.Add(new BoundField
                 {
                     DataField = d.ToString(),
                     HeaderText = d.ToString(),
-                    DataFormatString = "{0:0.##}",
+                    DataFormatString = "{0:0.##}", // Cleanly shows 8 or 1.6
                     HtmlEncode = false
                 });
             }
