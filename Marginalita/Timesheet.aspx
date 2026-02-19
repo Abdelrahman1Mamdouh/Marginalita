@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Timesheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Timesheet.aspx.cs" Inherits="Marginalita.Timesheet" %>
+<%@ Page Title="Timesheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Timesheet.aspx.cs" Inherits="Marginalita.Timesheet" %>
 
 <%@ Register assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" namespace="System.Web.UI.DataVisualization.Charting" tagprefix="asp" %>
 
@@ -54,7 +54,7 @@
 
      <asp:SqlDataSource runat="server" ID="VistaAssenti" 
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-         SelectCommand="SELECT ID, Dipendente, Motivo, Ore, DateAssenze FROM VistaAssenti">
+         SelectCommand="SELECT ID, Dipendente, Motivo, Ore, DataAssenze FROM OreAssenze">
     </asp:SqlDataSource>
 
     <asp:SqlDataSource runat="server" ID="TabellaMotivo" 
@@ -113,7 +113,7 @@
                 <asp:DropDownList ID="AssenzeDDL" runat="server" 
             DataSourceID="TabellaDipendente" 
             DataTextField="Nome" 
-<%--            DataValueField="ID"--%>
+
             DataKeyNames="ID"
             AppendDataBoundItems="true"
             AutoPostBack="true">
