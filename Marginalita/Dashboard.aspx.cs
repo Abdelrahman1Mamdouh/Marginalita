@@ -10,6 +10,10 @@ namespace Marginalita
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+
+        bool[] vedi = new bool[3];
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //CalcolaBudget();
@@ -21,6 +25,19 @@ namespace Marginalita
             Response.Redirect("dettagliProgetto.aspx");
         }
 
+
+        public void Aggiungi_Progetti(object sender, EventArgs e)
+        {
+
+            vedi[0] = true;
+            vedi[1] = false;
+            vedi[2] = false;
+
+            Session["vedi"] = vedi;
+            
+            Response.Redirect("InputDati.aspx");
+           
+        }
         //protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         //{
         //    // Verifichiamo che il comando sia quello del nostro pulsante
