@@ -16,7 +16,7 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CalcolaBudget();
+
         }
 
         protected void btnVisualizza_Click(object sender, EventArgs e)
