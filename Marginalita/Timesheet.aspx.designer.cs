@@ -13,8 +13,6 @@ namespace Marginalita
 
     public partial class Timesheet
     {
-      protected global::System.Web.UI.WebControls.DropDownList AssenzeDDL;
-
 
         /// <summary>
         /// TabellaProgetto control.
