@@ -39,7 +39,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Original">
+                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
@@ -90,31 +90,25 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="DSCard-card">
-                <div class="DSCard-text">
-                    <div class="DSCard-label">Report</div>
-                       <asp:SqlDataSource 
-                           ID="SqlScadenze" runat="server"
-                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT P.ID, P.Nome, P.Budget,
-                                           P.Durata AS ScadenzaCalcolata
-                                           FROM Progetto AS P
-                                           INNER JOIN Original AS O ON P.ID = O.Progetto
-                                           WHERE P.Durata &gt; = CAST(GETDATE() AS date)
-                                           AND P.Durata &lt; = DATEADD(day, 30, CAST(GETDATE() AS date))
-                                           ORDER BY P.Durata ASC;">
-                       </asp:SqlDataSource> 
-                    <asp:GridView ID="GridView2" runat="server"
-                        DataSourceID="SqlScadenze"
-                        AutoGenerateColumns="False"
-                        CssClass="table table-striped w-100 text-center">
-                        <Columns>
-                                <asp:BoundField DataField="Nome" HeaderText="Progetto" />
-                                <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
-                        </Columns>
-                     </asp:GridView>
-                </div>
-            </div>
+<div class="DSCard-card">
+    <div class="DSCard-text">
+        <div class="DSCard-label">Report</div>
+           <asp:SqlDataSource 
+               ID="SqlScadenze" runat="server"
+                ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                SelectCommand="SELECT P.ID, P.Nome, P.Budget, P.Durata AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Fake AS O ON P.ID = O.Progetto WHERE P.Durata >= GETDATE() AND P.Durata <= DATEADD(day, 30, GETDATE()) ORDER BY P.Durata ASC">
+           </asp:SqlDataSource> 
+        <asp:GridView ID="GridView2" runat="server"
+            DataSourceID="SqlScadenze"
+            AutoGenerateColumns="False"
+            CssClass="table table-striped w-100 text-center">
+            <Columns>
+                    <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                    <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+            </Columns>
+         </asp:GridView>
+    </div>
+</div>
         </section>
 
         <section class="mt-5">
