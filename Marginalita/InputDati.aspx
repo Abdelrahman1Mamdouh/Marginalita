@@ -159,7 +159,7 @@
             <asp:Label ID="LCognome" Text="Cognome" runat="server" />
             <asp:TextBox runat="server" ID="TCognome" />
 
-            <asp:Label ID="LCosto" Text="Cognome orario" runat="server" />
+            <asp:Label ID="LCosto" Text="Costo orario" runat="server" />
             <asp:TextBox runat="server" ID="TCosto" />
 
 

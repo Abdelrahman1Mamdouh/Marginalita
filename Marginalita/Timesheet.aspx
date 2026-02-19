@@ -54,7 +54,7 @@
 
      <asp:SqlDataSource runat="server" ID="VistaAssenti" 
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-         SelectCommand="SELECT ID, Dipendente, Motivo, Ore, DateAssenze FROM VistaAssenti">
+         SelectCommand="SELECT ID, Dipendente, Motivo, Ore, DataAssenze FROM OreAssenze">
     </asp:SqlDataSource>
 
     <asp:SqlDataSource runat="server" ID="TabellaMotivo" 
@@ -113,7 +113,7 @@
                 <asp:DropDownList ID="AssenzeDDL" runat="server" 
             DataSourceID="TabellaDipendente" 
             DataTextField="Nome" 
-<%--            DataValueField="ID"--%>
+
             DataKeyNames="ID"
             AppendDataBoundItems="true"
             AutoPostBack="true">

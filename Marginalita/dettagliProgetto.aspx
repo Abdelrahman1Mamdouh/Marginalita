@@ -26,7 +26,10 @@
 
     </asp:SqlDataSource>
 
-    <asp:SqlDataSource runat="server" ID="ChartMARGINE" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+    <asp:SqlDataSource runat="server"
+        ID="ChartMARGINE"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+        ProviderName="System.Data.SqlClient"
         SelectCommand=" 
                               SELECT V.Label, V.Valore
                               FROM Progetto P

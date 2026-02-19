@@ -42,43 +42,43 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DSFake;
 
         /// <summary>
-        /// Controllo CostiEsterni.
+        /// CostiEsterni control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource CostiEsterni;
 
         /// <summary>
-        /// Controllo TabellaAssenze.
+        /// TabellaAssenze control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaAssenze;
 
         /// <summary>
-        /// Controllo VistaAssenti.
+        /// VistaAssenti control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource VistaAssenti;
 
         /// <summary>
-        /// Controllo TabellaMotivo.
+        /// TabellaMotivo control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaMotivo;
 
         /// <summary>
-        /// Controllo RepSingolo.
+        /// RepSingolo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -87,7 +87,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Repeater RepSingolo;
 
         /// <summary>
-        /// Controllo PanelAssenze.
+        /// PanelAssenze control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -96,200 +96,209 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Panel PanelAssenze;
 
         /// <summary>
-        /// Controllo GridAssenze.
+        /// GridAssenze control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridAssenze;
 
         /// <summary>
-        /// Controllo LDipendente.
+        /// LDipendente control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LDipendente;
 
         /// <summary>
-        /// Controllo LMotivo.
+        /// AssenzeDDL control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList AssenzeDDL;
+
+        /// <summary>
+        /// LMotivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LMotivo;
 
         /// <summary>
-        /// Controllo MotivoDDL.
+        /// MotivoDDL control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList MotivoDDL;
 
         /// <summary>
-        /// Controllo LOre.
+        /// LOre control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LOre;
 
         /// <summary>
-        /// Controllo OreAssenze.
+        /// OreAssenze control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox OreAssenze;
 
         /// <summary>
-        /// Controllo hfSelectedDates.
+        /// hfSelectedDates control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfSelectedDates;
 
         /// <summary>
-        /// Controllo LData.
+        /// LData control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LData;
 
         /// <summary>
-        /// Controllo txtDataVisualizzata.
+        /// txtDataVisualizzata control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDataVisualizzata;
 
         /// <summary>
-        /// Controllo btnApriCalendario.
+        /// btnApriCalendario control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnApriCalendario;
 
         /// <summary>
-        /// Controllo pnlCalendario.
+        /// pnlCalendario control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlCalendario;
 
         /// <summary>
-        /// Controllo CDurata.
+        /// CDurata control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Calendar CDurata;
 
         /// <summary>
-        /// Controllo InvioAssenze.
+        /// InvioAssenze control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button InvioAssenze;
 
         /// <summary>
-        /// Controllo PanelCostiEsterni.
+        /// PanelCostiEsterni control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PanelCostiEsterni;
 
         /// <summary>
-        /// Controllo GridCostiEsterni.
+        /// GridCostiEsterni control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridCostiEsterni;
 
         /// <summary>
-        /// Controllo LIntestazione.
+        /// LIntestazione control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LIntestazione;
 
         /// <summary>
-        /// Controllo TIntestazione.
+        /// TIntestazione control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TIntestazione;
 
         /// <summary>
-        /// Controllo LDescrizione.
+        /// LDescrizione control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LDescrizione;
 
         /// <summary>
-        /// Controllo TDescrizione.
+        /// TDescrizione control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TDescrizione;
 
         /// <summary>
-        /// Controllo LImporto.
+        /// LImporto control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LImporto;
 
         /// <summary>
-        /// Controllo TImporto.
+        /// TImporto control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TImporto;
 
         /// <summary>
-        /// Controllo Button1.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button1;
 
@@ -303,16 +312,16 @@ namespace Marginalita
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ViewOre;
 
         /// <summary>
-        /// Controllo PFake.
+        /// PFake control.
         /// </summary>
         /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PFake;
 
         /// <summary>
-        /// Controllo ViewFake.
+        /// ViewFake control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

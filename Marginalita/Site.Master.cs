@@ -16,6 +16,7 @@ namespace Marginalita
             if (!IsPostBack)
             {
                 IsSidebarOpen = false;
+                lstProjects.Visible = false;
             }
 
             ApplySidebar();
@@ -82,6 +83,40 @@ namespace Marginalita
 
             IsSidebarOpen = false;
             Response.Redirect("Anagrafiche.aspx");
+        }
+        protected void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string term = txtSearch.Text.Trim();
+
+            if (term.Length < 2)
+            {
+                lstProjects.Visible = false;
+                lstProjects.Items.Clear();
+                return;
+            }
+
+            SearchProgetti.SelectParameters["term"].DefaultValue = term;
+
+            lstProjects.DataBind();
+
+            if (lstProjects.Items.Count == 0)
+            {
+                lstProjects.Visible = false;
+            }
+            else
+            {
+                lstProjects.Visible = true;
+            }
+        }
+
+        protected void LstProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedId = lstProjects.SelectedValue;
+
+            if (!string.IsNullOrEmpty(selectedId))
+            {
+                Response.Redirect("dettagliProgetto.aspx?id=" + selectedId);
+            }
         }
     }
 }
