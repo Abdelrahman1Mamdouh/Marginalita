@@ -15,7 +15,7 @@ namespace Marginalita
     {
 
         /// <summary>
-        /// SqlDataSourceBudget control.
+        /// Controllo SqlDataSourceBudget.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -24,7 +24,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceBudget;
 
         /// <summary>
-        /// rptTotale control.
+        /// Controllo rptTotale.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -33,7 +33,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Repeater rptTotale;
 
         /// <summary>
-        /// SqlDataSourceCosti control.
+        /// Controllo SqlDataSourceCosti.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -42,11 +42,11 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceCosti;
 
         /// <summary>
-        /// Repeater1 control.
+        /// Controllo Repeater1.
         /// </summary>
         /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater Repeater1;
 
@@ -60,7 +60,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label lblUsersChange;
 
         /// <summary>
-        /// SqlDataSourceMargini control.
+        /// Controllo SqlDataSourceMargini.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -69,11 +69,11 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceMargini;
 
         /// <summary>
-        /// Repeater2 control.
+        /// Controllo Repeater2.
         /// </summary>
         /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater Repeater2;
 
@@ -87,7 +87,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label lblGrowthChange;
 
         /// <summary>
-        /// SqlScadenze control.
+        /// Controllo SqlScadenze.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -96,7 +96,7 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource SqlScadenze;
 
         /// <summary>
-        /// GridView2 control.
+        /// Controllo GridView2.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
