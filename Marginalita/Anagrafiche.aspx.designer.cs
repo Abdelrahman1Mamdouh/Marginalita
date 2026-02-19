@@ -42,13 +42,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DProgetti;
 
         /// <summary>
-        /// Controllo LProgetti.
+        /// Controllo GridProgetti.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView LProgetti;
+        protected global::System.Web.UI.WebControls.GridView GridProgetti;
 
         /// <summary>
         /// Controllo NewProg.
@@ -78,13 +78,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DSocieta;
 
         /// <summary>
-        /// Controllo LSocieta.
+        /// Controllo GridSocieta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView LSocieta;
+        protected global::System.Web.UI.WebControls.GridView GridSocieta;
 
         /// <summary>
         /// Controllo NewSoc.
@@ -114,13 +114,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DDipendenti;
 
         /// <summary>
-        /// Controllo LDipendenti.
+        /// Controllo GridDipendenti.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView LDipendenti;
+        protected global::System.Web.UI.WebControls.GridView GridDipendenti;
 
         /// <summary>
         /// Controllo NewDip.
@@ -130,14 +130,5 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button NewDip;
-
-        /// <summary>
-        /// Controllo AnaView.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView AnaView;
     }
 }

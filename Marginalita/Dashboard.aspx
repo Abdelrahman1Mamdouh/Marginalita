@@ -13,13 +13,12 @@
 
                         <asp:SqlDataSource ID="SqlDataSourceBudget" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                            SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM V_Dash">
-                        </asp:SqlDataSource>
-                            <asp:Repeater ID="rptTotale" runat="server" DataSourceID="SqlDataSourceBudget">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("TotaleBudget", "{0:C}") %>'/>
-                                 </ItemTemplate>
-                            </asp:Repeater>
+                            SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM Progetto"></asp:SqlDataSource>
+                        <asp:Repeater ID="rptTotale" runat="server" DataSourceID="SqlDataSourceBudget">
+                            <ItemTemplate>
+                                <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("TotaleBudget", "{0:C}") %>' />
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </div>
                     <div class="DSCard-change DSCard-up">
                        <%-- ↑--%>
@@ -39,7 +38,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Original">
+                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
@@ -96,7 +95,14 @@
                        <asp:SqlDataSource 
                            ID="SqlScadenze" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT P.ID, P.Nome, P.Budget, DATEADD(month, P.Durata, O.Creata) AS ScadenzaCalcolata FROM Progetto AS P INNER JOIN Original AS O ON P.ID = O.Progetto WHERE DATEADD(month, P.Durata, O.Creata) >= GETDATE() AND DATEADD(month, P.Durata, O.Creata) <= DATEADD(day, 30, GETDATE()) ORDER BY DATEADD(month, P.Durata, O.Creata) ASC">
+                            SelectCommand="SELECT ID, 
+                                            Nome, 
+                                            Budget, 
+                                            Durata
+                                            FROM Progetto
+                                            WHERE Durata &gt; = CAST(GETDATE() AS DATE) 
+                                            AND Durata &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
+                                            ORDER BY Durata ASC">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
@@ -133,8 +139,7 @@
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                    SelectCommand="SELECT * FROM V_Dash">
-                </asp:SqlDataSource>
+                    SelectCommand="SELECT * FROM Progetto"></asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"

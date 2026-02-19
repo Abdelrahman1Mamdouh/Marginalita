@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Antlr.Runtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -24,7 +26,6 @@ namespace Marginalita
                 SalDip.Visible = false;
                 SalSoc.Visible = false;
                 SalProg.Visible = false;
-
             }
             else
             {
@@ -34,10 +35,6 @@ namespace Marginalita
                 EliDip.Visible = false;
                 EliSoc.Visible = false;
                 EliProg.Visible = false;
-                
-
-
-
             }
 
             if (Session["vedi"] == null)
@@ -49,63 +46,66 @@ namespace Marginalita
             }
             else {
                 vedi = (bool[])Session["vedi"];
-
-               
             }
 
-           
-                if (vedi[0])
-                {
-                    ViewProgetti.Visible = vedi[0];
-                    ViewSocieta.Visible = vedi[1];
-                    ViewDipendenti.Visible = vedi[2];
-
-
-                    if (Session["DatiProgetto"] != null)
-                    {
-                        TNomePro.Text = dati["Nome"];
-                        TBudget.Text = dati["Budget"];
-                        TDurata.Text = dati["Durata"];
-                        TDescritione.Text = dati["Descrizione"];
-
-                    }
-
-                }
-
-            if (!IsPostBack)
+            if (vedi[0])
             {
-                if (vedi[1])
+                ViewProgetti.Visible = vedi[0];
+                ViewSocieta.Visible = vedi[1];
+                ViewDipendenti.Visible = vedi[2];
+
+                if (Session["DatiProgetto"] != null)
                 {
-                    ViewProgetti.Visible = vedi[0];
-                    ViewSocieta.Visible = vedi[1];
-                    ViewDipendenti.Visible = vedi[2];
+                    TNomePro.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
+                    TBudget.Text = dati.ContainsKey("Budget") ? dati["Budget"] : "";
 
-                    if (Session["DatiProgetto"] != null)
+                    if (dati.ContainsKey("Inizio"))
                     {
-                        TIntestazione.Text = dati["Intestazione"];
-                        TEmail.Text = dati["Email"];
+                        if (DateTime.TryParse(dati["Inizio"], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedIn))
+                        {
+                            CDInizio.SelectedDate = parsedIn;
+                        }
                     }
+                    if (dati.ContainsKey("Fine"))
+                    {
+                        if (DateTime.TryParse(dati["Fine"], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedFin))
+                        {
+                            CDFine.SelectedDate = parsedFin;
+                        }
 
-
-
+                        TDescritione.Text = dati.ContainsKey("Descrizione") ? dati["Descrizione"] : "";
+                    }
                 }
 
-                if (vedi[2])
+                if (!IsPostBack)
                 {
-                    ViewProgetti.Visible = vedi[0];
-                    ViewSocieta.Visible = vedi[1];
-                    ViewDipendenti.Visible = vedi[2];
-
-                    if (Session["DatiProgetto"] != null)
+                    if (vedi[1])
                     {
-                        TLNomeDip.Text = dati["Nome"];
-                        TCognome.Text = dati["Cognome"];
-                        TCosto.Text = dati["Costo"];
+                        ViewProgetti.Visible = vedi[0];
+                        ViewSocieta.Visible = vedi[1];
+                        ViewDipendenti.Visible = vedi[2];
+
+                        if (Session["DatiProgetto"] != null)
+                        {
+                            TIntestazione.Text = dati.ContainsKey("Intestazione") ? dati["Intestazione"] : "";
+                            TEmail.Text = dati.ContainsKey("Email") ? dati["Email"] : "";
+                        }
                     }
 
+                    if (vedi[2])
+                    {
+                        ViewProgetti.Visible = vedi[0];
+                        ViewSocieta.Visible = vedi[1];
+                        ViewDipendenti.Visible = vedi[2];
 
+                        if (Session["DatiProgetto"] != null)
+                        {
+                            TLNomeDip.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
+                            TCognome.Text = dati.ContainsKey("Cognome") ? dati["Cognome"] : "";
+                            TCosto.Text = dati.ContainsKey("Costo") ? dati["Costo"] : "";
+                        }
+                    }
                 }
-
             }
 
 
@@ -117,8 +117,8 @@ namespace Marginalita
         //Gestione progetti
         protected void SalProgetto(object sender, EventArgs e)
         {
+            // DProgetti Insert usa CDInizio per il parametro Durata
             DProgetti.Insert();
-
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -134,7 +134,6 @@ namespace Marginalita
             DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
-
 
         //Gestione societa
         protected void SalSocieta(object sender, EventArgs e)
@@ -157,33 +156,27 @@ namespace Marginalita
             Response.Redirect("Anagrafiche.aspx");
         }
 
-
         //Gestione dipendenti
         protected void SalDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Insert();
-            
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void ModDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Update();
-           
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void EliDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Delete();
-            
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void Annulla(object sender, EventArgs e)
         {
-            
-
             Response.Redirect("Anagrafiche.aspx");
         }
     }
