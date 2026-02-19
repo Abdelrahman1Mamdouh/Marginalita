@@ -12,7 +12,7 @@
 
                         <asp:SqlDataSource ID="SqlDataSourceBudget" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                            SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM V_Dash"></asp:SqlDataSource>
+                            SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM Progetto"></asp:SqlDataSource>
                         <asp:Repeater ID="rptTotale" runat="server" DataSourceID="SqlDataSourceBudget">
                             <ItemTemplate>
                                 <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("TotaleBudget", "{0:C}") %>' />
@@ -137,7 +137,7 @@
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                    SelectCommand="SELECT * FROM V_Dash"></asp:SqlDataSource>
+                    SelectCommand="SELECT * FROM Progetto"></asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"

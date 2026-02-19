@@ -123,22 +123,40 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.TextBox TBudget;
 
         /// <summary>
-        /// LDurata control.
+        /// Controllo LDInizio.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LDurata;
+        protected global::System.Web.UI.WebControls.Label LDInizio;
 
         /// <summary>
-        /// CDurata control.
+        /// Controllo CDInizio.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar CDurata;
+        protected global::System.Web.UI.WebControls.Calendar CDInizio;
+
+        /// <summary>
+        /// Controllo LDFine.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LDFine;
+
+        /// <summary>
+        /// Controllo CDFine.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Calendar CDFine;
 
         /// <summary>
         /// LDescritione control.
