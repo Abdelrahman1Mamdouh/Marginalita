@@ -14,12 +14,12 @@ namespace Marginalita
     {
         bool[] vedi = new bool[3];
         Dictionary<string, string> dati = null;
-     
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ( Session["DatiProgetto"] != null)
+            if (Session["DatiProgetto"] != null)
             {
-                 dati = (Dictionary<string, string>)Session["DatiProgetto"];
+                dati = (Dictionary<string, string>)Session["DatiProgetto"];
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
                 HID.Value = dati["ID"];
@@ -44,7 +44,8 @@ namespace Marginalita
                     Response.Redirect("Anagrafiche.aspx");
                 }
             }
-            else {
+            else
+            {
                 vedi = (bool[])Session["vedi"];
             }
 
@@ -107,11 +108,6 @@ namespace Marginalita
                     }
                 }
             }
-
-
-
-           
-
         }
 
         //Gestione progetti
@@ -141,7 +137,6 @@ namespace Marginalita
             DSocieta.Insert();
             Response.Redirect("Anagrafiche.aspx");
         }
-
         protected void ModSocieta(object sender, EventArgs e)
         {
             DSocieta.Update();

@@ -40,7 +40,15 @@
             </Scripts>
         </asp:ScriptManager>
 
-
+        <asp:SqlDataSource ID="SearchProgetti"
+            runat="server"
+            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
+            ProviderName="System.Data.SqlClient"
+            SelectCommand="SELECT TOP 10 ID, Nome FROM Progetto WHERE Nome LIKE '%' + @term + '%' ORDER BY Nome">
+            <SelectParameters>
+                <asp:Parameter Name="term" Type="String" DefaultValue="" />
+            </SelectParameters>
+        </asp:SqlDataSource>
 
         <header class="topbar">
             <div class="topbar__left">
@@ -62,7 +70,18 @@
                     <span class="search__icon">&#128270;</span>
                     <asp:TextBox ID="txtSearch" runat="server"
                         CssClass="search__input"
-                        placeholder="Search transactions, customers..." />
+                        placeholder="Search project..."
+                        AutoPostBack="true"
+                        OnTextChanged="TxtSearch_TextChanged" />
+
+                    <asp:ListBox ID="lstProjects" runat="server"
+                        CssClass="search__dropdown"
+                        Visible="false"
+                        DataSourceID="SearchProgetti"
+                        DataTextField="Nome"
+                        DataValueField="ID"
+                        AutoPostBack="true"
+                        OnSelectedIndexChanged="LstProjects_SelectedIndexChanged" />
                 </div>
             </div>
         </header>
@@ -92,17 +111,14 @@
             <span class="ico">&#9634;</span> Dashboard
                 </asp:HyperLink>
 
-            <asp:LinkButton id="AnaButton" 
-               Text="&#10133    Anagrafiche" 
-                
-               OnClick="SubMenu" 
-                Class="sidebar-link"
-               runat="server"/>
+                <asp:LinkButton ID="AnaButton"
+                    Text="&#10133    Anagrafiche"
+                    OnClick="SubMenu"
+                    Class="sidebar-link"
+                    runat="server" />
 
                 <asp:LinkButton ID="AnProg"
                     Text="  &#10133   Progetti"
-                    
-                    
                     Font-Size="12pt"
                     OnClick="Progetti"
                     Visible="false"
@@ -111,7 +127,6 @@
 
                 <asp:LinkButton ID="AnSoc"
                     Text="   &#10133   Societa"
-                  
                     Font-Size="12pt"
                     OnClick="Societa"
                     Visible="false"

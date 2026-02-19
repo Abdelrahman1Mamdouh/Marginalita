@@ -34,10 +34,10 @@
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
             </UpdateParameters>
-              <DeleteParameters>
-      <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
-                   <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
-  </DeleteParameters>
+            <DeleteParameters>
+                <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
+                <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
+            </DeleteParameters>
         </asp:SqlDataSource>
 
         <asp:SqlDataSource
@@ -156,7 +156,7 @@
             <asp:Label ID="LCognome" Text="Cognome" runat="server" />
             <asp:TextBox runat="server" ID="TCognome" />
 
-            <asp:Label ID="LCosto" Text="Cognome orario" runat="server" />
+            <asp:Label ID="LCosto" Text="Costo orario" runat="server" />
             <asp:TextBox runat="server" ID="TCosto" />
 
             <asp:Button ID="ModDip" runat="server" Text="Modifica" OnClick="ModDipendenti" />

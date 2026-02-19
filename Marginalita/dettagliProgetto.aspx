@@ -13,10 +13,10 @@
         P.Margine AS ProgettoMargine,
         P.residuo AS Residuo,
         C.Margine AS ContrattoMargine,
-        O.Creata AS Creata,
-        P.Durata AS Durata
+        F.Creata AS Creata,
+        P.Durata AS Scadenza
         FROM Progetto AS P
-        LEFT JOIN Original AS O ON O.Progetto = P.ID
+        LEFT JOIN FAKE AS F ON F.Progetto = P.ID
         LEFT JOIN Contratto AS C ON C.ID = P.Margine
         WHERE P.ID = @ID">
         <SelectParameters>
@@ -26,17 +26,47 @@
 
     </asp:SqlDataSource>
 
-    <asp:SqlDataSource runat="server" ID="ChartMARGINE" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand=" 
-        SELECT V.Label, V.Valore FROM Progetto AS P 
-        LEFT JOIN Contratto AS C ON C.ID = P.Margine 
-        CROSS APPLY (
-        SELECT CAST(ISNULL(C.Margine,0) AS DECIMAL(10,2)) AS MarginePct, 
-        CAST( CASE WHEN ISNULL(P.Budget,0) = 0 THEN 0 ELSE (ISNULL(P.Residuo,0) * 100.0) / P.Budget END AS DECIMAL(10,2)) AS DisponibilePct ) AS Calc
-        CROSS APPLY ( SELECT CAST(100.0 - Calc.MarginePct AS DECIMAL(10,2)) AS LimitePct,
-        CAST( CASE WHEN Calc.DisponibilePct &lt; 0 THEN 0 WHEN Calc.DisponibilePct &gt; (100.0 - Calc.MarginePct) 
-        THEN (100.0 - Calc.MarginePct) ELSE Calc.DisponibilePct END AS DECIMAL(10,2)) AS DisponibileClamped ) AS K
-        CROSS APPLY (VALUES ('Margine', Calc.MarginePct), ('Residuo', K.DisponibileClamped), ('Speso', K.LimitePct - K.DisponibileClamped) )
-        AS V(Label, Valore) WHERE P.ID = @ID; ">
+    <asp:SqlDataSource runat="server"
+        ID="ChartMARGINE"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+        ProviderName="System.Data.SqlClient"
+        SelectCommand=" 
+                              SELECT V.Label, V.Valore
+                              FROM Progetto P
+                              LEFT JOIN Contratto C ON C.ID = P.Margine
+                              CROSS APPLY (
+                                  SELECT
+                                      CAST(ISNULL(C.Margine,0) AS DECIMAL(10,4)) AS MarginePct,
+                                      CAST(
+                                          CASE 
+                                              WHEN ISNULL(P.Budget,0) = 0 THEN 0
+                                              ELSE (ISNULL(P.Residuo,0) * 100.0) / P.Budget
+                                          END AS DECIMAL(10,4)) AS ResiduoPctRaw) X
+                              CROSS APPLY (
+                                  SELECT
+                                      CAST(100.0 - X.MarginePct AS DECIMAL(10,4)) AS LimitePct,
+                                      CAST(CASE WHEN X.ResiduoPctRaw &lt; 0 THEN -X.ResiduoPctRaw ELSE 0 END AS DECIMAL(10,4)) AS OverPct) T
+                              CROSS APPLY (
+                                  SELECT
+                                      CAST(CASE
+                                              WHEN (X.MarginePct - T.OverPct) &lt; 0 THEN 0
+                                              ELSE (X.MarginePct - T.OverPct)
+                                          END AS DECIMAL(10,4)) AS MargineShown,
+
+                                      CAST(CASE
+                                              WHEN X.ResiduoPctRaw &lt;= 0 THEN 0
+                                              WHEN X.ResiduoPctRaw &gt; T.LimitePct THEN T.LimitePct
+                                              ELSE X.ResiduoPctRaw
+                                           END AS DECIMAL(10,4)) AS ResiduoShown) S
+                              CROSS APPLY (
+                                  SELECT CAST(100.0 - S.MargineShown - S.ResiduoShown AS DECIMAL(10,4)) AS SpesoShown) F
+                              CROSS APPLY (VALUES
+                                  ('Margine', S.MargineShown),
+                                  ('Residuo', S.ResiduoShown),
+                                  ('Speso',   F.SpesoShown) ) V(Label, Valore)
+                              WHERE P.ID = @ID;
+                              ">
+
         <SelectParameters>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
@@ -85,9 +115,9 @@
                     <!-- Card 3 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblEndDate" runat="server" Text="Durata" CssClass="DSCard-label" />
+                            <asp:Label ID="lblEndDate" runat="server" Text="Scadenza" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Durata") %>' />
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Scadenza","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
@@ -143,8 +173,9 @@
                                             ChartType="Doughnut"
                                             XValueMember="Label"
                                             YValueMembers="Valore"
-                                            LabelFormat="{0:0.##}%"
-                                            IsValueShownAsLabel="true"
+                                            IsValueShownAsLabel="false"
+                                            LegendText="#VALX"
+                                            Label="#VALY{0.00}%"
                                             BorderWidth="0" />
                                     </Series>
 
