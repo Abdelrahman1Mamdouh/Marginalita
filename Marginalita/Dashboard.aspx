@@ -37,7 +37,7 @@
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Ore) AS TotaleCosti FROM Fake">
+                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
                     </asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
@@ -95,11 +95,11 @@
                             SelectCommand="SELECT ID, 
                                             Nome, 
                                             Budget, 
-                                            DataScadenza
+                                            Durata
                                             FROM Progetto
-                                            WHERE DataScadenza &gt; = CAST(GETDATE() AS DATE) 
-                                            AND DataScadenza &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
-                                            ORDER BY DataScadenza ASC">
+                                            WHERE Durata &gt; = CAST(GETDATE() AS DATE) 
+                                            AND Durata &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
+                                            ORDER BY Durata ASC">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
