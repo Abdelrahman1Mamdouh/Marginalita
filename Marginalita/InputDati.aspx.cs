@@ -12,12 +12,12 @@ namespace Marginalita
     {
         bool[] vedi = new bool[3];
         Dictionary<string, string> dati = null;
-     
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ( Session["DatiProgetto"] != null)
+            if (Session["DatiProgetto"] != null)
             {
-                 dati = (Dictionary<string, string>)Session["DatiProgetto"];
+                dati = (Dictionary<string, string>)Session["DatiProgetto"];
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
                 HID.Value = dati["ID"];
@@ -34,7 +34,7 @@ namespace Marginalita
                 EliDip.Visible = false;
                 EliSoc.Visible = false;
                 EliProg.Visible = false;
-                
+
 
 
 
@@ -47,30 +47,31 @@ namespace Marginalita
                     Response.Redirect("Anagrafiche.aspx");
                 }
             }
-            else {
+            else
+            {
                 vedi = (bool[])Session["vedi"];
 
-               
+
             }
 
-           
-                if (vedi[0])
+
+            if (vedi[0])
+            {
+                ViewProgetti.Visible = vedi[0];
+                ViewSocieta.Visible = vedi[1];
+                ViewDipendenti.Visible = vedi[2];
+
+
+                if (Session["DatiProgetto"] != null)
                 {
-                    ViewProgetti.Visible = vedi[0];
-                    ViewSocieta.Visible = vedi[1];
-                    ViewDipendenti.Visible = vedi[2];
-
-
-                    if (Session["DatiProgetto"] != null)
-                    {
-                        TNomePro.Text = dati["Nome"];
-                        TBudget.Text = dati["Budget"];
-                        TDurata.Text = dati["Durata"];
-                        TDescritione.Text = dati["Descrizione"];
-
-                    }
+                    TNomePro.Text = dati["Nome"];
+                    TBudget.Text = dati["Budget"];
+                    CDurata.SelectedDate = Convert.ToDateTime(dati["Durata"]);
+                    TDescritione.Text = dati["Descrizione"];
 
                 }
+
+            }
 
             if (!IsPostBack)
             {
@@ -110,7 +111,7 @@ namespace Marginalita
 
 
 
-           
+
 
         }
 
@@ -162,27 +163,27 @@ namespace Marginalita
         protected void SalDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Insert();
-            
+
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void ModDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Update();
-           
+
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void EliDipendenti(object sender, EventArgs e)
         {
             DDipendenti.Delete();
-            
+
             Response.Redirect("Anagrafiche.aspx");
         }
 
         protected void Annulla(object sender, EventArgs e)
         {
-            
+
 
             Response.Redirect("Anagrafiche.aspx");
         }
