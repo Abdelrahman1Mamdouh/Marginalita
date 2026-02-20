@@ -107,7 +107,7 @@
                         <div class="DSCard-text">
                             <asp:Label ID="lblStartDate" runat="server" Text="Data Creazione" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio") %>' />
+                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
@@ -118,7 +118,7 @@
                         <div class="DSCard-text">
                             <asp:Label ID="lblEndDate" runat="server" Text="Scadenza" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Scadenza","{0:dd/MM/yyyy}") %>' />
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Fine","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
