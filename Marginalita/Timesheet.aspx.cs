@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,7 +19,16 @@ namespace Marginalita
         {
             if (!IsPostBack)
             {
-                CreaGrigliaFake();
+                // Imposta i parametri del SqlDataSource che invoca la stored procedure pivot
+                if (DSMatrix != null)
+                {
+                    DSMatrix.SelectParameters["Mode"].DefaultValue = "Progetti";
+                    DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
+                }
+
+                // bind della GridView: la proc DB restituisce già la matrice pivotata
+                if (ViewFake != null) ViewFake.DataBind();
+
                 GrigliaCostiEsterni();
                 GrigliaAssenze();
             }
@@ -57,17 +67,18 @@ namespace Marginalita
 
                 SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
 
+                // aggiorna le sorgenti dati e rilegga la matrice dal DB
                 if (DSFake != null) DSFake.DataBind();
-                CreaGrigliaFake();
+                if (ViewFake != null) ViewFake.DataBind();
             }
         }
+
         protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
                 HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
-
 
                 string idProgettoFisso = "10";
 
@@ -109,99 +120,6 @@ namespace Marginalita
                 comando.ExecuteNonQuery();
             }
         }
-        private void CreaGrigliaFake()
-        {
-            // 1. Retrieve Employee Data (to get Hourly Costs for reverse math)
-            DataView dvDip = TabellaDipendente?.Select(DataSourceSelectArguments.Empty) as DataView;
-            if (dvDip == null) return;
-            DataTable dipendenti = dvDip.ToTable();
-
-            // 2. Retrieve Shredded Data from the Fake Table
-            DataView dvFake = DSFake?.Select(DataSourceSelectArguments.Empty) as DataView;
-            DataTable fake = dvFake != null ? dvFake.ToTable() : new DataTable();
-
-            int year = DateTime.Now.Year;
-            int month = DateTime.Now.Month;
-            int daysInMonth = DateTime.DaysInMonth(year, month);
-
-            var costMap = new Dictionary<int, decimal>();
-            foreach (DataRow row in dipendenti.Rows)
-            {
-                int id = Convert.ToInt32(row["ID"]);
-                decimal rate = row.IsNull("CostoOrario") ? 0 : Convert.ToDecimal(row["CostoOrario"]);
-                costMap[id] = rate;
-            }
-
-            var valori = new Dictionary<string, decimal>(StringComparer.Ordinal);
-            foreach (DataRow r in fake.Rows)
-            {
-                try
-                {
-                    if (r.IsNull("Dipendente") || r.IsNull("Creata") || r.IsNull("Costo"))
-                        continue;
-
-                    int dipId = Convert.ToInt32(r["Dipendente"]);
-                    DateTime dt = Convert.ToDateTime(r["Creata"]);
-                    decimal totalCosto = Convert.ToDecimal(r["Costo"]);
-
-                    if (dt.Year == year && dt.Month == month)
-                    {
-                        decimal hourlyRate = costMap.ContainsKey(dipId) ? costMap[dipId] : 0;
-                        decimal oreCalcolate = (hourlyRate > 0) ? (totalCosto / hourlyRate) : 0;
-
-                        string key = $"{dipId}_{dt.Day}";
-                        if (valori.ContainsKey(key)) valori[key] += oreCalcolate;
-                        else valori[key] = oreCalcolate;
-                    }
-                }
-                catch { continue; }
-            }
-
-            DataTable matrice = new DataTable();
-            matrice.Columns.Add("Dipendente", typeof(string));
-            for (int d = 1; d <= daysInMonth; d++)
-            {
-                matrice.Columns.Add(d.ToString(), typeof(decimal));
-            }
-
-            foreach (DataRow dip in dipendenti.Rows)
-            {
-                DataRow nr = matrice.NewRow();
-                int dipId = Convert.ToInt32(dip["ID"]);
-                nr["Dipendente"] = $"{dip["Nome"]} {dip["Cognome"]}";
-
-                for (int d = 1; d <= daysInMonth; d++)
-                {
-                    string key = $"{dipId}_{d}";
-                    nr[d.ToString()] = valori.TryGetValue(key, out decimal v) ? (object)v : DBNull.Value;
-                }
-                matrice.Rows.Add(nr);
-            }
-
-            ViewFake.Columns.Clear();
-            ViewFake.AutoGenerateColumns = false;
-
-            // First Column: Employee Name
-            ViewFake.Columns.Add(new BoundField { DataField = "Dipendente", HeaderText = "Dipendente" });
-
-            // Dynamic Columns: Days 1 to 31
-            for (int d = 1; d <= daysInMonth; d++)
-            {
-                ViewFake.Columns.Add(new BoundField
-                {
-                    DataField = d.ToString(),
-                    HeaderText = d.ToString(),
-                    DataFormatString = "{0:0.##}", // Cleanly shows 8 or 1.6
-                    HtmlEncode = false
-                });
-            }
-
-            ViewFake.RowDataBound -= ViewFake_RowDataBound;
-            ViewFake.RowDataBound += ViewFake_RowDataBound;
-
-            ViewFake.DataSource = matrice;
-            ViewFake.DataBind();
-        }
 
         private void GrigliaAssenze()
         {
@@ -229,6 +147,7 @@ namespace Marginalita
                 comando.ExecuteNonQuery();
             }
         }
+
         private void GrigliaCostiEsterni()
         {
             if (CostiEsterni != null && GridCostiEsterni != null)
@@ -237,6 +156,7 @@ namespace Marginalita
                 GridCostiEsterni.DataBind();
             }
         }
+
         protected void Assenze_Click(object sender, EventArgs e)
         {
             string idDipendenteStr = AssenzeDDL.SelectedValue;
@@ -257,11 +177,12 @@ namespace Marginalita
 
             SalvaAssenzaSuDB(idProgettoFisso, idDipendente, ore, dataSelezionata);
 
-            OreAssenze.Text = "";
-            MotivoDDL.SelectedIndex = 0;
-            AssenzeDDL.SelectedIndex = 0;
+            //OreAssenze.Text = "";
+            //MotivoDDL.SelectedIndex = 0;
+            //AssenzeDDL.SelectedIndex = 0;
 
-            CreaGrigliaFake();
+            //aggiorna la matrice ricaricando direttamente dal DB(proc pivot)
+            //if (ViewFake != null) ViewFake.DataBind();
             GrigliaAssenze();
         }
 
@@ -421,6 +342,40 @@ namespace Marginalita
             {
                 CDurata.SelectedDates.Add(d);
             }
+        }
+
+        protected void ExportExcel(object sender, EventArgs e)
+        {
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", "Esempio.xls"));
+            Response.ContentType = "application/ms-excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            ViewFake.RenderControl(htw);
+            Response.Write(sw.ToString());
+            Response.End();
+        }
+
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+        }
+
+        protected void ChangeFake(object sender, EventArgs e)
+        {
+            DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
+
+            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+                ? Calendar1.SelectedDate
+                : DateTime.Today;
+
+            DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+            ViewFake.DataBind();
+        }
+        protected void ApriCalendario(object sender, EventArgs e)
+        {
+            Panel1.Visible = !Panel1.Visible;
         }
     }
 }

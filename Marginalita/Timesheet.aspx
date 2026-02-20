@@ -82,9 +82,10 @@
                                 <asp:HiddenField ID="HiddenProgettoFisso" runat="server" Value="1" /> 
                             </td>
                             <td style="padding:10px;">
-                                <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" 
-                                    Columns="5" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
-                            </td>
+                                <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" Columns="5" AutoPostBack="true" />
+                                <!--OnTextChanged="InputOre_TextChanged"-->
+</td>
+                                    
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
@@ -147,7 +148,7 @@
         </div>
         </div>
 
-        <asp:Button id="InvioAssenze" Text="Invio" OnClick="Assenze_Click" runat="server"/>
+        <asp:Button id="InvioAssenze" Text="Aggiungi" OnClick="Assenze_Click" runat="server"/>
 
         <br />
         <br />
@@ -176,18 +177,51 @@
         <asp:Label id="LImporto" Text="Importo: " runat="server"/>
         <asp:TextBox runat="server" ID="TImporto" TextMode="Number" AutoPostBack="true"/>
 
-        <asp:Button id="Button1" Text="Invio" OnClick="Extra_Click" runat="server"/>
+        <asp:Button id="BExtra" Text="Aggiungi" OnClick="Extra_Click" runat="server"/>
         <br />
         <br />
     </div>
+    <asp:Button id="Binvia" Text="Invia" OnClick="InputOre_TextChanged" runat="server"/>
+
+
+    <asp:SqlDataSource ID="DSMatrix" runat="server"
+    ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+    SelectCommandType="StoredProcedure" SelectCommand="usp_GetMonthlyMatrixPivot">
+    <SelectParameters>
+        <asp:Parameter Name="Mode" Type="String" />
+        <asp:Parameter Name="AnchorDate" Type="DateTime" />
+    </SelectParameters>
+</asp:SqlDataSource>
 
     <div id="ViewOre" class="col-33" runat="server">
 
            <asp:Panel ID="PFake" class="row-cols-sm-auto gridd" runat="server">
-               <asp:GridView ID="ViewFake" runat="server"
-                 AutoGenerateColumns="false"
-                 CssClass="table table-bordered table-fixed">
+               <asp:GridView ID="ViewFake" runat="server" DataSourceID="DSMatrix"
+                 AutoGenerateColumns="True" CssClass="table table-bordered table-fixed">
                </asp:GridView>
            </asp:Panel>
     </div>
+
+    
+
+    <asp:Label ID="LMode" runat="server" Text="Visualizza per:" />
+    <asp:DropDownList ID="Mode" runat="server"  AutoPostBack="true" OnSelectedIndexChanged="ChangeFake">
+        <asp:ListItem Value="Dipendenti" Selected="True">Dipendenti</asp:ListItem>
+        <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
+    </asp:DropDownList>
+
+    <div class="calendar-container" style="position: relative;">
+    
+<asp:TextBox ID="TextBox1" runat="server" ReadOnly="true" placeholder="Seleziona data: " />
+        <asp:LinkButton ID="SelectMonth" runat="server" OnClick="ApriCalendario" Text="Apri" />
+
+    <asp:Panel ID="Panel1" runat="server" Visible="false" 
+        style=" background:white; border:1px solid #ccc;">
+        <asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="ChangeFake" />
+    </asp:Panel>
+</div>
+    <br />
+    <br />
+     <asp:Button ID="Export" runat="server" Text="Esporta Dati" OnClick="ExportExcel" />
+    
 </asp:Content>
