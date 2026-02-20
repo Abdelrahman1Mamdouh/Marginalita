@@ -119,7 +119,7 @@
             DataSourceID="TabellaDipendente" 
             DataTextField="Nome" 
 
-            DataKeyNames="ID"
+            DataValueField="ID"
             AppendDataBoundItems="true"
             AutoPostBack="true">
             <asp:ListItem Selected="True" Value="0">Scegli dipendente: </asp:ListItem>
@@ -129,6 +129,7 @@
         <asp:DropDownList ID="MotivoDDL" runat="server"
             DataSourceID="TabellaMotivo" 
             DataTextField="Descrizione" 
+            AppendDataBoundItems="true"
             DataValueField="ID" 
             AutoPostBack="true">
         <asp:ListItem Selected="True" Value="">Scegli motivo: </asp:ListItem>
@@ -168,6 +169,7 @@
             <asp:BoundField DataField="Costo" HeaderText="Costo" />
             <asp:BoundField DataField="Fornitore" HeaderText="Fornitore" />
             <asp:BoundField DataField="Descrizione" HeaderText="Descrizione" />
+            
         </Columns>
     </asp:GridView>
 </asp:Panel>

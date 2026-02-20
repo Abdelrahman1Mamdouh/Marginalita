@@ -131,25 +131,7 @@ namespace Marginalita
             
         }
 
-        private void SalvaAssenzaSuDB(int idProgetto, int idDipendente, decimal ore, DateTime data)
-        {
-            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-            {
-                string sql = "INSERT INTO OreAssenze (Progetto, Dipendente, Ore, DataAssenze, Motivo) VALUES (@p, @d, @o, @date, @m)";
-
-                SqlCommand comando = new SqlCommand(sql, connessione);
-
-                comando.Parameters.AddWithValue("@p", idProgetto);
-                comando.Parameters.AddWithValue("@d", idDipendente);
-                comando.Parameters.AddWithValue("@o", ore);
-                comando.Parameters.AddWithValue("@date", data);
-
-                comando.Parameters.AddWithValue("@m", MotivoDDL.SelectedValue);
-                connessione.Open();
-                comando.ExecuteNonQuery();
-            }
-        }
-
+      
         private void GrigliaCostiEsterni()
         {
             if (CostiEsterni != null && GridCostiEsterni != null)
@@ -175,35 +157,41 @@ namespace Marginalita
 
             int idDipendente = int.Parse(AssenzeDDL.SelectedValue);
             decimal ore = decimal.Parse(oreStr);
-            int idProgettoFisso = 10;
 
-            SalvaAssenzaSuDB(idProgettoFisso, idDipendente, ore, dataSelezionata);
 
-            //OreAssenze.Text = "";
-            //MotivoDDL.SelectedIndex = 0;
-            //AssenzeDDL.SelectedIndex = 0;
+            // Imposta i parametri del SqlDataSource (nomi devono corrispondere all'InsertCommand)
+            TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
+            TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
+            TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");
+            TabellaAssenze.InsertParameters["Progetto"].DefaultValue = "10";
 
-            //aggiorna la matrice ricaricando direttamente dal DB(proc pivot)
-            //if (ViewFake != null) ViewFake.DataBind();
+            // Esegue l'INSERT tramite SqlDataSource (senza try/catch come richiesto)
+            TabellaAssenze.Insert();
+
+            // Aggiorna la griglia
             GrigliaAssenze();
         }
 
         protected void Extra_Click(object sender, EventArgs e)
         {
+            // Leggi i valori dai controlli della pagina
             string fornitore = TIntestazione.Text.Trim();
             string descrizione = TDescrizione.Text.Trim();
-            decimal importo = 0;
+            if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
+                return;
 
-            if (decimal.TryParse(TImporto.Text, out importo) && !string.IsNullOrEmpty(fornitore))
-            {
-                CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
-                CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
-                CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString().Replace(",", ".");
-                CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
+            // Imposta i parametri (nomi devono corrispondere a InsertParameters in .aspx)
+            CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+            CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+            CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
 
-                CostiEsterni.Insert();
-                GrigliaCostiEsterni();
-            }
+            // Esegue l'INSERT
+            CostiEsterni.Insert();
+
+            // Aggiorna visualizzazione
+            GrigliaCostiEsterni();
         }
  
 
