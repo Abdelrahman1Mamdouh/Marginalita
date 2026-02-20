@@ -22,7 +22,7 @@ namespace Marginalita
                 dati = (Dictionary<string, string>)Session["DatiProgetto"];
                 DDLMargine.Visible = false;
                 DDLSocieta.Visible = false;
-                HID.Value = dati["ID"];
+                if (dati.ContainsKey("ID")) HID.Value = dati["ID"];
                 SalDip.Visible = false;
                 SalSoc.Visible = false;
                 SalProg.Visible = false;
@@ -42,6 +42,7 @@ namespace Marginalita
                 if (!IsPostBack)
                 {
                     Response.Redirect("Anagrafiche.aspx");
+                    return;
                 }
             }
             else
@@ -49,63 +50,61 @@ namespace Marginalita
                 vedi = (bool[])Session["vedi"];
             }
 
-            if (vedi[0])
-            {
-                ViewProgetti.Visible = vedi[0];
-                ViewSocieta.Visible = vedi[1];
-                ViewDipendenti.Visible = vedi[2];
+            // Impostiamo sempre le visibilità in base a 'vedi'
+            ViewProgetti.Visible = vedi[0];
+            ViewSocieta.Visible = vedi[1];
+            ViewDipendenti.Visible = vedi[2];
 
-                if (Session["DatiProgetto"] != null)
+            // Popoliamo i campi solo al primo caricamento per evitare di sovrascrivere input utente in postback
+            if (!IsPostBack && Session["DatiProgetto"] != null)
+            {
+                // Progetti
+                if (vedi[0])
                 {
                     TNomePro.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
                     TBudget.Text = dati.ContainsKey("Budget") ? dati["Budget"] : "";
 
-                    if (dati.ContainsKey("Inizio"))
+                    if (dati.ContainsKey("Inizio") && !string.IsNullOrWhiteSpace(dati["Inizio"]))
                     {
-                        if (DateTime.TryParse(dati["Inizio"], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedIn))
+                        var s = dati["Inizio"];
+                        DateTime parsedIn;
+                        if (DateTime.TryParseExact(s, "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out parsedIn)
+                            || DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out parsedIn)
+                            || DateTime.TryParse(s, out parsedIn))
                         {
                             CDInizio.SelectedDate = parsedIn;
                         }
                     }
-                    if (dati.ContainsKey("Fine"))
+
+                    if (dati.ContainsKey("Fine") && !string.IsNullOrWhiteSpace(dati["Fine"]))
                     {
-                        if (DateTime.TryParse(dati["Fine"], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedFin))
+                        var s = dati["Fine"];
+                        DateTime parsedFin;
+                        if (DateTime.TryParseExact(s, "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out parsedFin)
+                            || DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out parsedFin)
+                            || DateTime.TryParse(s, out parsedFin))
                         {
                             CDFine.SelectedDate = parsedFin;
                         }
-
-                        TDescritione.Text = dati.ContainsKey("Descrizione") ? dati["Descrizione"] : "";
                     }
+
+                    TDescritione.Text = dati.ContainsKey("Descrizione") ? dati["Descrizione"] : "";
                 }
 
-                if (!IsPostBack)
+                // Societa
+                if (vedi[1])
                 {
-                    if (vedi[1])
-                    {
-                        ViewProgetti.Visible = vedi[0];
-                        ViewSocieta.Visible = vedi[1];
-                        ViewDipendenti.Visible = vedi[2];
+                    TIntestazione.Text = dati.ContainsKey("Intestazione") ? dati["Intestazione"] : "";
+                    TEmail.Text = dati.ContainsKey("Email") ? dati["Email"] : "";
+                    // se necessario impostare DDLSocieta.SelectedValue qui
+                }
 
-                        if (Session["DatiProgetto"] != null)
-                        {
-                            TIntestazione.Text = dati.ContainsKey("Intestazione") ? dati["Intestazione"] : "";
-                            TEmail.Text = dati.ContainsKey("Email") ? dati["Email"] : "";
-                        }
-                    }
-
-                    if (vedi[2])
-                    {
-                        ViewProgetti.Visible = vedi[0];
-                        ViewSocieta.Visible = vedi[1];
-                        ViewDipendenti.Visible = vedi[2];
-
-                        if (Session["DatiProgetto"] != null)
-                        {
-                            TLNomeDip.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
-                            TCognome.Text = dati.ContainsKey("Cognome") ? dati["Cognome"] : "";
-                            TCosto.Text = dati.ContainsKey("Costo") ? dati["Costo"] : "";
-                        }
-                    }
+                // Dipendenti
+                if (vedi[2])
+                {
+                    TLNomeDip.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
+                    TCognome.Text = dati.ContainsKey("Cognome") ? dati["Cognome"] : "";
+                    TCosto.Text = dati.ContainsKey("Costo") ? dati["Costo"] : "";
                 }
             }
         }
