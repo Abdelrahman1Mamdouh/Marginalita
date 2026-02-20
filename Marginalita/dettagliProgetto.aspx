@@ -14,6 +14,8 @@
         P.residuo AS Residuo,
         C.Margine AS ContrattoMargine,
         F.Creata AS Creata,
+        P.Inizio As Inizio,
+        P.Fine AS Fine,
         P.Durata AS Scadenza
         FROM Progetto AS P
         LEFT JOIN FAKE AS F ON F.Progetto = P.ID
@@ -66,7 +68,6 @@
                                   ('Speso',   F.SpesoShown) ) V(Label, Valore)
                               WHERE P.ID = @ID;
                               ">
-
         <SelectParameters>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
@@ -106,7 +107,7 @@
                         <div class="DSCard-text">
                             <asp:Label ID="lblStartDate" runat="server" Text="Data Creazione" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Creata") %>' />
+                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio") %>' />
                             </div>
                         </div>
                         <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
