@@ -15,6 +15,24 @@ namespace Marginalita
     {
 
         /// <summary>
+        /// Controllo CostiAssenzeID.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField CostiAssenzeID;
+
+        /// <summary>
+        /// Controllo DeleteCostiAssenze.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField DeleteCostiAssenze;
+
+        /// <summary>
         /// Controllo TabellaProgetto.
         /// </summary>
         /// <remarks>
@@ -60,15 +78,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaAssenze;
 
         /// <summary>
-        /// Controllo VistaAssenti.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource VistaAssenti;
-
-        /// <summary>
         /// Controllo TabellaMotivo.
         /// </summary>
         /// <remarks>
@@ -87,15 +96,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Repeater RepSingolo;
 
         /// <summary>
-        /// Controllo PanelAssenze.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelAssenze;
-
-        /// <summary>
         /// Controllo GridAssenze.
         /// </summary>
         /// <remarks>
@@ -103,15 +103,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridAssenze;
-
-        /// <summary>
-        /// Controllo LDipendente.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LDipendente;
 
         /// <summary>
         /// Controllo AssenzeDDL.
@@ -123,15 +114,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.DropDownList AssenzeDDL;
 
         /// <summary>
-        /// Controllo LMotivo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LMotivo;
-
-        /// <summary>
         /// Controllo MotivoDDL.
         /// </summary>
         /// <remarks>
@@ -141,15 +123,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.DropDownList MotivoDDL;
 
         /// <summary>
-        /// Controllo LOre.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LOre;
-
-        /// <summary>
         /// Controllo OreAssenze.
         /// </summary>
         /// <remarks>
@@ -157,24 +130,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox OreAssenze;
-
-        /// <summary>
-        /// Controllo hfSelectedDates.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfSelectedDates;
-
-        /// <summary>
-        /// Controllo LData.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LData;
 
         /// <summary>
         /// Controllo txtDataVisualizzata.
@@ -222,15 +177,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button InvioAssenze;
 
         /// <summary>
-        /// Controllo PanelCostiEsterni.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelCostiEsterni;
-
-        /// <summary>
         /// Controllo GridCostiEsterni.
         /// </summary>
         /// <remarks>
@@ -238,15 +184,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridCostiEsterni;
-
-        /// <summary>
-        /// Controllo LIntestazione.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LIntestazione;
 
         /// <summary>
         /// Controllo TIntestazione.
@@ -258,15 +195,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.TextBox TIntestazione;
 
         /// <summary>
-        /// Controllo LDescrizione.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LDescrizione;
-
-        /// <summary>
         /// Controllo TDescrizione.
         /// </summary>
         /// <remarks>
@@ -274,15 +202,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TDescrizione;
-
-        /// <summary>
-        /// Controllo LImporto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LImporto;
 
         /// <summary>
         /// Controllo TImporto.
@@ -321,24 +240,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource DSMatrix;
 
         /// <summary>
-        /// Controllo ViewOre.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ViewOre;
-
-        /// <summary>
-        /// Controllo PFake.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PFake;
-
-        /// <summary>
         /// Controllo ViewFake.
         /// </summary>
         /// <remarks>
@@ -346,15 +247,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView ViewFake;
-
-        /// <summary>
-        /// Controllo LMode.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LMode;
 
         /// <summary>
         /// Controllo Mode.
@@ -409,5 +301,14 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Export;
+
+        /// <summary>
+        /// Controllo hfSelectedDates.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSelectedDates;
     }
 }

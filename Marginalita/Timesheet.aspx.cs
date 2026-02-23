@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -51,7 +49,7 @@ namespace Marginalita
 
                 decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
 
-                //SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+             
 
                 if (oreInserite + oreGiaSalvate > 40)
                 {
@@ -65,7 +63,7 @@ namespace Marginalita
                     casellaTesto.ForeColor = Color.Black;
                 }
 
-                //SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+              
 
                 // aggiorna le sorgenti dati e rilegga la matrice dal DB
                 if (DSFake != null) DSFake.DataBind();
@@ -103,23 +101,7 @@ namespace Marginalita
             }
         }
 
-        //private void SalvaDatiConStoredProcedure(int idProgetto, int idDipendente, decimal ore)
-        //{
-        //    using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-        //    {
-        //        SqlCommand comando = new SqlCommand("DivideAndConquer", connessione);
-        //        comando.CommandType = CommandType.StoredProcedure;
 
-        //        comando.Parameters.Add("@idProgettoOriginale", SqlDbType.Int).Value = idProgetto;
-        //        comando.Parameters.Add("@idDipendente", SqlDbType.Int).Value = idDipendente;
-        //        comando.Parameters.Add("@oreInserite", SqlDbType.Decimal).Value = ore;
-
-        //        comando.Parameters.Add("@dataAncoraggio", SqlDbType.DateTime).Value = GetTargetMonday();
-
-        //        connessione.Open();
-        //        comando.ExecuteNonQuery();
-        //    }
-        //}
 
         private void GrigliaAssenze()
         {
@@ -185,7 +167,7 @@ namespace Marginalita
             CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
             CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
             CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
-            CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
+           
 
             // Esegue l'INSERT
             CostiEsterni.Insert();
@@ -331,5 +313,16 @@ namespace Marginalita
 
             return tvp;
         }
+        protected void Elimina_Assenza(object sender, EventArgs e)
+        {
+            TabellaAssenze.Delete();
+            Response.Redirect("Timesheet.aspx");
+        }
+
+        protected void Elimina_CostiEsterni(object sender, EventArgs e)
+        {
+            CostiEsterni.Delete();
+            Response.Redirect("Timesheet.aspx");
+        }
     }
-}
+}  
