@@ -17,7 +17,7 @@
     <asp:SqlDataSource runat="server" ID="DSFake"
          ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
          SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())"
-        InsertCommand="INSERT INTO Fake (Dipendente, Ore, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)">
+        InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)">
             <InsertParameters>
                <asp:Parameter Name="Costo" Type="Decimal"/>
                <asp:Parameter Name="Fornitore" Type="String"/>
@@ -82,18 +82,22 @@
                                 <asp:HiddenField ID="HiddenProgettoFisso" runat="server" Value="1" /> 
                             </td>
                             <td style="padding:10px;">
-                                <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" Columns="5" AutoPostBack="true" />
-                                <!--OnTextChanged="InputOre_TextChanged"-->
+                                <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" Columns="5" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
+                             
 </td>
                                     
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
             </tbody>
+             
         </table>
+
+         
     </div>
     <br />
     <br />
+    
 
     <div id="gestioneAssenze">
 
@@ -115,7 +119,7 @@
             DataSourceID="TabellaDipendente" 
             DataTextField="Nome" 
 
-            DataKeyNames="ID"
+            DataValueField="ID"
             AppendDataBoundItems="true"
             AutoPostBack="true">
             <asp:ListItem Selected="True" Value="0">Scegli dipendente: </asp:ListItem>
@@ -125,6 +129,7 @@
         <asp:DropDownList ID="MotivoDDL" runat="server"
             DataSourceID="TabellaMotivo" 
             DataTextField="Descrizione" 
+            AppendDataBoundItems="true"
             DataValueField="ID" 
             AutoPostBack="true">
         <asp:ListItem Selected="True" Value="">Scegli motivo: </asp:ListItem>
@@ -164,6 +169,7 @@
             <asp:BoundField DataField="Costo" HeaderText="Costo" />
             <asp:BoundField DataField="Fornitore" HeaderText="Fornitore" />
             <asp:BoundField DataField="Descrizione" HeaderText="Descrizione" />
+            
         </Columns>
     </asp:GridView>
 </asp:Panel>
@@ -181,12 +187,12 @@
         <br />
         <br />
     </div>
-    <asp:Button id="Binvia" Text="Invia" OnClick="InputOre_TextChanged" runat="server"/>
-
+    
+    <asp:Button id="Binvia" Text="Invia" OnClick="btnSalvaTutto" runat="server"/>
 
     <asp:SqlDataSource ID="DSMatrix" runat="server"
     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-    SelectCommandType="StoredProcedure" SelectCommand="usp_GetMonthlyMatrixPivot">
+    SelectCommandType="StoredProcedure" SelectCommand="Time_Sheet">
     <SelectParameters>
         <asp:Parameter Name="Mode" Type="String" />
         <asp:Parameter Name="AnchorDate" Type="DateTime" />
