@@ -93,13 +93,13 @@
                            ID="SqlScadenze" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
                             SelectCommand="SELECT ID, 
-                                            Nome, 
-                                            Budget, 
-                                            Durata
-                                            FROM Progetto
-                                            WHERE Fine <= CAST(GETDATE() AS DATE) 
-                                           
-                                            ">
+                                                 Nome, 
+                                                 Budget, 
+                                                 Fine
+                                          FROM Progetto
+                                          WHERE Fine >= CAST(GETDATE() AS DATE) 
+                                          AND Fine <= DATEADD(day, 2, CAST(GETDATE() AS DATE))
+                                          ORDER BY Fine ASC">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
@@ -137,7 +137,15 @@
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                    SelectCommand="SELECT * FROM V_Dash"></asp:SqlDataSource>
+                    SelectCommand="SELECT P.ID, 
+                                            P.Nome, 
+                                             P.Budget, 
+                                             P.Descrizione, 
+                                             CAST(V.Margine AS INT) AS MargineIntero
+                                             FROM Progetto AS P
+                                             JOIN V_Margini AS V ON V.ID = P.ID">
+
+                </asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"
@@ -158,10 +166,10 @@
                             <ItemTemplate>
                                 <div class="progress" role="progressbar" style="height: 20px;">
                                     <div class="progress-bar <%# 
-                                             Convert.ToInt32(Eval("Residuo")) > 2000 ? "bg-danger" : 
-                                             Convert.ToInt32(Eval("Budget")) > 1500 ? "bg-warning" : "bg-success"%>"
-                                        style='<%# "width:" + Convert.ToInt32(Eval("Budget")) + "%;" %>'>
-                                        <%# Eval("Budget") %>%
+                                             Convert.ToInt32(Eval("MargineIntero")) <= 65  ? "bg-danger" : 
+                                             Convert.ToInt32(Eval("MargineIntero")) <= 70 ? "bg-warning" : "bg-success"%>"
+                                        style='<%# "width:" + Convert.ToInt32(Eval("MargineIntero")) + "%;" %>'>
+                                        <%# Eval("MargineIntero") %>%
                                     </div>
                                 </div>
                             </ItemTemplate>
