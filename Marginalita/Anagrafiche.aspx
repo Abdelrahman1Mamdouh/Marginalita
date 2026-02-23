@@ -18,7 +18,7 @@
                     <Columns>
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:Button ID="UpPro" CssClass="w-25" runat="server" Text="📝" OnClick="UpPro_Click" CommandArgument='<%# Eval("ID") %>' />
+                                <asp:Button ID="UpPro" CssClass="w-auto" runat="server" Text="📝" OnClick="UpPro_Click" CommandArgument='<%# Eval("ID") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
 
