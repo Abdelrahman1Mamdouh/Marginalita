@@ -48,42 +48,14 @@
         ID="ChartMARGINE"
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
         ProviderName="System.Data.SqlClient"
-        SelectCommand=" 
-                              SELECT V.Label, V.Valore
-                              FROM Progetto P
-                              LEFT JOIN Contratto C ON C.ID = P.Margine
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(ISNULL(C.Margine,0) AS DECIMAL(10,4)) AS MarginePct,
-                                      CAST(
-                                          CASE 
-                                              WHEN ISNULL(P.Budget,0) = 0 THEN 0
-                                              ELSE (ISNULL(P.Residuo,0) * 100.0) / P.Budget
-                                          END AS DECIMAL(10,4)) AS ResiduoPctRaw) X
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(100.0 - X.MarginePct AS DECIMAL(10,4)) AS LimitePct,
-                                      CAST(CASE WHEN X.ResiduoPctRaw &lt; 0 THEN -X.ResiduoPctRaw ELSE 0 END AS DECIMAL(10,4)) AS OverPct) T
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(CASE
-                                              WHEN (X.MarginePct - T.OverPct) &lt; 0 THEN 0
-                                              ELSE (X.MarginePct - T.OverPct)
-                                          END AS DECIMAL(10,4)) AS MargineShown,
-
-                                      CAST(CASE
-                                              WHEN X.ResiduoPctRaw &lt;= 0 THEN 0
-                                              WHEN X.ResiduoPctRaw &gt; T.LimitePct THEN T.LimitePct
-                                              ELSE X.ResiduoPctRaw
-                                           END AS DECIMAL(10,4)) AS ResiduoShown) S
-                              CROSS APPLY (
-                                  SELECT CAST(100.0 - S.MargineShown - S.ResiduoShown AS DECIMAL(10,4)) AS SpesoShown) F
-                              CROSS APPLY (VALUES
-                                  ('Margine', S.MargineShown),
-                                  ('Residuo', S.ResiduoShown),
-                                  ('Speso',   F.SpesoShown) ) V(Label, Valore)
-                              WHERE P.ID = @ID;
-                              ">
+        SelectCommand="
+                        SELECT 'Residuo' AS Label, Round(Residuo * 100 / Budget,0) AS Value
+                        FROM Progetto
+                        WHERE ID = @ID
+                        UNION ALL
+                        SELECT 'Margine' AS Label, Round((Budget - Residuo)*100 / Budget,0) AS Value
+                        FROM Progetto
+                        WHERE ID = @ID;">
         <SelectParameters>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
@@ -202,10 +174,10 @@
                                         <asp:Series Name="Series1"
                                             ChartType="Doughnut"
                                             XValueMember="Label"
-                                            YValueMembers="Valore"
+                                            YValueMembers="Value"
                                             IsValueShownAsLabel="false"
-                                            LegendText="#VALX"
-                                            Label="#VALY{0.00}%"
+                                            LegendText="#VALX (#PERCENT{P0})"
+                                            Label="#VALY"
                                             BorderWidth="0" />
                                     </Series>
 
