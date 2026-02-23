@@ -29,7 +29,8 @@
 
     <asp:SqlDataSource runat="server" ID="TotOre"
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
-        SelectCommand="SELECT CAST(SUM(X.OreDip) AS INT) AS TotOreProgetto
+        SelectCommand="
+                        SELECT CAST(SUM(X.OreDip) AS INT) AS TotOreProgetto
                         FROM (
                             SELECT F.Dipendente, SUM(F.Costo) / D.CostoOrario AS OreDip
                             FROM Fake F
@@ -78,7 +79,7 @@
                 <asp:Label ID="lblDettagli" runat="server" Text="Dettagli Progetto" CssClass="fw-semibold" />
 
                 <section class="DSCard-grid">
-                    <!-- Card 1 -->
+                    <!-- Budget -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
                             <asp:Label ID="lblBudget" runat="server" Text="Bilancio Preventivo" CssClass="DSCard-label" />
@@ -88,28 +89,29 @@
                         </div>
                         <asp:Label Text="$" runat="server" ID="txtMRR" CssClass="DSCard-icon DSCard-green" />
                     </div>
-
-                    <!-- Card 2 -->
+                    <!-- TOT COSTO -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblStartDate" runat="server" Text="Data Creazione" CssClass="DSCard-label" />
+                            <asp:Label runat="server" Text="Residuo" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio","{0:dd/MM/yyyy}") %>' />
+                                <asp:Label ID="Label2" runat="server" Text='<%# Eval("Residuo") %>' />
                             </div>
                         </div>
-                        <asp:Label Text="&#128197;" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
                     </div>
 
-                    <!-- Card 3 -->
-                    <div class="DSCard-card">
-                        <div class="DSCard-text">
-                            <asp:Label ID="lblEndDate" runat="server" Text="Scadenza" CssClass="DSCard-label" />
-                            <div class="DSCard-value">
-                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Fine","{0:dd/MM/yyyy}") %>' />
+                    <asp:FormView ID="FV" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
+                        <ItemTemplate>
+                            <!-- TOT ORE-->
+                            <div class="DSCard-card">
+                                <div class="DSCard-text">
+                                    <asp:Label ID="Label4" runat="server" Text="Ore di lavoro totali" CssClass="DSCard-label" />
+                                    <div class="DSCard-value">
+                                        <asp:Label ID="lblHoursDone3" runat="server" Text='<%# Eval("TotOreProgetto") %>' CssClass="kpi3-big2" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <asp:Label Text="&#128198;" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
-                    </div>
+                        </ItemTemplate>
+                    </asp:FormView>
                 </section>
 
                 <br />
@@ -124,27 +126,27 @@
                     </div>
                 </section>
                 <section class="DSCard-grid">
-                    <asp:FormView ID="FV" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
-                        <ItemTemplate>
-                            <!-- TOT ORE-->
-                            <div class="DSCard-card">
-                                <div class="DSCard-text">
-                                    <asp:Label ID="Label4" runat="server" Text="Ore di lavoro totali" CssClass="DSCard-label" />
-                                    <div class="DSCard-value">
-                                        <asp:Label ID="lblHoursDone3" runat="server" Text='<%# Eval("TotOreProgetto") %>' CssClass="kpi3-big2" />
-                                    </div>
-                                </div>
-                            </div>
-                        </ItemTemplate>
-                    </asp:FormView>
-                    <!-- TOT COSTO -->
+
+                    <!-- Data Creazione -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label runat="server" Text="Residuo" CssClass="DSCard-label" />
+                            <asp:Label ID="lblStartDate" runat="server" Text="Data Creazione" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="Label2" runat="server" Text='<%# Eval("Residuo") %>' />
+                                <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
+                        <asp:Label Text="&#128197;" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
+                    </div>
+
+                    <!-- Scadenza -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label ID="lblEndDate" runat="server" Text="Scadenza" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Fine","{0:dd/MM/yyyy}") %>' />
+                            </div>
+                        </div>
+                        <asp:Label Text="&#128198;" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
                     </div>
 
                     <!-- Durata -->
