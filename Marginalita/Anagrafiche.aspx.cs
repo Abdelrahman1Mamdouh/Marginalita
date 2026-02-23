@@ -82,29 +82,63 @@ namespace Marginalita
 
             string id = btn.CommandArgument;
 
-            // trova le label: supporta sia GridViewRow che vecchia ListViewDataItem
+            
             var nomeLbl = FindLabelRecursive(container, "PLNome");
             var budgetLbl = FindLabelRecursive(container, "PLBudget");
-            var durataLbl = FindLabelRecursive(container, "PLDurata");
             var descrLbl = FindLabelRecursive(container, "PLDescrizione");
             var societaLbl = FindLabelRecursive(container, "PLSocieta");
 
             var nome = nomeLbl?.Text;
             var budget = budgetLbl?.Text;
-            var durata = durataLbl?.Text;
+
+            string inizioIso = string.Empty;
+            string fineIso = string.Empty;
+
             var descrizione = descrLbl?.Text;
             var societa = societaLbl?.Text;
 
-            Session["DatiProgetto"] = new Dictionary<string, string>
+            
+            var dv = DProgetti.Select(DataSourceSelectArguments.Empty) as System.Data.DataView;
+            if (dv != null)
+            {
+                foreach (System.Data.DataRowView row in dv)
+                {
+                    if (row["ID"] != null && row["ID"].ToString() == id)
+                    {
+                        if (row["Inizio"] != null)
+                        {
+                            DateTime temp;
+                            if (DateTime.TryParse(row["Inizio"].ToString(), out temp))
+                                inizioIso = temp.ToString("o");
+                        }
+
+                        if (row["Fine"] != null)
+                        {
+                            DateTime temp;
+                            if (DateTime.TryParse(row["Fine"].ToString(), out temp))
+                                fineIso = temp.ToString("o");
+                        }
+                        break;
+                    }
+                }
+            }
+
+            
+            var dati = new Dictionary<string, string>
             {
                 { "ID", id },
                 { "Nome", nome },
                 { "Budget", budget },
-                { "Durata", durata },
+                { "Inizio", inizioIso },
+                { "Fine", fineIso },
                 { "Descrizione", descrizione },
-                { "Societa", societa },
+                { "Societa", societa }
             };
-            Response.Redirect("InputDati.aspx");
+
+            Session["DatiProgetto"] = dati;
+
+            Response.Redirect("InputDati.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void UpSocieta_Click(object sender, EventArgs e)

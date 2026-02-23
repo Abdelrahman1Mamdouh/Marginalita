@@ -12,7 +12,7 @@
 
                 <asp:SqlDataSource ID="DProgetti" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-                    SelectCommand="SELECT ID, Nome, Budget, Descrizione, Margine, Societa FROM VProg"></asp:SqlDataSource>
+                    SelectCommand="SELECT ID, Nome, Budget, Descrizione, Inizio, Fine, Margine, Societa FROM VProg"></asp:SqlDataSource>
                  
                 <asp:GridView ID="GridProgetti" DataSourceID="DProgetti" runat="server" AutoGenerateColumns="False" CssClass="table w-100 text-center">
                     <Columns>

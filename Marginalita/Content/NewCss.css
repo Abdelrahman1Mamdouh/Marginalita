@@ -586,3 +586,31 @@ body {
 .grid {
     width: 100%;
 }
+/* visualizzazione grid in timesheet */
+
+.container-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.col-33 {
+    flex: 1; 
+    min-width: 300px;
+    box-sizing: border-box;
+}
+<style >
+/* Uniforma le linee di tutte le tabelle per essere sottili come nelle card */
+.table td, .table th {
+    border-bottom: 1px solid #dee2e6 !important;
+    border-top: none !important;
+}
+
+.table {
+    border-collapse: collapse !important;
+}
+
+</style >
