@@ -22,52 +22,40 @@
         LEFT JOIN Contratto AS C ON C.ID = P.Margine
         WHERE P.ID = @ID">
         <SelectParameters>
-            <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
-
     </asp:SqlDataSource>
+
+
+    <asp:SqlDataSource runat="server" ID="TotOre"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+        SelectCommand="SELECT CAST(SUM(X.OreDip) AS INT) AS TotOreProgetto
+                        FROM (
+                            SELECT F.Dipendente, SUM(F.Costo) / D.CostoOrario AS OreDip
+                            FROM Fake F
+                            JOIN Dipendente D ON D.ID = F.Dipendente
+                            WHERE F.Progetto = @ProgettoId
+                            GROUP BY F.Dipendente, D.CostoOrario
+                        ) X;">
+
+        <SelectParameters>
+            <asp:QueryStringParameter Name="ProgettoId" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+
 
     <asp:SqlDataSource runat="server"
         ID="ChartMARGINE"
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
         ProviderName="System.Data.SqlClient"
-        SelectCommand=" 
-                              SELECT V.Label, V.Valore
-                              FROM Progetto P
-                              LEFT JOIN Contratto C ON C.ID = P.Margine
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(ISNULL(C.Margine,0) AS DECIMAL(10,4)) AS MarginePct,
-                                      CAST(
-                                          CASE 
-                                              WHEN ISNULL(P.Budget,0) = 0 THEN 0
-                                              ELSE (ISNULL(P.Residuo,0) * 100.0) / P.Budget
-                                          END AS DECIMAL(10,4)) AS ResiduoPctRaw) X
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(100.0 - X.MarginePct AS DECIMAL(10,4)) AS LimitePct,
-                                      CAST(CASE WHEN X.ResiduoPctRaw &lt; 0 THEN -X.ResiduoPctRaw ELSE 0 END AS DECIMAL(10,4)) AS OverPct) T
-                              CROSS APPLY (
-                                  SELECT
-                                      CAST(CASE
-                                              WHEN (X.MarginePct - T.OverPct) &lt; 0 THEN 0
-                                              ELSE (X.MarginePct - T.OverPct)
-                                          END AS DECIMAL(10,4)) AS MargineShown,
-
-                                      CAST(CASE
-                                              WHEN X.ResiduoPctRaw &lt;= 0 THEN 0
-                                              WHEN X.ResiduoPctRaw &gt; T.LimitePct THEN T.LimitePct
-                                              ELSE X.ResiduoPctRaw
-                                           END AS DECIMAL(10,4)) AS ResiduoShown) S
-                              CROSS APPLY (
-                                  SELECT CAST(100.0 - S.MargineShown - S.ResiduoShown AS DECIMAL(10,4)) AS SpesoShown) F
-                              CROSS APPLY (VALUES
-                                  ('Margine', S.MargineShown),
-                                  ('Residuo', S.ResiduoShown),
-                                  ('Speso',   F.SpesoShown) ) V(Label, Valore)
-                              WHERE P.ID = @ID;
-                              ">
+        SelectCommand="
+                        SELECT 'Residuo' AS Label, Round(Residuo * 100 / Budget,0) AS Value
+                        FROM Progetto
+                        WHERE ID = @ID
+                        UNION ALL
+                        SELECT 'Margine' AS Label, Round((Budget - Residuo)*100 / Budget,0) AS Value
+                        FROM Progetto
+                        WHERE ID = @ID;">
         <SelectParameters>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
@@ -76,7 +64,6 @@
     <div>
         <asp:FormView ID="FV" DataSourceID="PROG" runat="server" RenderOuterTable="false">
             <ItemTemplate>
-                <asp:Label runat="server" Text="Nome del Progetto" CssClass="fw-semibold" />
                 <section class="DSCard-grid">
                     <!-- Nome del App -->
                     <div class="DSCard-desc">
@@ -94,7 +81,7 @@
                     <!-- Card 1 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblBudget" runat="server" Text="Budget" CssClass="DSCard-label" />
+                            <asp:Label ID="lblBudget" runat="server" Text="Bilancio Preventivo" CssClass="DSCard-label" />
                             <div class="DSCard-value">
                                 <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("Budget") %>' />
                             </div>
@@ -110,7 +97,7 @@
                                 <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
-                        <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
+                        <asp:Label Text="&#128197;" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
                     </div>
 
                     <!-- Card 3 -->
@@ -121,7 +108,7 @@
                                 <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Fine","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
-                        <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
+                        <asp:Label Text="&#128198;" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
                     </div>
                 </section>
 
@@ -137,16 +124,19 @@
                     </div>
                 </section>
                 <section class="DSCard-grid">
-                    <!-- TOT ORE-->
-                    <div class="DSCard-card">
-                        <div class="DSCard-text">
-                            <asp:Label ID="Label4" runat="server" Text="Total Hours" CssClass="DSCard-label" />
-                            <div class="DSCard-value">
-                                <asp:Label ID="lblHoursDone3" runat="server" Text="INSERIRE DA QUERY" CssClass="kpi3-big2" />
+                    <asp:FormView ID="FV" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
+                        <ItemTemplate>
+                            <!-- TOT ORE-->
+                            <div class="DSCard-card">
+                                <div class="DSCard-text">
+                                    <asp:Label ID="Label4" runat="server" Text="Ore di lavoro totali" CssClass="DSCard-label" />
+                                    <div class="DSCard-value">
+                                        <asp:Label ID="lblHoursDone3" runat="server" Text='<%# Eval("TotOreProgetto") %>' CssClass="kpi3-big2" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
+                        </ItemTemplate>
+                    </asp:FormView>
                     <!-- TOT COSTO -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
@@ -156,15 +146,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Durata -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label runat="server" Text="Durata (Giorni)" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") %>' />
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section class="DSCard-grid">
+
                     <!-- CHART MARGINE -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
 
                             <asp:Label runat="server" Text="Margine" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label runat="server" Text='<%# Eval("ContrattoMargine") %>' />
+                                <asp:Label runat="server" Text='<%# Eval("ContrattoMargine") + "%" %>' />
                             </div>
 
                             <div class="DSCard-value">
@@ -173,10 +174,10 @@
                                         <asp:Series Name="Series1"
                                             ChartType="Doughnut"
                                             XValueMember="Label"
-                                            YValueMembers="Valore"
+                                            YValueMembers="Value"
                                             IsValueShownAsLabel="false"
-                                            LegendText="#VALX"
-                                            Label="#VALY{0.00}%"
+                                            LegendText="#VALX (#PERCENT{P0})"
+                                            Label="#VALY"
                                             BorderWidth="0" />
                                     </Series>
 
