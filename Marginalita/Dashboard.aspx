@@ -97,9 +97,9 @@
                                             Budget, 
                                             Durata
                                             FROM Progetto
-                                            WHERE Fine &gt; = CAST(GETDATE() AS DATE) 
-                                            AND Fine &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
-                                            ORDER BY Fine ASC">
+                                            WHERE Fine <= CAST(GETDATE() AS DATE) 
+                                           
+                                            ">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
