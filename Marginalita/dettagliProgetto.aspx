@@ -110,7 +110,7 @@
                                 <asp:Label ID="lblUsers" runat="server" Text='<%# Eval("Inizio","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
-                        <asp:Label Text="📅" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
+                        <asp:Label Text="&#128197;" runat="server" ID="txtStartDate" CssClass="DSCard-icon DSCard-pastalblue" />
                     </div>
 
                     <!-- Card 3 -->
@@ -121,7 +121,7 @@
                                 <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("Fine","{0:dd/MM/yyyy}") %>' />
                             </div>
                         </div>
-                        <asp:Label Text="📆" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
+                        <asp:Label Text="&#128198;" runat="server" ID="txtEndDate" CssClass="DSCard-icon DSCard-orange" />
                     </div>
                 </section>
 

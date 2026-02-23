@@ -14,7 +14,7 @@
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
             SelectCommand="SELECT Nome, Budget, Inizio, Fine, Descrizione, Residuo, Margine, Societa FROM Progetto WHERE Vedi=1"
-            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine, 0)"
+            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine)"
             UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Inizio=@Inizio, Fine=@Fine, Descrizione=@Descrizione WHERE ID=@ID"
             DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
@@ -105,7 +105,7 @@
             </DeleteParameters>
         </asp:SqlDataSource>
 
-        <div id="ViewProgetti" runat="server" style="display:flex;flex-direction:column">
+        <div id="ViewProgetti" runat="server" style="display: flex; flex-direction: column">
             <h2>Progetti</h2>
 
             <asp:Label ID="LNomePro" Text="Nome progetto" runat="server" />
@@ -128,11 +128,11 @@
             <asp:DropDownList ID="DDLMargine" AutoPostBack="true" DataSourceID="DContratto" DataTextField="Tipo" DataValueField="ID" runat="server"></asp:DropDownList>
 
             <asp:Button ID="ModProg" runat="server" Text="Modifica" OnClick="ModProgetto" />
-            <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px"/>
+            <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" Style="background-color: black; color: white; padding: 5px 10px; margin-top: 10px; margin-bottom: 10px; border-radius: 5px" />
             <asp:Button ID="EliProg" runat="server" Text="Elimina" OnClick="EliProgetto" />
         </div>
 
-        <div id="ViewSocieta" runat="server" style="display:flex;flex-direction:column">
+        <div id="ViewSocieta" runat="server" style="display: flex; flex-direction: column">
             <h2>Societa</h2>
 
             <asp:Label ID="LIntestazione" Text="Intestazione societa" runat="server" />
@@ -142,11 +142,11 @@
             <asp:TextBox runat="server" ID="TEmail" />
 
             <asp:Button ID="ModSoc" runat="server" Text="Modifica" OnClick="ModSocieta" />
-            <asp:Button ID="SalSoc" runat="server" Text="Salva" OnClick="SalSocieta" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px" />
+            <asp:Button ID="SalSoc" runat="server" Text="Salva" OnClick="SalSocieta" Style="background-color: black; color: white; padding: 5px 10px; margin-top: 10px; margin-bottom: 10px; border-radius: 5px" />
             <asp:Button ID="EliSoc" runat="server" Text="Elimina" OnClick="EliSocieta" />
         </div>
 
-        <div id="ViewDipendenti" runat="server" style="display:flex;flex-direction:column">
+        <div id="ViewDipendenti" runat="server" style="display: flex; flex-direction: column">
 
             <h2>Dipendenti</h2>
 
@@ -160,11 +160,11 @@
             <asp:TextBox runat="server" ID="TCosto" />
 
             <asp:Button ID="ModDip" runat="server" Text="Modifica" OnClick="ModDipendenti" />
-            <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px"/>
+            <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti" Style="background-color: black; color: white; padding: 5px 10px; margin-top: 10px; margin-bottom: 10px; border-radius: 5px" />
             <asp:Button ID="EliDip" runat="server" Text="Elimina" OnClick="EliDipendenti" />
 
         </div>
-        <asp:Button ID="Ann" runat="server" Text="Annulla" OnClick="Annulla" style="border:2px solid red;padding:5px 10px;background-color:transparent; border-radius:5px;color:red"/>
+        <asp:Button ID="Ann" runat="server" Text="Annulla" OnClick="Annulla" Style="border: 2px solid red; padding: 5px 10px; background-color: transparent; border-radius: 5px; color: red" />
     </main>
 
 </asp:Content>

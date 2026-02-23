@@ -36,9 +36,8 @@
                 <div class="DSCard-text">
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
-                         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
-                    </asp:SqlDataSource>
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                        SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake"></asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
                     <div class="DSCard-value">
@@ -63,13 +62,23 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Margine Totale</div>
+                    <%--<asp:SqlDataSource ID="SqlDataSourceMargini" runat="server"
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                        SelectCommand="SELECT AVG(Margine) AS TotaleMargini FROM Progetto"></asp:SqlDataSource>--%>
+
                     <asp:SqlDataSource ID="SqlDataSourceMargini" runat="server"
                         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                        SelectCommand="SELECT AVG(Margine) AS TotaleMargini FROM Progetto"></asp:SqlDataSource>
+                        SelectCommand="SELECT 
+                                         CAST(AVG(CAST(C.Margine AS DECIMAL(10,2))) AS DECIMAL(10,2)) AS TotaleMargini
+                                                FROM Progetto P
+                                                INNER JOIN Contratto C ON P.Margine = C.ID
+                                                WHERE P.Vedi = 1
+                                            "></asp:SqlDataSource>
                     <div class="DSCard-value">
                         <asp:Repeater ID="Repeater2" runat="server" DataSourceID="SqlDataSourceMargini">
                             <ItemTemplate>
-                                <asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("TotaleMargini")+ "%" %>' />
+                                <%--<asp:Label ID="lblGrowth" runat="server" Text='<%# Eval("TotaleMargini")+ "%" %>' />--%>
+                                <asp:Label ID="lblGrowth" runat="server" Text='<%# String.Format("{0:0.##}%", Eval("TotaleMargini")) %>' />
                             </ItemTemplate>
                         </asp:Repeater>
                     </div>
@@ -89,25 +98,48 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Report</div>
-                       <asp:SqlDataSource 
-                           ID="SqlScadenze" runat="server"
-                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT ID, 
+                    <%--<asp:SqlDataSource
+                        ID="SqlScadenze" runat="server"
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                        SelectCommand="SELECT ID, 
                                             Nome, 
                                             Budget, 
-                                            Durata
+                                            Durata,
+                                            Margine
                                             FROM Progetto
                                             WHERE Fine &gt; = CAST(GETDATE() AS DATE) 
                                             AND Fine &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
-                                            ORDER BY Fine ASC">
-                       </asp:SqlDataSource> 
-                    <asp:GridView ID="GridView2" runat="server"
+                                            ORDER BY Fine ASC"></asp:SqlDataSource>--%>
+                    <asp:SqlDataSource
+                        ID="SqlScadenze" runat="server"
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                        SelectCommand="
+                                        SELECT 
+                                            ID,
+                                            Nome,
+                                            Fine
+                                        FROM Progetto
+                                        WHERE Vedi = 1
+                                          AND Fine &gt; = CAST(GETDATE() AS DATE)
+                                          AND Fine &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
+                                        ORDER BY Fine ASC
+                                    "></asp:SqlDataSource>
+                    <%-- <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
                         AutoGenerateColumns="False"
                         CssClass="table table-striped w-100 text-center">
                         <Columns>
                             <asp:BoundField DataField="Nome" HeaderText="Progetto" />
                             <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+                        </Columns>
+                    </asp:GridView>--%>
+                    <asp:GridView ID="GridView2" runat="server"
+                        DataSourceID="SqlScadenze"
+                        AutoGenerateColumns="False"
+                        CssClass="table table-striped w-100 text-center">
+                        <Columns>
+                            <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                            <asp:BoundField DataField="Fine" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
                         </Columns>
                     </asp:GridView>
                 </div>
@@ -137,31 +169,38 @@
 
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                    SelectCommand="SELECT * FROM V_Dash"></asp:SqlDataSource>
+                    SelectCommand="     SELECT 
+                                        P.ID,
+                                        P.Nome,
+                                        P.Budget,
+                                        P.Residuo,
+                                        P.Inizio,
+                                        P.Fine,
+                                        S.Intestazione,
+                                        CAST(C.Margine AS INT) AS MarginePct
+                                    FROM Progetto P
+                                    INNER JOIN Contratto C ON P.Margine = C.ID
+                                    INNER JOIN Societa AS S ON P.Societa = S.ID
+                                "></asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"
-                    AutoGenerateColumns="True"
+                    AutoGenerateColumns="False"
                     CssClass="table table-striped w-100 text-center">
 
                     <HeaderStyle CssClass="table-dark" />
 
                     <Columns>
 
-
-
-                        <%--<asp:BoundField DataField="Nome" HeaderText="Nome" />
-                        <asp:BoundField DataField="Budget" HeaderText="Cognome" />
-                        <asp:BoundField DataField="CostoOrario" HeaderText="Costo Orario" />--%>
-
-                        <asp:TemplateField HeaderText="Margini">
+                        <asp:TemplateField HeaderText="Margine">
                             <ItemTemplate>
                                 <div class="progress" role="progressbar" style="height: 20px;">
-                                    <div class="progress-bar <%# 
-                                             Convert.ToInt32(Eval("Residuo")) > 2000 ? "bg-danger" : 
-                                             Convert.ToInt32(Eval("Budget")) > 1500 ? "bg-warning" : "bg-success"%>"
-                                        style='<%# "width:" + Convert.ToInt32(Eval("Budget")) + "%;" %>'>
-                                        <%# Eval("Budget") %>%
+                                    <div class="progress-bar 
+                        <%# Convert.ToInt32(Eval("MarginePct")) < 30 ? "bg-danger" :
+                            Convert.ToInt32(Eval("MarginePct")) < 60 ? "bg-warning" :
+                            "bg-success" %>"
+                                        style='<%# "width:" + Eval("MarginePct") + "%;" %>'>
+                                        <%# Eval("MarginePct") %>%
                                     </div>
                                 </div>
                             </ItemTemplate>
@@ -169,22 +208,24 @@
 
                         <asp:TemplateField HeaderText="Dettagli">
                             <ItemTemplate>
-
                                 <asp:LinkButton ID="btnVisualizza"
                                     runat="server"
                                     CssClass="btn btn-outline-primary"
-                                    OnClick="btnVisualizza_Click"
                                     CommandArgument='<%# Eval("ID") %>'
-                                    PostBackUrl='<%# "dettagliProgetto.aspx?id=" + Eval("ID") %>'> 
-                                             <i class="bi bi-eye"></i> Visualizza
+                                    PostBackUrl='<%# "dettagliProgetto.aspx?id=" + Eval("ID") %>'>
+                    <i class="bi bi-eye"></i> Visualizza
                                 </asp:LinkButton>
-
                             </ItemTemplate>
                         </asp:TemplateField>
 
+                        <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                        <asp:BoundField DataField="Budget" HeaderText="Budget" DataFormatString="{0:C}" />
+                        <asp:BoundField DataField="Residuo" HeaderText="Residuo" DataFormatString="{0:C}" />
+                        <asp:BoundField DataField="Fine" HeaderText="Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+                        <asp:BoundField DataField="Intestazione" HeaderText="Societa" />
+
                     </Columns>
                 </asp:GridView>
-
 
             </div>
         </section>
