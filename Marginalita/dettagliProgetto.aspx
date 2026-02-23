@@ -22,11 +22,27 @@
         LEFT JOIN Contratto AS C ON C.ID = P.Margine
         WHERE P.ID = @ID">
         <SelectParameters>
-            <%-- Name=@ID nella query, QueryStringField='id' perché l'URL è ?id=... --%>
             <asp:QueryStringParameter Name="ID" QueryStringField="id" Type="Int32" />
         </SelectParameters>
-
     </asp:SqlDataSource>
+
+
+    <asp:SqlDataSource runat="server" ID="TotOre"
+        ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient"
+        SelectCommand="SELECT CAST(SUM(X.OreDip) AS INT) AS TotOreProgetto
+                        FROM (
+                            SELECT F.Dipendente, SUM(F.Costo) / D.CostoOrario AS OreDip
+                            FROM Fake F
+                            JOIN Dipendente D ON D.ID = F.Dipendente
+                            WHERE F.Progetto = @ProgettoId
+                            GROUP BY F.Dipendente, D.CostoOrario
+                        ) X;">
+
+        <SelectParameters>
+            <asp:QueryStringParameter Name="ProgettoId" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+
 
     <asp:SqlDataSource runat="server"
         ID="ChartMARGINE"
@@ -76,7 +92,6 @@
     <div>
         <asp:FormView ID="FV" DataSourceID="PROG" runat="server" RenderOuterTable="false">
             <ItemTemplate>
-                <asp:Label runat="server" Text="Nome del Progetto" CssClass="fw-semibold" />
                 <section class="DSCard-grid">
                     <!-- Nome del App -->
                     <div class="DSCard-desc">
@@ -94,7 +109,7 @@
                     <!-- Card 1 -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label ID="lblBudget" runat="server" Text="Budget" CssClass="DSCard-label" />
+                            <asp:Label ID="lblBudget" runat="server" Text="Bilancio Preventivo" CssClass="DSCard-label" />
                             <div class="DSCard-value">
                                 <asp:Label ID="lblMRR" runat="server" Text='<%# Eval("Budget") %>' />
                             </div>
@@ -137,16 +152,19 @@
                     </div>
                 </section>
                 <section class="DSCard-grid">
-                    <!-- TOT ORE-->
-                    <div class="DSCard-card">
-                        <div class="DSCard-text">
-                            <asp:Label ID="Label4" runat="server" Text="Total Hours" CssClass="DSCard-label" />
-                            <div class="DSCard-value">
-                                <asp:Label ID="lblHoursDone3" runat="server" Text="INSERIRE DA QUERY" CssClass="kpi3-big2" />
+                    <asp:FormView ID="FV" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
+                        <ItemTemplate>
+                            <!-- TOT ORE-->
+                            <div class="DSCard-card">
+                                <div class="DSCard-text">
+                                    <asp:Label ID="Label4" runat="server" Text="Ore di lavoro totali" CssClass="DSCard-label" />
+                                    <div class="DSCard-value">
+                                        <asp:Label ID="lblHoursDone3" runat="server" Text='<%# Eval("TotOreProgetto") %>' CssClass="kpi3-big2" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
+                        </ItemTemplate>
+                    </asp:FormView>
                     <!-- TOT COSTO -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
@@ -156,15 +174,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Durata -->
+                    <div class="DSCard-card">
+                        <div class="DSCard-text">
+                            <asp:Label runat="server" Text="Durata (Giorni)" CssClass="DSCard-label" />
+                            <div class="DSCard-value">
+                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") %>' />
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section class="DSCard-grid">
+
                     <!-- CHART MARGINE -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
 
                             <asp:Label runat="server" Text="Margine" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label runat="server" Text='<%# Eval("ContrattoMargine") %>' />
+                                <asp:Label runat="server" Text='<%# Eval("ContrattoMargine") + "%" %>' />
                             </div>
 
                             <div class="DSCard-value">

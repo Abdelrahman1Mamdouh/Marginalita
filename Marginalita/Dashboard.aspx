@@ -72,7 +72,6 @@
                                          CAST(AVG(CAST(C.Margine AS DECIMAL(10,2))) AS DECIMAL(10,2)) AS TotaleMargini
                                                 FROM Progetto P
                                                 INNER JOIN Contratto C ON P.Margine = C.ID
-                                                WHERE P.Vedi = 1
                                             "></asp:SqlDataSource>
                     <div class="DSCard-value">
                         <asp:Repeater ID="Repeater2" runat="server" DataSourceID="SqlDataSourceMargini">
@@ -124,15 +123,6 @@
                                           AND Fine &lt; = DATEADD(day, 5, CAST(GETDATE() AS DATE))
                                         ORDER BY Fine ASC
                                     "></asp:SqlDataSource>
-                    <%-- <asp:GridView ID="GridView2" runat="server"
-                        DataSourceID="SqlScadenze"
-                        AutoGenerateColumns="False"
-                        CssClass="table table-striped w-100 text-center">
-                        <Columns>
-                            <asp:BoundField DataField="Nome" HeaderText="Progetto" />
-                            <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
-                        </Columns>
-                    </asp:GridView>--%>
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
                         AutoGenerateColumns="False"
