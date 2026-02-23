@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -13,7 +11,7 @@ namespace Marginalita
     public partial class Timesheet : Page
     {
         string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
-        private int LimiteCorrente => 40;
+       
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,7 +20,7 @@ namespace Marginalita
                 // Imposta i parametri del SqlDataSource che invoca la stored procedure pivot
                 if (DSMatrix != null)
                 {
-                    DSMatrix.SelectParameters["Mode"].DefaultValue = "Progetti";
+                    DSMatrix.SelectParameters["Mode"].DefaultValue = "Dipendenti";
                     DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
                 }
 
@@ -51,7 +49,7 @@ namespace Marginalita
 
                 decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
 
-                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+             
 
                 if (oreInserite + oreGiaSalvate > 40)
                 {
@@ -65,7 +63,7 @@ namespace Marginalita
                     casellaTesto.ForeColor = Color.Black;
                 }
 
-                SalvaDatiConStoredProcedure(idProgettoFisso, idDipendente, oreInserite);
+              
 
                 // aggiorna le sorgenti dati e rilegga la matrice dal DB
                 if (DSFake != null) DSFake.DataBind();
@@ -103,23 +101,7 @@ namespace Marginalita
             }
         }
 
-        private void SalvaDatiConStoredProcedure(int idProgetto, int idDipendente, decimal ore)
-        {
-            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-            {
-                SqlCommand comando = new SqlCommand("DivideAndConquer", connessione);
-                comando.CommandType = CommandType.StoredProcedure;
 
-                comando.Parameters.Add("@idProgettoOriginale", SqlDbType.Int).Value = idProgetto;
-                comando.Parameters.Add("@idDipendente", SqlDbType.Int).Value = idDipendente;
-                comando.Parameters.Add("@oreInserite", SqlDbType.Decimal).Value = ore;
-
-                comando.Parameters.Add("@dataAncoraggio", SqlDbType.DateTime).Value = GetTargetMonday();
-
-                connessione.Open();
-                comando.ExecuteNonQuery();
-            }
-        }
 
         private void GrigliaAssenze()
         {
@@ -127,27 +109,11 @@ namespace Marginalita
             {
                 GridAssenze.DataBind();
             }
+
+            
         }
 
-        private void SalvaAssenzaSuDB(int idProgetto, int idDipendente, decimal ore, DateTime data)
-        {
-            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-            {
-                string sql = "INSERT INTO OreAssenze (Progetto, Dipendente, Ore, DataAssenze, Motivo) VALUES (@p, @d, @o, @date, @m)";
-
-                SqlCommand comando = new SqlCommand(sql, connessione);
-
-                comando.Parameters.AddWithValue("@p", idProgetto);
-                comando.Parameters.AddWithValue("@d", idDipendente);
-                comando.Parameters.AddWithValue("@o", ore);
-                comando.Parameters.AddWithValue("@date", data);
-
-                comando.Parameters.AddWithValue("@m", MotivoDDL.SelectedValue);
-                connessione.Open();
-                comando.ExecuteNonQuery();
-            }
-        }
-
+      
         private void GrigliaCostiEsterni()
         {
             if (CostiEsterni != null && GridCostiEsterni != null)
@@ -173,103 +139,43 @@ namespace Marginalita
 
             int idDipendente = int.Parse(AssenzeDDL.SelectedValue);
             decimal ore = decimal.Parse(oreStr);
-            int idProgettoFisso = 10;
 
-            SalvaAssenzaSuDB(idProgettoFisso, idDipendente, ore, dataSelezionata);
 
-            //OreAssenze.Text = "";
-            //MotivoDDL.SelectedIndex = 0;
-            //AssenzeDDL.SelectedIndex = 0;
+            // Imposta i parametri del SqlDataSource (nomi devono corrispondere all'InsertCommand)
+            TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
+            TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
+            TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");
+            TabellaAssenze.InsertParameters["Progetto"].DefaultValue = "10";
 
-            //aggiorna la matrice ricaricando direttamente dal DB(proc pivot)
-            //if (ViewFake != null) ViewFake.DataBind();
+            // Esegue l'INSERT tramite SqlDataSource (senza try/catch come richiesto)
+            TabellaAssenze.Insert();
+
+            // Aggiorna la griglia
             GrigliaAssenze();
         }
 
         protected void Extra_Click(object sender, EventArgs e)
         {
+            // Leggi i valori dai controlli della pagina
             string fornitore = TIntestazione.Text.Trim();
             string descrizione = TDescrizione.Text.Trim();
-            decimal importo = 0;
+            if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
+                return;
 
-            if (decimal.TryParse(TImporto.Text, out importo) && !string.IsNullOrEmpty(fornitore))
-            {
-                CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
-                CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
-                CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString().Replace(",", ".");
-                CostiEsterni.InsertParameters["Progetto"].DefaultValue = "10";
+            // Imposta i parametri (nomi devono corrispondere a InsertParameters in .aspx)
+            CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+            CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+           
 
-                CostiEsterni.Insert();
-                GrigliaCostiEsterni();
-            }
+            // Esegue l'INSERT
+            CostiEsterni.Insert();
+
+            // Aggiorna visualizzazione
+            GrigliaCostiEsterni();
         }
-        protected void ViewFake_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType != DataControlRowType.DataRow) return;
-
-            int year = DateTime.Now.Year;
-            int month = DateTime.Now.Month;
-            int daysInMonth = DateTime.DaysInMonth(year, month);
-
-            var festivita = GetHolidays(year, month);
-
-            for (int d = 1; d <= daysInMonth; d++)
-            {
-                int cellIndex = d; // d=1 => cell 1
-                if (cellIndex >= e.Row.Cells.Count) break;
-
-                DateTime date = new DateTime(year, month, d);
-                TableCell cell = e.Row.Cells[cellIndex];
-
-                if (festivita.Contains(date.Date))
-                {
-                    cell.BackColor = Color.LightGreen;
-                }
-                else if (date.DayOfWeek == DayOfWeek.Saturday)
-                {
-                    cell.BackColor = Color.LightBlue;
-                }
-                else if (date.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    cell.BackColor = Color.LightCoral;
-                }
-                else
-                {
-                    cell.BackColor = Color.Beige;
-                }
-
-            }
-        }
-
-        private HashSet<DateTime> GetHolidays(int year, int month)
-        {
-            var hs = new HashSet<DateTime>();
-
-            try
-            {
-
-                hs.Add(new DateTime(year, 1, 1));
-
-                hs.Add(new DateTime(year, 6, 2));
-
-                hs.Add(new DateTime(year, 12, 25));
-                hs.Add(new DateTime(year, 12, 26));
-
-            }
-            catch
-            {
-            }
-
-            var result = new HashSet<DateTime>();
-            foreach (var dt in hs)
-            {
-                if (dt.Year == year && dt.Month == month) result.Add(dt.Date);
-            }
-
-            return result;
-
-
-        }
+ 
 
         private DateTime GetTargetMonday()
         {
@@ -294,7 +200,7 @@ namespace Marginalita
             using (SqlConnection conn = new SqlConnection(stringaConnessione))
             {
 
-                string sql = @"SELECT SUM(Ore) FROM Fake
+                string sql = @"SELECT SUM(Costo) FROM Fake
                        WHERE Dipendente = @d 
                        AND Progetto != @p 
                        AND CAST(Creata AS DATE) = CAST(@data AS DATE)";
@@ -309,21 +215,7 @@ namespace Marginalita
                 return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
             }
         }
-        private List<DateTime> SelectedDatesList
-        {
-            get
-            {
-                if (ViewState["SelectedDatesList"] == null)
-                {
-                    return new List<DateTime>();
-                }
-                return (List<DateTime>)ViewState["SelectedDatesList"];
-            }
-            set
-            {
-                ViewState["SelectedDatesList"] = value;
-            }
-        }
+
 
         protected void btnApriCalendario_Click(object sender, EventArgs e)
         {
@@ -335,14 +227,7 @@ namespace Marginalita
             pnlCalendario.Visible = false;
         }
 
-        protected void Page_PreRender(object sender, EventArgs e)
-        {
-            CDurata.SelectedDates.Clear();
-            foreach (DateTime d in SelectedDatesList)
-            {
-                CDurata.SelectedDates.Add(d);
-            }
-        }
+      
 
         protected void ExportExcel(object sender, EventArgs e)
         {
@@ -376,6 +261,68 @@ namespace Marginalita
         protected void ApriCalendario(object sender, EventArgs e)
         {
             Panel1.Visible = !Panel1.Visible;
+        }
+
+        protected void btnSalvaTutto(object sender, EventArgs e)
+        {
+            var tvp = BuildTimesheetDataTableFromRepeater();
+            if (tvp.Rows.Count == 0) return;
+
+            using (var conn = new SqlConnection(stringaConnessione))
+            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn)) 
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var p = cmd.Parameters.AddWithValue("@rows", tvp);
+                p.SqlDbType = SqlDbType.Structured;
+                p.TypeName = "dbo.TimesheetRow";
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private DataTable BuildTimesheetDataTableFromRepeater()
+        {
+            DataTable tvp = new DataTable();
+            tvp.Columns.Add("IdDipendente", typeof(int));
+            tvp.Columns.Add("Ore", typeof(decimal));
+            tvp.Columns.Add("Data", typeof(DateTime));
+
+            foreach (RepeaterItem item in RepSingolo.Items)
+            {
+                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+                {
+                    HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
+                    TextBox txtOre = (TextBox)item.FindControl("InputOre");
+                    Label lblData = (Label)item.FindControl("DataLabel"); // Assicurati di avere un'etichetta per la data
+
+                    if (hfIdDipendente != null && txtOre != null && lblData != null)
+                    {
+                        int idDipendente = int.Parse(hfIdDipendente.Value);
+                        decimal ore = string.IsNullOrEmpty(txtOre.Text) ? 0 : decimal.Parse(txtOre.Text);
+                        DateTime data = DateTime.Parse(lblData.Text); // Ottieni la data dall'etichetta
+
+                        DataRow row = tvp.NewRow();
+                        row["IdDipendente"] = idDipendente;
+                        row["Ore"] = ore;
+                        row["Data"] = GetTargetMonday(); // Aggiungi la data alla riga
+
+                        tvp.Rows.Add(row);
+                    }
+                }
+            }
+
+            return tvp;
+        }
+        protected void Elimina_Assenza(object sender, EventArgs e)
+        {
+            TabellaAssenze.Delete();
+            Response.Redirect("Timesheet.aspx");
+        }
+
+        protected void Elimina_CostiEsterni(object sender, EventArgs e)
+        {
+            CostiEsterni.Delete();
+            Response.Redirect("Timesheet.aspx");
         }
     }
 }
