@@ -36,9 +36,8 @@
                 <div class="DSCard-text">
 
                     <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
-                         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                         SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake">
-                    </asp:SqlDataSource>
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+                        SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake"></asp:SqlDataSource>
 
                     <div class="DSCard-label">Costo Totale</div>
                     <div class="DSCard-value">
@@ -89,25 +88,26 @@
             <div class="DSCard-card">
                 <div class="DSCard-text">
                     <div class="DSCard-label">Report</div>
-                       <asp:SqlDataSource 
-                           ID="SqlScadenze" runat="server"
-                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand="SELECT ID, 
-                                                 Nome, 
-                                                 Budget, 
-                                                 Fine
-                                           FROM Progetto
-                                           WHERE Fine >= CAST(GETDATE() AS DATE) 
-                                           AND Fine <= DATEADD(day, 2, CAST(GETDATE() AS DATE))
-                                           ORDER BY Fine ASC">
-                       </asp:SqlDataSource> 
+                    <asp:SqlDataSource
+                        ID="SqlScadenze" runat="server"
+                        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                        SelectCommand='SELECT P.ID, P.Nome, 
+                                        P.Budget, 
+                                        P.Fine,
+                                        CAST(V.Margine AS INT) AS MargineIntero
+                                        FROM Progetto AS P
+                                        JOIN V_Margini AS V ON V.ID = P.ID
+                                        WHERE P.Fine &gt;= CAST(GETDATE() AS DATE) OR (V.Margine &lt;= 35)
+                                        AND P.Fine &lt;= DATEADD(day, 2, CAST(GETDATE() AS DATE))
+                                        ORDER BY P.Fine ASC'>
+                    </asp:SqlDataSource>
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
                         AutoGenerateColumns="False"
                         CssClass="table table-striped w-100 text-center">
                         <Columns>
                             <asp:BoundField DataField="Nome" HeaderText="Progetto" />
-                            <asp:BoundField DataField="ScadenzaCalcolata" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+                            <asp:BoundField DataField="Fine" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
                         </Columns>
                     </asp:GridView>
                 </div>
@@ -143,9 +143,7 @@
                                              P.Descrizione, 
                                              CAST(V.Margine AS INT) AS MargineIntero
                                              FROM Progetto AS P
-                                             JOIN V_Margini AS V ON V.ID = P.ID">
-
-                </asp:SqlDataSource>
+                                             JOIN V_Margini AS V ON V.ID = P.ID"></asp:SqlDataSource>
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"

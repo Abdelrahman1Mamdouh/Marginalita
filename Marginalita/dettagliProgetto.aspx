@@ -51,11 +51,11 @@
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
         ProviderName="System.Data.SqlClient"
         SelectCommand="
-                        SELECT 'Residuo' AS Label, Round(Residuo * 100 / Budget,0) AS Value
+                        SELECT 'Residuo' AS Label,Round((Budget - Residuo)*100 / Budget,0) AS Value
                         FROM Progetto
                         WHERE ID = @ID
                         UNION ALL
-                        SELECT 'Margine' AS Label, Round((Budget - Residuo)*100 / Budget,0) AS Value
+                        SELECT 'Margine' AS Label, Round(Residuo * 100 / Budget,0) AS Value
                         FROM Progetto
                         WHERE ID = @ID;">
         <SelectParameters>
@@ -153,9 +153,9 @@
                     <!-- Durata -->
                     <div class="DSCard-card">
                         <div class="DSCard-text">
-                            <asp:Label runat="server" Text="Durata (Giorni)" CssClass="DSCard-label" />
+                            <asp:Label runat="server" Text="Durata (Giorni) -------> Giorni Rimanenti" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                               <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") + " --------> " + Eval("GiorniRimanenti") %>' />
+                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") + " --------> " + Eval("GiorniRimanenti") %>' />
                             </div>
                         </div>
                     </div>
