@@ -283,34 +283,40 @@ namespace Marginalita
         private DataTable BuildTimesheetDataTableFromRepeater()
         {
             DataTable tvp = new DataTable();
-            tvp.Columns.Add("IdDipendente", typeof(int));
+
+            tvp.Columns.Add("IdDip", typeof(int));
             tvp.Columns.Add("dataAncoraggio", typeof(DateTime));
             tvp.Columns.Add("Ore", typeof(decimal));
-           
+
+            DateTime anchor = GetTargetMonday();
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {
-                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
-                {
-                    HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
-                    TextBox txtOre = (TextBox)item.FindControl("InputOre");
-                    Label lblData = (Label)item.FindControl("DataLabel"); // Assicurati di avere un'etichetta per la data
+                if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
+                    continue;
 
-                    if (hfIdDipendente != null && txtOre != null && lblData != null)
-                    {
-                        int idDipendente = int.Parse(hfIdDipendente.Value);
-                        decimal ore = string.IsNullOrEmpty(txtOre.Text) ? 0 : decimal.Parse(txtOre.Text);
-                        DateTime data = DateTime.Parse(lblData.Text); // Ottieni la data dall'etichetta
+                HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
+                TextBox txtOre = (TextBox)item.FindControl("InputOre");
 
-                        DataRow row = tvp.NewRow();
-                        row["IdDipendente"] = idDipendente;
-                        row["dataAncoraggio"] = GetTargetMonday(); // Aggiungi la data alla riga
-                        row["Ore"] = ore;
-                        
+                if (hfIdDipendente == null || txtOre == null)
+                    continue;
 
-                        tvp.Rows.Add(row);
-                    }
-                }
+                if (!int.TryParse(hfIdDipendente.Value, out int idDip))
+                    continue;
+
+                decimal ore = 0;
+                if (!string.IsNullOrWhiteSpace(txtOre.Text))
+                    decimal.TryParse(txtOre.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture, out ore);
+
+                
+                if (ore <= 0) continue;
+
+                DataRow row = tvp.NewRow();
+                row["IdDip"] = idDip;
+                row["dataAncoraggio"] = anchor;
+                row["Ore"] = ore;
+                tvp.Rows.Add(row);
             }
 
             return tvp;
