@@ -96,10 +96,10 @@
                                                  Nome, 
                                                  Budget, 
                                                  Fine
-                                          FROM Progetto
-                                          WHERE Fine >= CAST(GETDATE() AS DATE) 
-                                          AND Fine <= DATEADD(day, 2, CAST(GETDATE() AS DATE))
-                                          ORDER BY Fine ASC">
+                                           FROM Progetto
+                                           WHERE Fine >= CAST(GETDATE() AS DATE) 
+                                           AND Fine <= DATEADD(day, 2, CAST(GETDATE() AS DATE))
+                                           ORDER BY Fine ASC">
                        </asp:SqlDataSource> 
                     <asp:GridView ID="GridView2" runat="server"
                         DataSourceID="SqlScadenze"
@@ -149,7 +149,7 @@
 
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"
-                    AutoGenerateColumns="True"
+                    AutoGenerateColumns="False"
                     CssClass="table table-striped w-100 text-center">
 
                     <HeaderStyle CssClass="table-dark" />
@@ -158,9 +158,9 @@
 
 
 
-                        <%--<asp:BoundField DataField="Nome" HeaderText="Nome" />
-                        <asp:BoundField DataField="Budget" HeaderText="Cognome" />
-                        <asp:BoundField DataField="CostoOrario" HeaderText="Costo Orario" />--%>
+                        <asp:BoundField DataField="Nome" HeaderText="Nome" />
+                        <asp:BoundField DataField="Budget" HeaderText="Budget" />
+                        <asp:BoundField DataField="Descrizione" HeaderText="Descrizione" />
 
                         <asp:TemplateField HeaderText="Margini">
                             <ItemTemplate>
