@@ -145,9 +145,9 @@
              <span class="ico">&#128202;</span>Timesheet
                 </asp:HyperLink>
 
-                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
+<%--                <asp:HyperLink runat="server" CssClass="sidebar-link" NavigateUrl="~/settings.aspx">
             <span class="ico">&#9881;</span> Settings
-                </asp:HyperLink>
+                </asp:HyperLink>--%>
             </div>
         </asp:Panel>
 
