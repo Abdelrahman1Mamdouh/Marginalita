@@ -155,7 +155,7 @@
                         <div class="DSCard-text">
                             <asp:Label runat="server" Text="Durata (Giorni)" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") + " ------> " + Eval("GiorniRimanenti") %>' />
+                               <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") + " --------> " + Eval("GiorniRimanenti") %>' />
                             </div>
                         </div>
                     </div>
