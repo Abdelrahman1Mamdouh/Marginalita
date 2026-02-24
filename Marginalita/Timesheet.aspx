@@ -6,11 +6,15 @@
     <asp:HiddenField ID="DeleteCostiAssenze" runat="server" Value="0" />
     
     <asp:SqlDataSource runat="server" ID="TabellaProgetto" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Nome FROM Progetto" />
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+        SelectCommand="SELECT ID, Nome FROM Progetto" />
     <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente" />
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+        SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente" />
     <asp:SqlDataSource runat="server" ID="DSFake" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())" InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)">
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+        SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())" 
+        InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)">
         <InsertParameters>
             <asp:Parameter Name="Costo" Type="Decimal"/>
             <asp:Parameter Name="Fornitore" Type="String"/>
@@ -19,7 +23,10 @@
         </InsertParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource runat="server" ID="CostiEsterni" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Costo, Fornitore, Descrizione, Progetto FROM CostiEsterni" InsertCommand="INSERT INTO CostiEsterni (Costo, Fornitore, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)" DeleteCommand="DELETE FROM CostiEsterni WHERE ID = @ID">
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+        SelectCommand="SELECT ID, Costo, Fornitore, Descrizione FROM CostiEsterni" 
+        InsertCommand="INSERT INTO CostiEsterni (Costo, Fornitore, Descrizione) VALUES (@Costo, @Fornitore, @Descrizione)" 
+        DeleteCommand="DELETE FROM CostiEsterni WHERE ID = @ID">
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
@@ -27,11 +34,14 @@
             <asp:Parameter Name="Costo" Type="Decimal"/>
             <asp:Parameter Name="Fornitore" Type="String"/>
             <asp:Parameter Name="Descrizione" Type="String"/>
-            <asp:Parameter Name="Progetto" Type="Int32"/>
+            
         </InsertParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource runat="server" ID="TabellaAssenze" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Ore, DataAssenze, Progetto, Dipendente, Motivo FROM OreAssenze" InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze, Progetto) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze, @Progetto)" DeleteCommand="DELETE FROM OreAssenze WHERE ID = @ID">
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+        SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze" 
+        InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze)" 
+        DeleteCommand="DELETE FROM OreAssenze WHERE ID = @ID">
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
@@ -40,7 +50,7 @@
             <asp:Parameter Name="Motivo" Type="Int32"/>
             <asp:Parameter Name="Ore" Type="Decimal"/>
             <asp:Parameter Name="DataAssenze" Type="DateTime"/>
-            <asp:Parameter Name="Progetto" Type="Int32"/>
+            
         </InsertParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource runat="server" ID="TabellaMotivo" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Descrizione FROM Motivo" />

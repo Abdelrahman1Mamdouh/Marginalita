@@ -284,8 +284,9 @@ namespace Marginalita
         {
             DataTable tvp = new DataTable();
             tvp.Columns.Add("IdDipendente", typeof(int));
+            tvp.Columns.Add("dataAncoraggio", typeof(DateTime));
             tvp.Columns.Add("Ore", typeof(decimal));
-            tvp.Columns.Add("Data", typeof(DateTime));
+           
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {
@@ -303,8 +304,9 @@ namespace Marginalita
 
                         DataRow row = tvp.NewRow();
                         row["IdDipendente"] = idDipendente;
+                        row["dataAncoraggio"] = GetTargetMonday(); // Aggiungi la data alla riga
                         row["Ore"] = ore;
-                        row["Data"] = GetTargetMonday(); // Aggiungi la data alla riga
+                        
 
                         tvp.Rows.Add(row);
                     }
