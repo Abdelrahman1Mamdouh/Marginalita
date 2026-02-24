@@ -16,7 +16,8 @@
         F.Creata AS Creata,
         P.Inizio As Inizio,
         P.Fine AS Fine,
-        P.Durata AS Scadenza
+        P.Durata AS Scadenza,
+        P.GiorniRimanenti AS GiorniRimanenti
         FROM Progetto AS P
         LEFT JOIN FAKE AS F ON F.Progetto = P.ID
         LEFT JOIN Contratto AS C ON C.ID = P.Margine
@@ -154,7 +155,7 @@
                         <div class="DSCard-text">
                             <asp:Label runat="server" Text="Durata (Giorni)" CssClass="DSCard-label" />
                             <div class="DSCard-value">
-                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") %>' />
+                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Scadenza") + " ------> " + Eval("GiorniRimanenti") %>' />
                             </div>
                         </div>
                     </div>
