@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg: #ffffff;
     --text: #111827;
     --muted: #6b7280;
@@ -154,68 +154,13 @@ body {
 /* ====== DSCard Grid ====== */
 .DSCard-grid {
     display: grid;
-    grid-template-columns: 1fr 1.25fr;
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     width: 100%;
+    max-width: 100%;
     padding: 0 20px;
-    margin-top: 20px;
+    margin: 20px 0 0;
     box-sizing: border-box;
-    align-items: stretch;
-}
-
-    .DSCard-grid .DSCard-card:nth-child(1) {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .DSCard-grid .DSCard-card:nth-child(2) {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .DSCard-grid .DSCard-card:nth-child(3) {
-        grid-column: 1;
-        grid-row: 3;
-    }
-
-    .DSCard-grid .DSCard-card:nth-child(4) {
-        grid-column: 2;
-        grid-row: 1 / span 3;
-    }
-
-        .DSCard-grid .DSCard-card:nth-child(4) .DSCard-text {
-            width: 100%;
-        }
-
-.DSCard-card .table {
-    margin: 10px 0 0;
-    font-size: 14px;
-}
-
-    /* خلي الهيدر ثابت وشكله مرتب */
-    .DSCard-card .table thead th {
-        font-weight: 800;
-        border-bottom: 1px solid #dee2e6 !important;
-    }
-
-    /* قلل الحشو شوية */
-    .DSCard-card .table td,
-    .DSCard-card .table th {
-        padding: 10px 12px;
-        vertical-align: middle;
-    }
-
-@media (max-width: 900px) {
-    .DSCard-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-    }
-
-        .DSCard-grid .DSCard-card:nth-child(4) {
-            grid-column: 1;
-            grid-row: auto;
-        }
 }
 
 @media (max-width: 1100px) {
@@ -653,11 +598,12 @@ body {
 }
 
 .col-33 {
-    flex: 1;
+    flex: 1; 
     min-width: 300px;
     box-sizing: border-box;
 }
-
+<style >
+/* Uniforma le linee di tutte le tabelle per essere sottili come nelle card */
 .table td, .table th {
     border-bottom: 1px solid #dee2e6 !important;
     border-top: none !important;
@@ -666,3 +612,5 @@ body {
 .table {
     border-collapse: collapse !important;
 }
+
+</style >
