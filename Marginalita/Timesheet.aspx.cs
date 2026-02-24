@@ -145,8 +145,7 @@ namespace Marginalita
             TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
             TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
             TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");
-            TabellaAssenze.InsertParameters["Progetto"].DefaultValue = "10";
+            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");       
 
             // Esegue l'INSERT tramite SqlDataSource (senza try/catch come richiesto)
             TabellaAssenze.Insert();
