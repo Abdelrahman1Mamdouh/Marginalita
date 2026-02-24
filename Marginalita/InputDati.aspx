@@ -14,7 +14,7 @@
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
             SelectCommand="SELECT Nome, Budget, Inizio, Fine, Descrizione, Residuo, Margine, Societa FROM Progetto WHERE Vedi=1"
-            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine, 0)"
+            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine, @Residuo)"
             UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Inizio=@Inizio, Fine=@Fine, Descrizione=@Descrizione WHERE ID=@ID"
             DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
@@ -25,6 +25,8 @@
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
                 <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
                 <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedValue" />
+                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Text" />
+
             </InsertParameters>
             <UpdateParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
@@ -123,9 +125,9 @@
             <asp:Label ID="LDescritione" TextMode="Multiline" Text="Descritione progetto" runat="server" />
             <asp:TextBox runat="server" ID="TDescritione" />
 
-            <asp:DropDownList ID="DDLSocieta" AutoPostBack="true" DataSourceID="DSocieta" DataTextField="Intestazione" DataValueField="ID" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="DDLSocieta"  DataSourceID="DSocieta" DataTextField="Intestazione" DataValueField="ID" runat="server"></asp:DropDownList>
 
-            <asp:DropDownList ID="DDLMargine" AutoPostBack="true" DataSourceID="DContratto" DataTextField="Tipo" DataValueField="ID" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="DDLMargine"  DataSourceID="DContratto" DataTextField="Tipo" DataValueField="ID" runat="server"></asp:DropDownList>
 
             <asp:Button ID="ModProg" runat="server" Text="Modifica" OnClick="ModProgetto" />
             <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto" style="background-color:black;color:white;padding:5px 10px;margin-top:10px;margin-bottom:10px;border-radius:5px"/>

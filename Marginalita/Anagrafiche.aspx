@@ -48,7 +48,7 @@
 
                         <asp:TemplateField HeaderText="Societa">
                             <ItemTemplate>
-                                <asp:Label ID="PLSocieta" runat="server" Text='<%# Eval("Societa") %>' CssClass="w-50" />
+                                <asp:Label ID="PLSocieta" runat="server" Text='<%# Eval("Societa") %>'  CssClass="w-50" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

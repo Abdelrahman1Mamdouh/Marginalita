@@ -112,7 +112,7 @@ namespace Marginalita
         //Gestione progetti
         protected void SalProgetto(object sender, EventArgs e)
         {
-            // DProgetti Insert usa CDInizio per il parametro Durata
+            
             DProgetti.Insert();
             Response.Redirect("Anagrafiche.aspx");
         }
