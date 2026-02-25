@@ -19,7 +19,7 @@
             DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
-                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Value" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
                 <asp:ControlParameter Name="Inizio" ControlID="CDInizio" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
