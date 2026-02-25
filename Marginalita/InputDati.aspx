@@ -14,22 +14,23 @@
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
             SelectCommand="SELECT Nome, Budget, Inizio, Fine, Descrizione, Residuo, Margine, Societa FROM Progetto WHERE Vedi=1"
-            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine, 0)"
+            InsertCommand="INSERT INTO Progetto (Nome, Budget, Inizio, Fine, Descrizione, Societa,Margine, Residuo) VALUES (@Nome, @Budget, @Inizio, @Fine, @Descrizione, @Societa, @Margine, @Residuo)"
             UpdateCommand="UPDATE Progetto SET Nome=@Nome, Budget=@Budget, Inizio=@Inizio, Fine=@Fine, Descrizione=@Descrizione WHERE ID=@ID"
             DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
-                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Value" />
                 <asp:ControlParameter Name="Inizio" ControlID="CDInizio" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
                 <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
                 <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedValue" />
+                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Value" />
             </InsertParameters>
             <UpdateParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
-                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Value" />
                 <asp:ControlParameter Name="Inizio" ControlID="CDInizio" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
@@ -73,7 +74,7 @@
             ID="DFake"
             runat="server"
             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
-            DeleteCommand="UPDATE Original SET Vedi = @Vedi WHERE Progetto = @ID">
+            DeleteCommand="UPDATE Fake SET Vedi = @Vedi WHERE Progetto = @ID">
             <DeleteParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Vedi" ControlID="ProgFin" PropertyName="Value" />
