@@ -171,7 +171,7 @@
         </section>
 
         <div class="d-flex justify-content-end my-4">
-            <asp:Button id="Binvia" Text="Invio" OnClick="btnSalvaTutto" runat="server" CssClass="btn btn-primary btn-lg shadow-sm px-5" />
+            <asp:Button id="Binvia" Text="Invio" OnClick="btnSalvaTutto" runat="server" CssClass="btn btn-primary shadow-sm btn-custom-size"/>
         </div>
 
 <section class="DSCard-card p-4 mt-5">
@@ -196,14 +196,12 @@
             </div>
         </section>
         <div>
-                     <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
-     
+        <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
      <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true" 
          OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
          <asp:ListItem Value="Dipendenti">Dipendenti</asp:ListItem>
          <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
      </asp:DropDownList>
-
      <div class="input-group input-group-sm w-auto" style="position: relative;">
          <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true" 
              CssClass="form-control" placeholder="Mese" style="width:100px;" />
@@ -217,11 +215,9 @@
              <asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="ChangeFake" />
          </asp:Panel>
      </div>
-
      <asp:Button ID="Export" runat="server" Text="Export Excel" 
-         OnClick="ExportExcel" CssClass="btn btn-success btn-sm px-3"/>
+         OnClick="ExportExcel" CssClass="btn btn-success shadow-sm btn-custom-size"/>
     </div>
         </div>
-    
     <asp:HiddenField ID="hfSelectedDates" runat="server" />
 </asp:Content>
