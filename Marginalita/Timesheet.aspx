@@ -8,9 +8,27 @@
     <asp:SqlDataSource runat="server" ID="TabellaProgetto" 
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
         SelectCommand="SELECT ID, Nome FROM Progetto" />
+   
     <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
-        SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente" />
+    ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+    SelectCommand="
+        SELECT 
+            d.ID, d.Nome, d.Cognome, d.CostoOrario,
+            CAST(ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0) AS DECIMAL(10,2)) AS OreSettimana
+        FROM Dipendente d
+        LEFT JOIN Fake f
+            ON f.Dipendente = d.ID
+           AND f.Creata >= @Monday
+           AND f.Creata < DATEADD(DAY,5,@Monday)
+           AND f.Progetto IS NOT NULL
+        GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
+        ORDER BY d.Nome, d.Cognome
+    ">
+    <SelectParameters>
+        <asp:Parameter Name="Monday" Type="DateTime" />
+    </SelectParameters>
+</asp:SqlDataSource>
+
     <asp:SqlDataSource runat="server" ID="DSFake" 
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
         SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())" 
@@ -69,10 +87,16 @@
                                         <td class="align-middle border-0">
                                             <strong><%# Eval("Nome") %> <%# Eval("Cognome") %></strong>
                                             <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                            <asp:HiddenField ID="HiddenProgettoFisso" runat="server" Value="1" /> 
+                                            
                                         </td>
                                         <td class="border-0">
-                                            <asp:TextBox runat="server" ID="InputOre" TextMode="Number" min="0" max="40" CssClass="form-control form-control-sm text-center" style="width:70px;" AutoPostBack="true" OnTextChanged="InputOre_TextChanged"/>
+                                         <asp:TextBox runat="server" ID="InputOre"
+                                            Text='<%# Eval("OreSettimana","{0:0.##}") %>'
+                                            TextMode="Number" min="0" max="40"
+                                            CssClass="form-control form-control-sm text-center"
+                                            style="width:70px;"
+                                            AutoPostBack="true"
+                                            OnTextChanged="InputOre_TextChanged" />
                                         </td>
                                     </tr>
                                 </ItemTemplate>

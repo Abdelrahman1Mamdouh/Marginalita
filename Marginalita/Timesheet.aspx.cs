@@ -17,16 +17,13 @@ namespace Marginalita
         {
             if (!IsPostBack)
             {
-                // Imposta i parametri del SqlDataSource che invoca la stored procedure pivot
-                if (DSMatrix != null)
-                {
-                    DSMatrix.SelectParameters["Mode"].DefaultValue = "Dipendenti";
-                    DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
-                }
+                TabellaDipendente.SelectParameters["Monday"].DefaultValue =
+                    GetTargetMonday().ToString("yyyy-MM-dd");
 
-                // bind della GridView: la proc DB restituisce già la matrice pivotata
-                if (ViewFake != null) ViewFake.DataBind();
+                DSMatrix.SelectParameters["Mode"].DefaultValue = "Dipendenti";
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
 
+                ViewFake.DataBind();
                 GrigliaCostiEsterni();
                 GrigliaAssenze();
             }
@@ -34,41 +31,29 @@ namespace Marginalita
 
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
-            TextBox casellaTesto = (TextBox)sender;
-            string testoInput = casellaTesto.Text.Trim();
+            TextBox tb = (TextBox)sender;
+            string s = (tb.Text ?? "").Trim();
 
-            decimal oreInserite = 0;
-            bool isValido = decimal.TryParse(testoInput, out oreInserite);
-
-            if (testoInput == "" || isValido)
+            if (string.IsNullOrWhiteSpace(s))
             {
-                RepeaterItem riga = (RepeaterItem)casellaTesto.NamingContainer;
-                int idDipendente = int.Parse(((HiddenField)riga.FindControl("HiddenDipendente")).Value);
-
-                int idProgettoFisso = 10;
-
-                decimal oreGiaSalvate = GetWeeklyHoursExcludingCurrent(idDipendente, idProgettoFisso);
-
-             
-
-                if (oreInserite + oreGiaSalvate > 40)
-                {
-                    decimal oreMassimePossibili = 40 - oreGiaSalvate;
-                    oreInserite = oreMassimePossibili > 0 ? oreMassimePossibili : 0;
-                    casellaTesto.Text = oreInserite.ToString("0.00");
-                    casellaTesto.ForeColor = Color.Red;
-                }
-                else
-                {
-                    casellaTesto.ForeColor = Color.Black;
-                }
-
-              
-
-                // aggiorna le sorgenti dati e rilegga la matrice dal DB
-                if (DSFake != null) DSFake.DataBind();
-                if (ViewFake != null) ViewFake.DataBind();
+                tb.ForeColor = Color.Black;
+                return;
             }
+
+            if (!decimal.TryParse(s.Replace(",", "."),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture, out decimal oreInserite))
+            {
+                tb.ForeColor = Color.Red;
+                return;
+            }
+
+            // cap 0..40
+            if (oreInserite < 0) oreInserite = 0;
+            if (oreInserite > 40) oreInserite = 40;
+
+            tb.Text = oreInserite.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+            tb.ForeColor = (oreInserite == 40) ? Color.Red : Color.Black;
         }
 
         protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -194,26 +179,30 @@ namespace Marginalita
             return TL.Date;
         }
 
-        private decimal GetWeeklyHoursExcludingCurrent(int idDipendente, int idProgettoEscluso)
-        {
-            using (SqlConnection conn = new SqlConnection(stringaConnessione))
-            {
+        //private decimal GetWeeklyHoursFromFake(int idDipendente)
+        //{
+        //    using (SqlConnection conn = new SqlConnection(stringaConnessione))
+        //    {
+        //        DateTime monday = GetTargetMonday();
 
-                string sql = @"SELECT SUM(Costo) FROM Fake
-                       WHERE Dipendente = @d 
-                       AND Progetto != @p 
-                       AND CAST(Creata AS DATE) = CAST(@data AS DATE)";
+        //        string sql = @"
+        //    SELECT ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0)
+        //    FROM Fake f
+        //    INNER JOIN Dipendente d ON d.ID = f.Dipendente
+        //    WHERE f.Dipendente = @d
+        //      AND f.Progetto IS NOT NULL
+        //      AND f.Creata >= @monday
+        //      AND f.Creata < DATEADD(DAY, 5, @monday);";
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@d", idDipendente);
-                cmd.Parameters.AddWithValue("@p", idProgettoEscluso);
-                cmd.Parameters.AddWithValue("@data", GetTargetMonday());
-
-                conn.Open();
-                object result = cmd.ExecuteScalar();
-                return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
-            }
-        }
+        //        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@d", idDipendente);
+        //            cmd.Parameters.AddWithValue("@monday", monday);
+        //            conn.Open();
+        //            return Convert.ToDecimal(cmd.ExecuteScalar());
+        //        }
+        //    }
+        //}
 
 
         protected void btnApriCalendario_Click(object sender, EventArgs e)
@@ -275,8 +264,17 @@ namespace Marginalita
                 p.SqlDbType = SqlDbType.Structured;
                 p.TypeName = "dbo.TimesheetRow";
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                
             }
+            TabellaDipendente.DataBind();
+            RepSingolo.DataBind();
+
+            DSMatrix.DataBind();
+            ViewFake.DataBind();
+
+            GrigliaAssenze();
+            GrigliaCostiEsterni();
         }
 
         private DataTable BuildTimesheetDataTableFromRepeater()
