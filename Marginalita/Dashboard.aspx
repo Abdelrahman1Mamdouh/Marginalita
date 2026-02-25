@@ -92,15 +92,18 @@
                         <asp:SqlDataSource
                             ID="SqlScadenze" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand='SELECT P.ID, P.Nome, 
-                                        P.Budget, 
-                                        P.Fine,
-                                        CAST(V.Margine AS INT) AS MargineIntero
-                                        FROM Progetto AS P
-                                        JOIN V_Margini AS V ON V.ID = P.ID
-                                        WHERE P.Fine &gt;= CAST(GETDATE() AS DATE) OR (V.Margine &lt;= 35)
-                                        AND P.Fine &lt;= DATEADD(day, 2, CAST(GETDATE() AS DATE))
-                                        ORDER BY P.Fine ASC'></asp:SqlDataSource>
+                            SelectCommand='SELECT 
+                                            P.ID, 
+                                            P.Nome, 
+                                            P.Budget, 
+                                            P.Fine,
+                                            CAST(V.Margine AS INT) AS MargineIntero
+                                            FROM Progetto AS P
+                                            JOIN V_Margini AS V ON V.ID = P.ID
+                                            WHERE P.Fine 
+                                            BETWEEN CAST(GETDATE() AS DATE) 
+                                            AND DATEADD(DAY, 10, CAST(GETDATE() AS DATE))
+                                            OR V.Margine&lt;30'></asp:SqlDataSource>
                         <asp:GridView ID="GridView2" runat="server"
                             DataSourceID="SqlScadenze"
                             AutoGenerateColumns="False"
