@@ -25,7 +25,7 @@
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
                 <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
                 <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedValue" />
-                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Value" />
+                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Text" />
             </InsertParameters>
             <UpdateParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
