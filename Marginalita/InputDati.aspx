@@ -99,11 +99,11 @@
                             <asp:TextBox runat="server" ID="TBudget" CssClass="form-control-styled" />
                         </div>
                         <div class="mb-3">
-                            <label class="DSCard-label">Società</label>
+                            <label ID="DropDownSocieta" class="DSCard-label" runat="server">Società</label>
                             <asp:DropDownList ID="DDLSocieta" AutoPostBack="true" DataSourceID="DSocieta" DataTextField="Intestazione" DataValueField="ID" runat="server" CssClass="form-control-styled"></asp:DropDownList>
                         </div>
                         <div class="mb-3">
-                            <label class="DSCard-label">Tipo Contratto</label>
+                            <label ID="DropDownMargine" class="DSCard-label" runat="server">Tipo Contratto</label>
                             <asp:DropDownList ID="DDLMargine" AutoPostBack="true" DataSourceID="DContratto" DataTextField="Tipo" DataValueField="ID" runat="server" CssClass="form-control-styled"></asp:DropDownList>
                         </div>
                         <div class="mb-3">
@@ -129,12 +129,12 @@
                     </div>
                     <div class="mt-2 p-3 text-end">
                         <asp:Button ID="SalProg" runat="server" Text="Salva" OnClick="SalProgetto"
-                            CssClass="btn btn-success text-white fw-bold shadow-sm" />
+                            CssClass="btn btn-success btn-custom-size shadow-sm" />
                         <asp:Button ID="ModProg" runat="server" Text="Modifica" OnClick="ModProgetto"
                             CssClass="btn btn-primary btn-custom-size shadow-sm" />
                         <asp:Button ID="EliProg" runat="server" Text="Elimina" OnClick="EliProgetto"
                             CssClass="btn btn-danger btn-custom-size shadow-sm" />
-                        <asp:Button ID="Button1" runat="server" Text="Annulla" OnClick="Annulla"
+                        <asp:Button ID="AnnullaProg" runat="server" Text="Annulla" OnClick="AnnullaProgetto"
                             CssClass="btn btn-dark btn-custom-size shadow-sm" />
                     </div>
                 </div>
@@ -161,6 +161,8 @@
                             CssClass="btn btn-custom-size btn-primary shadow-sm" />
                         <asp:Button ID="EliSoc" runat="server" Text="Elimina" OnClick="EliSocieta"
                             CssClass="btn btn-custom-size btn-danger shadow-sm" />
+                        <asp:Button ID="AnnullaSoc" runat="server" Text="Annulla" OnClick="AnnullaSocieta"
+                            CssClass="btn btn-dark btn-custom-size shadow-sm" />
                     </div>
                 </div>
             </div>
@@ -191,12 +193,11 @@
                             CssClass="btn btn-custom-size btn-danger shadow-sm" />
                         <asp:Button ID="SalDip" runat="server" Text="Salva" OnClick="SalDipendenti"
                             CssClass="btn btn-custom-size btn-success text-white fw-bold shadow-sm" />
+                        <asp:Button ID="AnnullaDip" runat="server" Text="Annulla" OnClick="AnnullaDipendenti"
+                            CssClass="btn btn-dark btn-custom-size shadow-sm" />
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-2 p-3 text-end">
-            <asp:Button ID="Ann" runat="server" Text="Annulla Operazione" OnClick="Annulla" CssClass="btn btn-dark text-decoration-none fw-bold" />
         </div>
     </main>
 </asp:Content>

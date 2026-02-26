@@ -87,6 +87,24 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaMotivo;
 
         /// <summary>
+        /// Controllo OreSett.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label OreSett;
+
+        /// <summary>
+        /// Controllo OreEst.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label OreEst;
+
+        /// <summary>
         /// Controllo RepSingolo.
         /// </summary>
         /// <remarks>
@@ -175,6 +193,15 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button InvioAssenze;
+
+        /// <summary>
+        /// Controllo gestioneCostiEsterni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gestioneCostiEsterni;
 
         /// <summary>
         /// Controllo GridCostiEsterni.

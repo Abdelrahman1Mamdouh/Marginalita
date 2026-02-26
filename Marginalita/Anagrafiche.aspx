@@ -51,7 +51,7 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-                <asp:Button ID="NewProg" runat="server" Text="New" OnClick="NewProgetto" CssClass="btn btn-dark mt-2" />
+                <asp:Button ID="NewProg" runat="server" Text="+ New" OnClick="NewProgetto" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
             <div id="ViewSocieta" class="col-33 " runat="server">
                 <h2>Societa</h2>
@@ -80,7 +80,7 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-                <asp:Button ID="NewSoc" runat="server" Text="New" OnClick="NewSocieta" CssClass="btn btn-dark mt-2" />
+                <asp:Button ID="NewSoc" runat="server" Text="+ New" OnClick="NewSocieta" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
             <div id="ViewDipendenti" class="col-33" runat="server">
                 <h2>Dipendenti</h2>
@@ -115,7 +115,7 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-                <asp:Button ID="NewDip" runat="server" Text="New" OnClick="NewDipendente" CssClass="btn btn-dark mt-2" />
+                <asp:Button ID="NewDip" runat="server" Text="+ New" OnClick="NewDipendente" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
         </asp:Panel>
     </main>
