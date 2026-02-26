@@ -9,21 +9,21 @@
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
         SelectCommand="SELECT ID, Nome FROM Progetto" />
    
-    <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
+    <asp:SqlDataSource runat="server" ID="TabellaDipendente"
     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
     SelectCommand="
-        SELECT 
-            d.ID, d.Nome, d.Cognome, d.CostoOrario,
-            CAST(ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0) AS DECIMAL(10,2)) AS OreSettimana
-        FROM Dipendente d
-        LEFT JOIN Fake f
-            ON f.Dipendente = d.ID
-           AND f.Creata >= @Monday
-           AND f.Creata < DATEADD(DAY,5,@Monday)
-           AND f.Progetto IS NOT NULL
-        GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
-        ORDER BY d.Nome, d.Cognome
-    ">
+    SELECT 
+        d.ID, d.Nome, d.Cognome, d.CostoOrario,
+        CAST(ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0) AS DECIMAL(10,2)) AS OreSettimana
+    FROM Dipendente d
+    LEFT JOIN Fake f
+        ON f.Dipendente = d.ID
+       AND f.Creata &gt;= @Monday
+       AND f.Creata &lt; DATEADD(DAY,5,@Monday)
+       AND f.Progetto IS NOT NULL
+    GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
+    ORDER BY d.Nome, d.Cognome
+">
     <SelectParameters>
         <asp:Parameter Name="Monday" Type="DateTime" />
     </SelectParameters>
