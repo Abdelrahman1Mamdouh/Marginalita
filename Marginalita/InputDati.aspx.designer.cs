@@ -123,6 +123,60 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.TextBox TBudget;
 
         /// <summary>
+        /// Controllo DropDownSocieta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DropDownSocieta;
+
+        /// <summary>
+        /// Controllo DDLSocieta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLSocieta;
+
+        /// <summary>
+        /// Controllo DropDownMargine.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DropDownMargine;
+
+        /// <summary>
+        /// Controllo DDLMargine.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLMargine;
+
+        /// <summary>
+        /// Controllo LDescritione.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LDescritione;
+
+        /// <summary>
+        /// Controllo TDescritione.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TDescritione;
+
+        /// <summary>
         /// Controllo LDInizio.
         /// </summary>
         /// <remarks>
@@ -159,40 +213,13 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Calendar CDFine;
 
         /// <summary>
-        /// Controllo LDescritione.
+        /// Controllo SalProg.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LDescritione;
-
-        /// <summary>
-        /// Controllo TDescritione.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TDescritione;
-
-        /// <summary>
-        /// Controllo DDLSocieta.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLSocieta;
-
-        /// <summary>
-        /// Controllo DDLMargine.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLMargine;
+        protected global::System.Web.UI.WebControls.Button SalProg;
 
         /// <summary>
         /// Controllo ModProg.
@@ -204,15 +231,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button ModProg;
 
         /// <summary>
-        /// Controllo SalProg.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalProg;
-
-        /// <summary>
         /// Controllo EliProg.
         /// </summary>
         /// <remarks>
@@ -220,6 +238,15 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button EliProg;
+
+        /// <summary>
+        /// Controllo AnnullaProg.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AnnullaProg;
 
         /// <summary>
         /// Controllo ViewSocieta.
@@ -267,15 +294,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.TextBox TEmail;
 
         /// <summary>
-        /// Controllo ModSoc.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ModSoc;
-
-        /// <summary>
         /// Controllo SalSoc.
         /// </summary>
         /// <remarks>
@@ -285,6 +303,15 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button SalSoc;
 
         /// <summary>
+        /// Controllo ModSoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ModSoc;
+
+        /// <summary>
         /// Controllo EliSoc.
         /// </summary>
         /// <remarks>
@@ -292,6 +319,15 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button EliSoc;
+
+        /// <summary>
+        /// Controllo AnnullaSoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AnnullaSoc;
 
         /// <summary>
         /// Controllo ViewDipendenti.
@@ -366,15 +402,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button ModDip;
 
         /// <summary>
-        /// Controllo SalDip.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalDip;
-
-        /// <summary>
         /// Controllo EliDip.
         /// </summary>
         /// <remarks>
@@ -384,12 +411,21 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button EliDip;
 
         /// <summary>
-        /// Controllo Ann.
+        /// Controllo SalDip.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Ann;
+        protected global::System.Web.UI.WebControls.Button SalDip;
+
+        /// <summary>
+        /// Controllo AnnullaDip.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AnnullaDip;
     }
 }

@@ -731,3 +731,109 @@ body {
 .table {
     border-collapse: collapse !important;
 }
+
+/* visualizzazione grid ViewFake */
+#MainContent_ViewFake {
+    table-layout: fixed !important;
+    width: 100% !important;
+    word-wrap: break-word; 
+}
+
+    
+    #MainContent_ViewFake th,
+    #MainContent_ViewFake td {
+        width: auto !important; 
+        text-align: center;
+        padding: 8px 4px !important;
+        font-size: 0.85rem;
+    }
+
+     
+        #MainContent_ViewFake td:first-child,
+        #MainContent_ViewFake th:first-child {
+            width: 150px !important;
+            text-align: left;
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+/* Bottoni su pagina timesheet */
+.btn-custom-size {
+    width: 160px !important;
+    height: 38px !important; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 !important; 
+}
+
+/* Calendari pagina input */
+#MainContent_CDInizio {
+    float: left !important;
+    width: 250px !important;
+}
+
+#MainContent_CDFine {
+    float: left !important;
+    width: 250px !important;
+    margin-left: 20px !important;
+}
+
+#MainContent_LDesc, #MainContent_TDescritione {
+    clear: both !important;
+    display: block !important;
+    margin-top: 20px !important;
+}
+/* Css pagina Fabio*/
+
+.project-container {
+    display: grid;
+    grid-template-columns: 1fr 300px 180px; 
+    gap: 30px;
+    align-items: start;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.calendar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.button-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-control-styled {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.calendar-box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 1024px) {
+    .project-container {
+        grid-template-columns: 1fr;
+    }
+
+    .button-column {
+        flex-direction: row;
+        justify-content: center;
+    }
+}

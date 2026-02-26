@@ -20,12 +20,17 @@ namespace Marginalita
             if (Session["DatiProgetto"] != null)
             {
                 dati = (Dictionary<string, string>)Session["DatiProgetto"];
+                DropDownMargine.Visible = false;
                 DDLMargine.Visible = false;
+                DropDownSocieta.Visible = false;
                 DDLSocieta.Visible = false;
                 if (dati.ContainsKey("ID")) HID.Value = dati["ID"];
                 SalDip.Visible = false;
                 SalSoc.Visible = false;
                 SalProg.Visible = false;
+                AnnullaProg.Visible = true;
+                AnnullaSoc.Visible = true;
+                AnnullaDip.Visible = true;
             }
             else
             {
@@ -129,6 +134,10 @@ namespace Marginalita
             DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
+        protected void AnnullaProgetto(object sender, EventArgs e)
+        {
+            Response.Redirect("Anagrafiche.aspx");
+        }
 
         //Gestione societa
         protected void SalSocieta(object sender, EventArgs e)
@@ -147,6 +156,10 @@ namespace Marginalita
             DSocieta.Delete();
             DProgetti.Delete();
             DFake.Delete();
+            Response.Redirect("Anagrafiche.aspx");
+        }
+        protected void AnnullaSocieta(object sender, EventArgs e)
+        {
             Response.Redirect("Anagrafiche.aspx");
         }
 
@@ -169,7 +182,7 @@ namespace Marginalita
             Response.Redirect("Anagrafiche.aspx");
         }
 
-        protected void Annulla(object sender, EventArgs e)
+        protected void AnnullaDipendenti(object sender, EventArgs e)
         {
             Response.Redirect("Anagrafiche.aspx");
         }

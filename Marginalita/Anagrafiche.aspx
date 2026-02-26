@@ -9,11 +9,9 @@
         <asp:Panel ID="PAnagrafica" class="row-cols-sm-auto gridd" runat="server">
             <div id="ViewProgetti" class="col-33" runat="server">
                 <h2>Progetti</h2>
-
                 <asp:SqlDataSource ID="DProgetti" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
                     SelectCommand="SELECT ID, Nome, Budget, Descrizione, Inizio, Fine, Margine, Societa FROM VProg"></asp:SqlDataSource>
-                 
                 <asp:GridView ID="GridProgetti" DataSourceID="DProgetti" runat="server" AutoGenerateColumns="False" CssClass="table w-100 text-center">
                     <Columns>
                         <asp:TemplateField>
@@ -53,17 +51,14 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-
-                <asp:Button ID="NewProg" runat="server" Text="New" OnClick="NewProgetto" CssClass="btn btn-dark mt-2" />
+                <asp:Button ID="NewProg" runat="server" Text="+ New" OnClick="NewProgetto" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
-
             <div id="ViewSocieta" class="col-33 " runat="server">
                 <h2>Societa</h2>
                 <asp:SqlDataSource ID="DSocieta" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
                     SelectCommand="SELECT ID, Intestazione, Email FROM Societa"
                     DeleteCommand="DELETE FROM Societa WHERE ID = @ID"></asp:SqlDataSource>
-
                 <asp:GridView ID="GridSocieta" DataSourceID="DSocieta" runat="server" AutoGenerateColumns="False" CssClass="table w-100 text-center">
                     <Columns>
                         <asp:TemplateField>
@@ -85,17 +80,14 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-
-                <asp:Button ID="NewSoc" runat="server" Text="New" OnClick="NewSocieta" CssClass="btn btn-dark mt-2"/>
+                <asp:Button ID="NewSoc" runat="server" Text="+ New" OnClick="NewSocieta" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
-
             <div id="ViewDipendenti" class="col-33" runat="server">
                 <h2>Dipendenti</h2>
                 <asp:SqlDataSource ID="DDipendenti" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True;"
                     SelectCommand="SELECT ID, Nome, Cognome, CostoOrario FROM Dipendente"
                     DeleteCommand="DELETE FROM Dipendente WHERE ID = @ID"></asp:SqlDataSource>
-
                 <asp:GridView ID="GridDipendenti" DataSourceID="DDipendenti" runat="server" AutoGenerateColumns="False" CssClass="table w-100 text-center">
                     <Columns>
                         <asp:TemplateField>
@@ -123,10 +115,8 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-
-                <asp:Button ID="NewDip" runat="server" Text="New" OnClick="NewDipendente" CssClass="btn btn-dark mt-2" />
+                <asp:Button ID="NewDip" runat="server" Text="+ New" OnClick="NewDipendente" CssClass="btn btn-dark mt-2 btn-custom-size" />
             </div>
         </asp:Panel>
     </main>
-
 </asp:Content>

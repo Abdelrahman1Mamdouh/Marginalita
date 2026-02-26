@@ -15,6 +15,8 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            gestioneCostiEsterni.Visible = false; 
+
             if (!IsPostBack)
             {
                 TabellaDipendente.SelectParameters["Monday"].DefaultValue =
@@ -56,21 +58,21 @@ namespace Marginalita
             tb.ForeColor = (oreInserite == 40) ? Color.Red : Color.Black;
         }
 
-        protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
-                HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
+        //protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
+        //        HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
 
-                string idProgettoFisso = "10";
+        //        string idProgettoFisso = "10";
 
-                if (idDipendenteHidden != null)
-                {
-                    txtOre.Text = RecuperaOreDalDatabase(idProgettoFisso, idDipendenteHidden.Value);
-                }
-            }
-        }
+        //        if (idDipendenteHidden != null)
+        //        {
+        //            txtOre.Text = RecuperaOreDalDatabase(idProgettoFisso, idDipendenteHidden.Value);
+        //        }
+        //    }
+        //}
 
         private string RecuperaOreDalDatabase(string idProgetto, string idDipendente)
         {
@@ -283,7 +285,8 @@ namespace Marginalita
 
             tvp.Columns.Add("IdDip", typeof(int));
             tvp.Columns.Add("dataAncoraggio", typeof(DateTime));
-            tvp.Columns.Add("Ore", typeof(decimal));
+            tvp.Columns.Add("OreInterne", typeof(decimal));
+            tvp.Columns.Add("OreEsterne", typeof(decimal));
 
             DateTime anchor = GetTargetMonday();
 
@@ -293,26 +296,33 @@ namespace Marginalita
                     continue;
 
                 HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
-                TextBox txtOre = (TextBox)item.FindControl("InputOre");
+                TextBox txtOreInterne = (TextBox)item.FindControl("InputOreInterne");
+                TextBox txtOreEsterne = (TextBox)item.FindControl("InputOreEsterne");
 
-                if (hfIdDipendente == null || txtOre == null)
+                if (hfIdDipendente == null || txtOreInterne == null || txtOreEsterne == null)
                     continue;
 
                 if (!int.TryParse(hfIdDipendente.Value, out int idDip))
                     continue;
 
-                decimal ore = 0;
-                if (!string.IsNullOrWhiteSpace(txtOre.Text))
-                    decimal.TryParse(txtOre.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
-                        System.Globalization.CultureInfo.InvariantCulture, out ore);
+                decimal oreI = 0;
+                if (!string.IsNullOrWhiteSpace(txtOreInterne.Text))
+                    decimal.TryParse(txtOreInterne.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture, out oreI);
 
-                
-                if (ore <= 0) continue;
+                decimal oreE = 0;
+                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))
+                    decimal.TryParse(txtOreEsterne.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture, out oreE);
+
+
+                if (oreI <= 0 && oreE <= 0) continue;
 
                 DataRow row = tvp.NewRow();
                 row["IdDip"] = idDip;
                 row["dataAncoraggio"] = anchor;
-                row["Ore"] = ore;
+                row["OreInterne"] = oreI;
+                row["OreEsterne"] = oreE;
                 tvp.Rows.Add(row);
             }
 
