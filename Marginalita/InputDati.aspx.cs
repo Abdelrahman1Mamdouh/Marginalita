@@ -131,7 +131,6 @@ namespace Marginalita
         protected void EliProgetto(object sender, EventArgs e)
         {
             DProgetti.Delete();
-            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
         protected void AnnullaProgetto(object sender, EventArgs e)
@@ -155,7 +154,6 @@ namespace Marginalita
         {
             DSocieta.Delete();
             DProgetti.Delete();
-            DFake.Delete();
             Response.Redirect("Anagrafiche.aspx");
         }
         protected void AnnullaSocieta(object sender, EventArgs e)
