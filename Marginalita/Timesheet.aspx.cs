@@ -22,7 +22,7 @@ namespace Marginalita
                 TabellaDipendente.SelectParameters["Monday"].DefaultValue =
                     GetTargetMonday().ToString("yyyy-MM-dd");
 
-                DSMatrix.SelectParameters["Mode"].DefaultValue = "Dipendenti";
+                DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
 
                 ViewFake.DataBind();
@@ -30,33 +30,73 @@ namespace Marginalita
                 GrigliaAssenze();
             }
         }
-
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
-            TextBox tb = (TextBox)sender;
-            string s = (tb.Text ?? "").Trim();
+            TextBox tbModificata = (TextBox)sender;
 
-            if (string.IsNullOrWhiteSpace(s))
+            RepeaterItem riga = (RepeaterItem)tbModificata.NamingContainer;
+
+            TextBox txtInterne = (TextBox)riga.FindControl("OreInterne");
+            TextBox txtEsterne = (TextBox)riga.FindControl("OreEsterne");
+
+            decimal oreI = TryParseDecimal(txtInterne.Text);
+            decimal oreE = TryParseDecimal(txtEsterne.Text);
+
+            decimal totale = oreI + oreE;
+
+            if (totale > 40)
             {
-                tb.ForeColor = Color.Black;
-                return;
+                txtInterne.ForeColor = System.Drawing.Color.Red;
+                txtEsterne.ForeColor = System.Drawing.Color.Red;
+
+            }
+            else
+            {
+                txtInterne.ForeColor = System.Drawing.Color.Black;
+                txtEsterne.ForeColor = System.Drawing.Color.Black;
             }
 
-            if (!decimal.TryParse(s.Replace(",", "."),
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture, out decimal oreInserite))
-            {
-                tb.ForeColor = Color.Red;
-                return;
-            }
-
-            // cap 0..40
-            if (oreInserite < 0) oreInserite = 0;
-            if (oreInserite > 40) oreInserite = 40;
-
-            tb.Text = oreInserite.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
-            tb.ForeColor = (oreInserite == 40) ? Color.Red : Color.Black;
+            txtInterne.Text = oreI.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+            txtEsterne.Text = oreE.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
         }
+
+        private decimal TryParseDecimal(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return 0;
+
+            decimal.TryParse(input.Replace(",", "."),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture, out decimal result);
+
+            return result;
+        }
+
+        //protected void InputOre_TextChanged(object sender, EventArgs e)
+        //{
+        //    TextBox tb = (TextBox)sender;
+        //    string s = (tb.Text ?? "").Trim();
+
+        //    if (string.IsNullOrWhiteSpace(s))
+        //    {
+        //        tb.ForeColor = Color.Black;
+        //        return;
+        //    }
+
+        //    if (!decimal.TryParse(s.Replace(",", "."),
+        //        System.Globalization.NumberStyles.Any,
+        //        System.Globalization.CultureInfo.InvariantCulture, out decimal oreInserite))
+        //    {
+        //        tb.ForeColor = Color.Red;
+        //        return;
+        //    }
+
+
+        //    if (oreInserite < 0) oreInserite = 0;
+        //    if (oreInserite > 40) oreInserite = 40;
+
+        //    tb.Text = oreInserite.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        //    tb.ForeColor = (oreInserite == 40) ? Color.Red : Color.Black;
+        //}
 
         //protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
         //{
@@ -74,19 +114,19 @@ namespace Marginalita
         //    }
         //}
 
-        private string RecuperaOreDalDatabase(string idProgetto, string idDipendente)
-        {
-            using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-            {
-                string sql = "SELECT Ore FROM Fake WHERE Progetto = @p AND Dipendente = @d";
-                SqlCommand comando = new SqlCommand(sql, connessione);
-                comando.Parameters.AddWithValue("@p", idProgetto);
-                comando.Parameters.AddWithValue("@d", idDipendente);
-                connessione.Open();
-                object risultato = comando.ExecuteScalar();
-                return risultato != null ? risultato.ToString() : "";
-            }
-        }
+        //private string RecuperaOreDalDatabase(string idProgetto, string idDipendente)
+        //{
+        //    using (SqlConnection connessione = new SqlConnection(stringaConnessione))
+        //    {
+        //        string sql = "SELECT Ore FROM Fake WHERE Progetto = @p AND Dipendente = @d";
+        //        SqlCommand comando = new SqlCommand(sql, connessione);
+        //        comando.Parameters.AddWithValue("@p", idProgetto);
+        //        comando.Parameters.AddWithValue("@d", idDipendente);
+        //        connessione.Open();
+        //        object risultato = comando.ExecuteScalar();
+        //        return risultato != null ? risultato.ToString() : "";
+        //    }
+        //}
 
 
 
@@ -99,8 +139,6 @@ namespace Marginalita
 
             
         }
-
-      
         private void GrigliaCostiEsterni()
         {
             if (CostiEsterni != null && GridCostiEsterni != null)
@@ -128,37 +166,27 @@ namespace Marginalita
             decimal ore = decimal.Parse(oreStr);
 
 
-            // Imposta i parametri del SqlDataSource (nomi devono corrispondere all'InsertCommand)
             TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
             TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
             TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
             TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");       
 
-            // Esegue l'INSERT tramite SqlDataSource (senza try/catch come richiesto)
             TabellaAssenze.Insert();
-
-            // Aggiorna la griglia
             GrigliaAssenze();
         }
 
         protected void Extra_Click(object sender, EventArgs e)
         {
-            // Leggi i valori dai controlli della pagina
             string fornitore = TIntestazione.Text.Trim();
             string descrizione = TDescrizione.Text.Trim();
             if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
                 return;
 
-            // Imposta i parametri (nomi devono corrispondere a InsertParameters in .aspx)
             CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
             CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
             CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
            
-
-            // Esegue l'INSERT
             CostiEsterni.Insert();
-
-            // Aggiorna visualizzazione
             GrigliaCostiEsterni();
         }
  
