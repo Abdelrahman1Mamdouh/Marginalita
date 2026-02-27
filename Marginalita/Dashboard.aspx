@@ -84,7 +84,46 @@
                         ↗
                     </div>
                 </div>
+                <!-- Chart -->
+                <asp:SqlDataSource runat="server"
+    ID="ChartMARGINE"
+    ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+    ProviderName="System.Data.SqlClient"
+    SelectCommand="
+                    SELECT 'Residuo' AS Label,AVG(Round((Budget - Residuo)*100 / Budget,0)) AS Value
+                    FROM Progetto
+                   
+                    UNION ALL
+                    SELECT 'Margine' AS Label,AVG(Round(Residuo * 100 / Budget,0)) AS Value
+                    FROM Progetto;"
+                    >
+    
+</asp:SqlDataSource>
+                
+                   <div class="DSCard-value">
+       <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE">
+           <Series>
+               <asp:Series Name="Series1"
+                   ChartType="Doughnut"
+                   XValueMember="Label"
+                   YValueMembers="Value"
+                   IsValueShownAsLabel="false"
+                   LegendText="#VALX (#PERCENT{P0})"
+                   Label="#VALY"
+                   BorderWidth="0" />
+           </Series>
 
+           <ChartAreas>
+               <asp:ChartArea Name="ChartArea1">
+                   <Area3DStyle Enable3D="true" />
+               </asp:ChartArea>
+           </ChartAreas>
+
+           <Legends>
+               <asp:Legend Enabled="true" />
+           </Legends>
+       </asp:Chart>
+   </div>
                 <!-- Card 4 -->
                 <div class="dashCard">
                     <div class="dashCard-text">
