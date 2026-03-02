@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Drawing;
+using System.Web.UI.DataVisualization.Charting;
+
 
 namespace Marginalita
 {
@@ -14,7 +9,25 @@ namespace Marginalita
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
+        }
+
+        protected void Chart_DataBound(object sender, EventArgs e)
+        {
+
+            Chart Chart1 = (Chart)sender;
+
+            foreach (var point in Chart1.Series["Series1"].Points)
+            {
+                if (point.AxisLabel == "Costi")
+                    point.Color = Color.Red;
+                else if (point.AxisLabel == "Margine")
+                    point.Color = Color.Green;
+
+                point.LabelForeColor = Color.White;
+                point.Font = new Font("Arial", 10, FontStyle.Bold);
+                point.Label = point.YValues[0].ToString("0") + "%";
+            }
         }
     }
 }
