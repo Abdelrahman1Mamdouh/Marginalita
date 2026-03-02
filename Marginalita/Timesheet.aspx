@@ -4,103 +4,121 @@
 
     <asp:HiddenField ID="CostiAssenzeID" runat="server" />
     <asp:HiddenField ID="DeleteCostiAssenze" runat="server" Value="0" />
-    
-    <asp:SqlDataSource runat="server" ID="TabellaProgetto" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
-        SelectCommand="SELECT ID, Nome FROM Progetto" />
-   
-    <asp:SqlDataSource runat="server" ID="TabellaDipendente" 
-    ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-    SelectCommand="
-        SELECT 
-            d.ID, d.Nome, d.Cognome, d.CostoOrario,
-            CAST(ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0) AS DECIMAL(10,2)) AS OreSettimana
-        FROM Dipendente d
-        LEFT JOIN Fake f
-            ON f.Dipendente = d.ID
-           AND f.Creata >= @Monday
-           AND f.Creata < DATEADD(DAY,5,@Monday)
-           AND f.Progetto IS NOT NULL
-        GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
-        ORDER BY d.Nome, d.Cognome
-    ">
-    <SelectParameters>
-        <asp:Parameter Name="Monday" Type="DateTime" />
-    </SelectParameters>
-</asp:SqlDataSource>
 
-    <asp:SqlDataSource runat="server" ID="DSFake" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
-        SelectCommand="SELECT Dipendente, Creata, Costo FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())" 
-        InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto)">
+    <asp:SqlDataSource runat="server" ID="TabellaProgetto"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT ID, Nome FROM Progetto" />
+
+    <asp:SqlDataSource runat="server" ID="TabellaDipendente"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT ID, Nome, Cognome, 0 AS OreEsterne,0  AS OreInterne FROM Dipendente ORDER BY Nome, Cognome">
+        <SelectParameters>
+            <asp:Parameter Name="Monday" Type="DateTime" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+
+    <asp:SqlDataSource runat="server" ID="DSFake"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT Dipendente, Creata, Costo, OreInterne, OreEsterne FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())"
+        InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto, OreInterne, OreEsterne) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto, @OreInterne, @OreEsterne)">
         <InsertParameters>
-            <asp:Parameter Name="Costo" Type="Decimal"/>
-            <asp:Parameter Name="Fornitore" Type="String"/>
-            <asp:Parameter Name="Descrizione" Type="String"/>
-            <asp:Parameter Name="Progetto" Type="Int32"/>
+            <asp:Parameter Name="Costo" Type="Decimal" />
+            <asp:Parameter Name="Fornitore" Type="String" />
+            <asp:Parameter Name="Descrizione" Type="String" />
+            <asp:Parameter Name="Progetto" Type="Int32" />
         </InsertParameters>
     </asp:SqlDataSource>
-    <asp:SqlDataSource runat="server" ID="CostiEsterni" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
-        SelectCommand="SELECT ID, Costo, Fornitore, Descrizione FROM CostiEsterni" 
-        InsertCommand="INSERT INTO CostiEsterni (Costo, Fornitore, Descrizione) VALUES (@Costo, @Fornitore, @Descrizione)" 
+    <asp:SqlDataSource runat="server" ID="CostiEsterni"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT ID, Costo, Fornitore, Descrizione FROM CostiEsterni"
+        InsertCommand="INSERT INTO CostiEsterni (Costo, Fornitore, Descrizione) VALUES (@Costo, @Fornitore, @Descrizione)"
         DeleteCommand="DELETE FROM CostiEsterni WHERE ID = @ID">
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
         <InsertParameters>
-            <asp:Parameter Name="Costo" Type="Decimal"/>
-            <asp:Parameter Name="Fornitore" Type="String"/>
-            <asp:Parameter Name="Descrizione" Type="String"/>
-            
+            <asp:Parameter Name="Costo" Type="Decimal" />
+            <asp:Parameter Name="Fornitore" Type="String" />
+            <asp:Parameter Name="Descrizione" Type="String" />
+
         </InsertParameters>
     </asp:SqlDataSource>
-    <asp:SqlDataSource runat="server" ID="TabellaAssenze" 
-        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
-        SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze" 
-        InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze)" 
+    <asp:SqlDataSource runat="server" ID="TabellaAssenze"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze"
+        InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze)"
         DeleteCommand="DELETE FROM OreAssenze WHERE ID = @ID">
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
         <InsertParameters>
-            <asp:Parameter Name="Dipendente" Type="Int32"/>
-            <asp:Parameter Name="Motivo" Type="Int32"/>
-            <asp:Parameter Name="Ore" Type="Decimal"/>
-            <asp:Parameter Name="DataAssenze" Type="DateTime"/>
-            
+            <asp:Parameter Name="Dipendente" Type="Int32" />
+            <asp:Parameter Name="Motivo" Type="Int32" />
+            <asp:Parameter Name="Ore" Type="Decimal" />
+            <asp:Parameter Name="DataAssenze" Type="DateTime" />
+
         </InsertParameters>
     </asp:SqlDataSource>
-    <asp:SqlDataSource runat="server" ID="TabellaMotivo" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" SelectCommand="SELECT ID, Descrizione FROM Motivo" />
+    <asp:SqlDataSource runat="server" ID="TabellaMotivo"
+        ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
+        SelectCommand="SELECT ID, Descrizione FROM Motivo" />
 
     <div class="container-fluid mt-4">
         <section class="DSCard-grid">
-            
             <div id="divOre" class="DSCard-card p-3">
                 <div class="DSCard-text w-100">
-                    <div class="DSCard-label"><i class="bi bi-person-badge"></i> Ore Settimanali</div>
+                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Settimanali</div>
                     <div class="mt-3 overflow-auto" style="max-height: 250px;">
                         <table class="table table-sm border-0">
-                            <asp:Repeater ID="RepSingolo" runat="server" DataSourceID="TabellaDipendente">
-                                <ItemTemplate>
-                                    <tr>
-                                        <td class="align-middle border-0">
-                                            <strong><%# Eval("Nome") %> <%# Eval("Cognome") %></strong>
-                                            <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                            
-                                        </td>
-                                        <td class="border-0">
-                                         <asp:TextBox runat="server" ID="InputOre"
-                                            Text='<%# Eval("OreSettimana","{0:0.##}") %>'
-                                            TextMode="Number" min="0" max="40"
-                                            CssClass="form-control form-control-sm text-center"
-                                            style="width:70px;"
-                                            AutoPostBack="true"
-                                            OnTextChanged="InputOre_TextChanged" />
-                                        </td>
-                                    </tr>
-                                </ItemTemplate>
-                            </asp:Repeater>
+                            <thead>
+                                <tr>
+                                    <th class="border-0">Dipendente</th>
+                                    <th class="border-0 text-center" style="width: 70px;">
+                                        <small>
+                                            <asp:Label ID="OreSett" Text="Ore interne" runat="server" /></small>
+                                    </th>
+                                    <th class="border-0 text-center" style="width: 70px;">
+                                        <small>
+                                            <asp:Label ID="OreEst" Text="Ore esterne" runat="server" /></small>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <asp:Repeater ID="RepSingolo" runat="server" DataSourceID="TabellaDipendente">
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td class="align-middle border-0">
+                                                <strong><%# Eval("Nome") %> <%# Eval("Cognome") %></strong>
+                                                <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
+                                            </td>
+                                            <td class="border-0 text-center">
+                                                <asp:UpdatePanel ID="upOreInterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox runat="server" ID="OreInterne"
+                                                            Text='<%# Eval("OreInterne","{0:0.##}") %>'
+                                                            TextMode="Number" min="0" max="40" step="0.01"
+                                                            CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-interne"
+                                                            Style="width: 70px;"
+                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                            <td class="border-0 text-center">
+                                                <asp:UpdatePanel ID="upOreEsterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox runat="server" ID="OreEsterne"
+                                                            Text='<%# Eval("OreEsterne","{0:0.##}") %>'
+                                                            TextMode="Number" min="0" max="40" step="0.01"
+                                                            CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-esterne"
+                                                            Style="width: 70px;"
+                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -108,7 +126,7 @@
 
             <div id="gestioneAssenze" class="DSCard-card p-3">
                 <div class="DSCard-text w-100">
-                    <div class="DSCard-label"><i class="bi bi-calendar-minus"></i> Assenze</div>
+                    <div class="DSCard-label"><i class="bi bi-calendar"></i>Assenze</div>
                     <div class="mt-2 overflow-auto mb-3" style="max-height: 120px;">
                         <asp:GridView ID="GridAssenze" runat="server" DataSourceID="TabellaAssenze" AutoGenerateColumns="False" DataKeyNames="ID" CssClass="table table-sm border-0 small" GridLines="None">
                             <Columns>
@@ -124,7 +142,7 @@
                         </asp:GridView>
                     </div>
                     <div class="bg-light p-2 rounded">
-                        <asp:DropDownList ID="AssenzeDDL" runat="server" DataSourceID="TabellaDipendente" DataTextField="Nome" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
+                        <asp:DropDownList ID="AssenzeDDL" runat="server" DataSourceID="TabellaDipendente" DataTextField="Cognome" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
                             <asp:ListItem Value="0">Seleziona dipendente</asp:ListItem>
                         </asp:DropDownList>
                         <asp:DropDownList ID="MotivoDDL" runat="server" DataSourceID="TabellaMotivo" DataTextField="Descrizione" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
@@ -137,16 +155,17 @@
                                 <i class="bi bi-calendar"></i>
                             </asp:LinkButton>
                         </div>
-                        <asp:Panel ID="pnlCalendario" runat="server" Visible="false" CssClass="position-absolute bg-white border shadow p-1" style="z-index:1000;">
-                            <asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" /></asp:Panel>
-                        <asp:Button id="InvioAssenze" Text="+ Aggiungi" OnClick="Assenze_Click" runat="server" CssClass="btn btn-dark btn-sm w-100 mt-1"/>
+                        <asp:Panel ID="pnlCalendario" runat="server" Visible="false" CssClass="position-absolute bg-white border shadow p-1" Style="z-index: 1000;">
+                            <asp:Calendar ID="CDurata" runat="server" OnSelectionChanged="CDurata_SelectionChanged" />
+                        </asp:Panel>
+                        <asp:Button ID="InvioAssenze" Text="+ Aggiungi" OnClick="Assenze_Click" runat="server" CssClass="btn btn-dark btn-sm w-100 mt-1" />
                     </div>
                 </div>
             </div>
 
-            <div id="gestioneCostiEsterni" class="DSCard-card p-3">
+            <div id="gestioneCostiEsterni" class="DSCard-card p-3" runat="server">
                 <div class="DSCard-text w-100">
-                    <div class="DSCard-label"><i class="bi bi-receipt"></i> Costi Esterni</div>
+                    <div class="DSCard-label"><i class="bi bi-receipt"></i>Costi Esterni</div>
                     <div class="mt-2 overflow-auto mb-3" style="max-height: 120px;">
                         <asp:GridView ID="GridCostiEsterni" runat="server" DataSourceID="CostiEsterni" AutoGenerateColumns="False" DataKeyNames="ID" CssClass="table table-sm border-0 small" GridLines="None">
                             <Columns>
@@ -161,22 +180,23 @@
                         </asp:GridView>
                     </div>
                     <div class="bg-light p-2 rounded">
-                        <asp:TextBox runat="server" ID="TIntestazione" placeholder="Fornitore" CssClass="form-control form-control-sm mb-1"/>
+                        <asp:TextBox runat="server" ID="TIntestazione" placeholder="Fornitore" CssClass="form-control form-control-sm mb-1" />
                         <asp:TextBox runat="server" ID="TDescrizione" placeholder="Descrizione" CssClass="form-control form-control-sm mb-1" />
                         <asp:TextBox runat="server" ID="TImporto" TextMode="Number" placeholder="Importo" CssClass="form-control form-control-sm mb-1" />
-                        <asp:Button id="BExtra" Text="+ Aggiungi" OnClick="Extra_Click" runat="server" CssClass="btn btn-dark btn-sm w-100 mt-1"/>
+                        <asp:Button ID="BExtra" Text="+ Aggiungi" OnClick="Extra_Click" runat="server" CssClass="btn btn-dark btn-sm w-100 mt-1" />
                     </div>
                 </div>
             </div>
         </section>
 
         <div class="d-flex justify-content-end my-4">
-            <asp:Button id="Binvia" Text="Invio" OnClick="btnSalvaTutto" runat="server" CssClass="btn btn-primary btn-lg shadow-sm px-5" />
+            <asp:Button ID="Binvia" Text="Invio" OnClick="btnSalvaTutto" runat="server" CssClass="btn btn-primary shadow-sm btn-custom-size" />
         </div>
 
-<section class="DSCard-card p-4 mt-5">
-            <asp:SqlDataSource ID="DSMatrix" runat="server" 
-                ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True" 
+
+        <section class="DSCard-card p-4 mt-5">
+            <asp:SqlDataSource ID="DSMatrix" runat="server"
+                ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
                 SelectCommandType="StoredProcedure" SelectCommand="Time_Sheet">
                 <SelectParameters>
                     <asp:Parameter Name="Mode" Type="String" />
@@ -186,42 +206,38 @@
 
             <div style="display: block; width: 100%; margin-bottom: 20px;">
                 <div class="table-responsive">
-            <asp:GridView ID="ViewFake" runat="server" DataSourceID="DSMatrix" 
-                AutoGenerateColumns="True" 
-                CssClass="table table-sm table-hover align-middle w-100" 
-                GridLines="Horizontal" BorderStyle="None" BorderWidth="0px">
-                <HeaderStyle CssClass="table-dark" />
-            </asp:GridView>
+                    <asp:GridView ID="ViewFake" runat="server" DataSourceID="DSMatrix"
+                        AutoGenerateColumns="True"
+                        CssClass="table table-sm align-middle w-100">
+                        <HeaderStyle CssClass="table-dark" />
+                    </asp:GridView>
                 </div>
             </div>
         </section>
         <div>
-                     <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
-     
-     <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true" 
-         OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
-         <asp:ListItem Value="Dipendenti">Dipendenti</asp:ListItem>
-         <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
-     </asp:DropDownList>
-
-     <div class="input-group input-group-sm w-auto" style="position: relative;">
-         <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true" 
-             CssClass="form-control" placeholder="Mese" style="width:100px;" />
-         <asp:LinkButton ID="SelectMonth" runat="server" OnClick="ApriCalendario" 
-             CssClass="btn btn-outline-secondary">
+            <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
+                <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
+                    OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
+                    <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
+                    <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
+                    <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
+                </asp:DropDownList>
+                <div class="input-group input-group-sm w-auto" style="position: relative;">
+                    <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true"
+                        CssClass="form-control" placeholder="Mese" Style="width: 100px;" />
+                    <asp:LinkButton ID="SelectMonth" runat="server" OnClick="ApriCalendario"
+                        CssClass="btn btn-outline-secondary">
              <i class="bi bi-calendar3"></i>
-         </asp:LinkButton>
-         
-         <asp:Panel ID="Panel1" runat="server" Visible="false" 
-             style="position:absolute; z-index:1000; background:white; border:1px solid #ccc; bottom: 40px; right: 0; min-width:250px;">
-             <asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="ChangeFake" />
-         </asp:Panel>
-     </div>
+                    </asp:LinkButton>
 
-     <asp:Button ID="Export" runat="server" Text="Export Excel" 
-         OnClick="ExportExcel" CssClass="btn btn-success btn-sm px-3"/>
-    </div>
+                    <asp:Panel ID="Panel1" runat="server" Visible="false"
+                        Style="position: absolute; z-index: 1000; background: white; border: 1px solid #ccc; bottom: 40px; right: 0; min-width: 250px;">
+                        <asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="ChangeFake" />
+                    </asp:Panel>
+                </div>
+                <asp:Button ID="Export" runat="server" Text="Export Excel"
+                    OnClick="ExportExcel" CssClass="btn btn-success shadow-sm btn-custom-size" />
+            </div>
         </div>
-    
-    <asp:HiddenField ID="hfSelectedDates" runat="server" />
+        <asp:HiddenField ID="hfSelectedDates" runat="server" />
 </asp:Content>
