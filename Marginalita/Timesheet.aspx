@@ -11,22 +11,7 @@
 
     <asp:SqlDataSource runat="server" ID="TabellaDipendente"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT 
-                        d.ID,
-                        d.Nome,
-                        d.Cognome,
-                        CAST(ISNULL(SUM(CASE WHEN p.IsEsterno = 0 THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END),0) AS DECIMAL(10,2)) AS OreInterne,
-                        CAST(ISNULL(SUM(CASE WHEN p.IsEsterno = 1 THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END),0) AS DECIMAL(10,2)) AS OreEsterne
-                    FROM Dipendente d
-                    LEFT JOIN Fake f
-                        ON f.Dipendente = d.ID
-                       AND f.Creata >= @Monday
-                       AND f.Creata < DATEADD(DAY, 5, @Monday)
-                       AND f.Progetto IS NOT NULL
-                    LEFT JOIN Progetto p
-                        ON p.ID = f.Progetto
-                    GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
-                    ORDER BY d.Nome, d.Cognome">
+        SelectCommand="SELECT ID, Nome, Cognome, 0 AS OreEsterne,0  AS OreInterne FROM Dipendente ORDER BY Nome, Cognome">
         <SelectParameters>
             <asp:Parameter Name="Monday" Type="DateTime" />
         </SelectParameters>
