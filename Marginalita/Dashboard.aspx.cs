@@ -14,27 +14,22 @@ namespace Marginalita
         bool[] vedi = new bool[3];
 
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
-                // Assicurati che il grafico sia bindato
-                Chart1.DataBind();
+protected void Page_Load(object sender, EventArgs e)
+{
+    Chart1.DataBind();
 
-                foreach (var point in Chart1.Series["Series1"].Points)
-                {
-                    if (point.AxisLabel == "Costi")
-                        point.Color = System.Drawing.Color.Red; // o System.Drawing.Color.FromArgb(220,53,69) per rosso personalizzato
-                    else if (point.AxisLabel == "Margine")
-                        point.Color = System.Drawing.Color.Green; // o System.Drawing.Color.FromArgb(40,167,69) per verde personalizzato
+    foreach (var point in Chart1.Series["Series1"].Points)
+    {
+        if (point.AxisLabel == "Costi")
+            point.Color = System.Drawing.Color.Red; // o System.Drawing.Color.FromArgb(220,53,69) per rosso personalizzato
+        else if (point.AxisLabel == "Margine")
+            point.Color = System.Drawing.Color.Green; // o System.Drawing.Color.FromArgb(40,167,69) per verde personalizzato
 
-                    point.LabelForeColor = System.Drawing.Color.White;   // testo bianco
-                    point.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold); // grassetto
-                    point.Label = point.YValues[0].ToString("0") + "%"; // mostra il valore
-                }
-            }
-
-        }
+        point.LabelForeColor = System.Drawing.Color.White;   // testo bianco
+        point.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold); // grassetto
+        point.Label = point.YValues[0].ToString("0") + "%"; // mostra il valore
+    }
+}
 
         protected void btnVisualizza_Click(object sender, EventArgs e)
         {
