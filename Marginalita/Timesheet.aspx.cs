@@ -15,12 +15,14 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            gestioneCostiEsterni.Visible = false; 
+            gestioneCostiEsterni.Visible = false;
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue =
+            GetTargetMonday().ToString("yyyy-MM-dd");
 
             if (!IsPostBack)
             {
-                TabellaDipendente.SelectParameters["Monday"].DefaultValue =
-                    GetTargetMonday().ToString("yyyy-MM-dd");
+               
 
                 DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
@@ -313,8 +315,8 @@ namespace Marginalita
 
             tvp.Columns.Add("IdDip", typeof(int));
             tvp.Columns.Add("dataAncoraggio", typeof(DateTime));
-            tvp.Columns.Add("OreInterne", typeof(decimal));
-            tvp.Columns.Add("OreEsterne", typeof(decimal));
+            tvp.Columns.Add("OreI", typeof(decimal));
+            tvp.Columns.Add("OreE", typeof(decimal));
 
             DateTime anchor = GetTargetMonday();
 
@@ -324,8 +326,8 @@ namespace Marginalita
                     continue;
 
                 HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
-                TextBox txtOreInterne = (TextBox)item.FindControl("InputOreInterne");
-                TextBox txtOreEsterne = (TextBox)item.FindControl("InputOreEsterne");
+                TextBox txtOreInterne = (TextBox)item.FindControl("OreInterne");
+                TextBox txtOreEsterne = (TextBox)item.FindControl("OreEsterne");
 
                 if (hfIdDipendente == null || txtOreInterne == null || txtOreEsterne == null)
                     continue;
@@ -349,8 +351,8 @@ namespace Marginalita
                 DataRow row = tvp.NewRow();
                 row["IdDip"] = idDip;
                 row["dataAncoraggio"] = anchor;
-                row["OreInterne"] = oreI;
-                row["OreEsterne"] = oreE;
+                row["OreI"] = oreI;
+                row["OreE"] = oreE;
                 tvp.Rows.Add(row);
             }
 
