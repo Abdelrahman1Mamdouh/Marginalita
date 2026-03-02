@@ -11,13 +11,28 @@
 
     <asp:SqlDataSource runat="server" ID="TabellaDipendente"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT ID, Nome, Cognome, 0 AS OreEsterne,0  AS OreInterne FROM Dipendente ORDER BY Nome, Cognome">
+        SelectCommand="SELECT 
+                        d.ID,
+                        d.Nome,
+                        d.Cognome,
+                        CAST(ISNULL(SUM(CASE WHEN p.IsEsterno = 0 THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END),0) AS DECIMAL(10,2)) AS OreInterne,
+                        CAST(ISNULL(SUM(CASE WHEN p.IsEsterno = 1 THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END),0) AS DECIMAL(10,2)) AS OreEsterne
+                    FROM Dipendente d
+                    LEFT JOIN Fake f
+                        ON f.Dipendente = d.ID
+                       AND f.Creata >= @Monday
+                       AND f.Creata < DATEADD(DAY, 5, @Monday)
+                       AND f.Progetto IS NOT NULL
+                    LEFT JOIN Progetto p
+                        ON p.ID = f.Progetto
+                    GROUP BY d.ID, d.Nome, d.Cognome, d.CostoOrario
+                    ORDER BY d.Nome, d.Cognome">
         <SelectParameters>
             <asp:Parameter Name="Monday" Type="DateTime" />
         </SelectParameters>
     </asp:SqlDataSource>
 
-    <asp:SqlDataSource runat="server" ID="DSFake"
+    <%--<asp:SqlDataSource runat="server" ID="DSFake"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="SELECT Dipendente, Creata, Costo, OreInterne, OreEsterne FROM Fake WHERE MONTH(Creata) = MONTH(GETDATE()) AND YEAR(Creata) = YEAR(GETDATE())"
         InsertCommand="INSERT INTO Fake (Dipendente, Costo, Descrizione, Progetto, OreInterne, OreEsterne) VALUES (@Costo, @Fornitore, @Descrizione, @Progetto, @OreInterne, @OreEsterne)">
@@ -27,7 +42,7 @@
             <asp:Parameter Name="Descrizione" Type="String" />
             <asp:Parameter Name="Progetto" Type="Int32" />
         </InsertParameters>
-    </asp:SqlDataSource>
+    </asp:SqlDataSource>--%>
     <asp:SqlDataSource runat="server" ID="CostiEsterni"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="SELECT ID, Costo, Fornitore, Descrizione FROM CostiEsterni"
