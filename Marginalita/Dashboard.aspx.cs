@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
 namespace Marginalita
@@ -14,22 +16,24 @@ namespace Marginalita
         bool[] vedi = new bool[3];
 
 
-protected void Page_Load(object sender, EventArgs e)
-{
-    Chart1.DataBind();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+        }
 
-    foreach (var point in Chart1.Series["Series1"].Points)
-    {
-        if (point.AxisLabel == "Costi")
-            point.Color = System.Drawing.Color.Red; // o System.Drawing.Color.FromArgb(220,53,69) per rosso personalizzato
-        else if (point.AxisLabel == "Margine")
-            point.Color = System.Drawing.Color.Green; // o System.Drawing.Color.FromArgb(40,167,69) per verde personalizzato
+        protected void Chart1_DataBound(object sender, EventArgs e)
+        {
+            foreach (var point in Chart1.Series["Series1"].Points)
+            {
+                if (point.AxisLabel == "Costi")
+                    point.Color = Color.Red;
+                else if (point.AxisLabel == "Margine")
+                    point.Color = Color.Green;
 
-        point.LabelForeColor = System.Drawing.Color.White;   // testo bianco
-        point.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold); // grassetto
-        point.Label = point.YValues[0].ToString("0") + "%"; // mostra il valore
-    }
-}
+                point.LabelForeColor = Color.White;
+                point.Font = new Font("Arial", 10, FontStyle.Bold);
+                point.Label = point.YValues[0].ToString("0") + "%";
+            }
+        }
 
         protected void btnVisualizza_Click(object sender, EventArgs e)
         {
@@ -46,9 +50,9 @@ protected void Page_Load(object sender, EventArgs e)
             vedi[2] = false;
 
             Session["vedi"] = vedi;
-            
+
             Response.Redirect("InputDati.aspx");
-           
+
         }
         //protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         //{

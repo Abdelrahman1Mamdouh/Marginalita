@@ -100,7 +100,7 @@
                         </div>
                     </div>
 
-                    <asp:FormView ID="FV" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
+                    <asp:FormView ID="FV1" DataSourceID="TotOre" runat="server" RenderOuterTable="false">
                         <ItemTemplate>
                             <!-- TOT ORE-->
                             <div class="DSCard-card">
@@ -172,11 +172,12 @@
                             </div>
 
                             <div class="DSCard-value">
-                                <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE">
+                                <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE" OnDataBound="Chart_DataBound">
                                     <Series>
                                         <asp:Series Name="Series1"
                                             ChartType="Doughnut"
                                             XValueMember="Label"
+                                            Palette ="None"
                                             YValueMembers="Value"
                                             IsValueShownAsLabel="false"
                                             LegendText="#VALX (#PERCENT{P0})"
