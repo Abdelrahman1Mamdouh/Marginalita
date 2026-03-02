@@ -4,8 +4,9 @@
 
     <div>
         <div class="dashboardV2">
-            <section class="dashCards-grid">
+            <section class="dashCards-grid d-flex flex-nowrap" style="height:20%">
                 <!-- Card 1 -->
+            <div style="display:flex;flex-direction:column;width:30%;justify-content:space-between;/*background-color:greenyellow*/" id="card">
                 <div class="dashCard">
                     <div class="dashCard-text">
                         <div class="dashCard-label">Budget Totale</div>
@@ -27,7 +28,7 @@
                         </div>
                     </div>
 
-                    <div class="dashCard-icon dash-blue">
+                    <div class="dashCard-icon dash-blue w-auto">
                         €
                     </div>
                 </div>
@@ -65,7 +66,7 @@
                         <div class="dashCard-label">Margine Totale</div>
                         <asp:SqlDataSource ID="SqlDataSourceMargini" runat="server"
                             ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                            SelectCommand="SELECT AVG(Margine) AS TotaleMargini FROM Progetto"></asp:SqlDataSource>
+                            SelectCommand="SELECT AVG(CAST(Margine AS INT)) AS TotaleMargini FROM V_Margini"></asp:SqlDataSource>
                         <div class="dashCard-value">
                             <asp:Repeater ID="Repeater2" runat="server" DataSourceID="SqlDataSourceMargini">
                                 <ItemTemplate>
@@ -84,37 +85,88 @@
                         ↗
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 4 -->
-                <div class="dashCard">
-                    <div class="dashCard-text">
-                        <div class="dashCard-label">Report</div>
-                        <asp:SqlDataSource
-                            ID="SqlScadenze" runat="server"
-                            ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
-                            SelectCommand='SELECT 
-                                            P.ID, 
-                                            P.Nome, 
-                                            P.Budget, 
-                                            P.Fine,
-                                            CAST(V.Margine AS INT) AS MargineIntero
-                                            FROM Progetto AS P
-                                            JOIN V_Margini AS V ON V.ID = P.ID
-                                            WHERE P.Fine 
-                                            BETWEEN CAST(GETDATE() AS DATE) 
-                                            AND DATEADD(DAY, 10, CAST(GETDATE() AS DATE))
-                                            OR V.Margine&lt;30'></asp:SqlDataSource>
-                        <asp:GridView ID="GridView2" runat="server"
-                            DataSourceID="SqlScadenze"
-                            AutoGenerateColumns="False"
-                            CssClass="table table-striped w-100 text-center">
-                            <Columns>
-                                <asp:BoundField DataField="Nome" HeaderText="Progetto" />
-                                <asp:BoundField DataField="Fine" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />
+    <!-- Grafico -->
+
+            <div style="width:35%;align-content:center; background-color:green;">
+                <!-- Chart -->
+                <asp:SqlDataSource runat="server"
+    ID="ChartMARGINE"
+    ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+    ProviderName="System.Data.SqlClient"
+    SelectCommand="
+                    SELECT 'Residuo' AS Label,AVG(Round((Budget - Residuo)*100 / Budget,0)) AS Value
+                    FROM Progetto
+                   
+                    UNION ALL
+                    SELECT 'Margine' AS Label,AVG(Round(Residuo * 100 / Budget,0)) AS Value
+                    FROM Progetto;"
+                    >
+    
+</asp:SqlDataSource>
+                
+                   
+       <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE" CssClass="w-auto justify-content-center ">
+           <Series>
+               <asp:Series Name="Series1"
+                   ChartType="Doughnut"
+                   XValueMember="Label"
+                   YValueMembers="Value"
+                   IsValueShownAsLabel="false"
+                   LegendText="#VALX (#PERCENT{P0})"
+                   Label="#VALY"
+                   BorderWidth="0" />
+           </Series>
+
+           <ChartAreas>
+               <asp:ChartArea Name="ChartArea1">
+                   <Area3DStyle Enable3D="true" />
+               </asp:ChartArea>
+           </ChartAreas>
+
+           <Legends>
+               <asp:Legend Enabled="true" />
+           </Legends>
+       </asp:Chart>
+    
+   </div>
+
+             <!-- Card 4 -->
+    <div style="width:35%;/*background-color:mediumvioletred*/">
+       <div class="dashCard">
+           <div class="dashCard-text">
+               <div class="dashCard-label">Report</div>
+               <asp:SqlDataSource
+                   ID="SqlScadenze" runat="server"
+                   ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
+                   SelectCommand='SELECT 
+                                   P.ID, 
+                                   P.Nome, 
+                                   P.Budget, 
+                                   P.Fine,
+                                   P.GiorniRimanenti,
+                                   CAST(V.Margine AS INT) AS MargineIntero
+                                   FROM Progetto AS P
+                                   JOIN V_Margini AS V ON V.ID = P.ID
+                                   WHERE P.Fine 
+                                   BETWEEN CAST(GETDATE() AS DATE) 
+                                   AND DATEADD(DAY, 10, CAST(GETDATE() AS DATE))
+                                   OR V.Margine&lt;30'></asp:SqlDataSource>
+               <asp:GridView ID="GridView2" runat="server"
+                   DataSourceID="SqlScadenze"
+                   AutoGenerateColumns="False"
+                   CssClass="table table-striped w-100 text-center">
+                   <Columns>
+                       <asp:BoundField DataField="Nome" HeaderText="Progetto" />
+                       <asp:BoundField DataField="GiorniRimanenti" HeaderText="GiorniRimansti" />
+                       <asp:BoundField DataField="MargineIntero" HeaderText="Margine" />
+                       <%--<asp:BoundField DataField="Fine" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />--%>
                             </Columns>
                         </asp:GridView>
                     </div>
                 </div>
+        </div>
             </section>
         </div>
         <section class="mt-5">
