@@ -89,14 +89,14 @@
 
     <!-- Grafico -->
 
-            <div style="width:35%;align-content:center; background-color:green;">
+            <div style="width:35%;align-content:center;display:flex;justify-content:center;" class="dashCard">
                 <!-- Chart -->
                 <asp:SqlDataSource runat="server"
     ID="ChartMARGINE"
     ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
     ProviderName="System.Data.SqlClient"
     SelectCommand="
-                    SELECT 'Residuo' AS Label,AVG(Round((Budget - Residuo)*100 / Budget,0)) AS Value
+                    SELECT 'Costi' AS Label,AVG(Round((Budget - Residuo)*100 / Budget,0)) AS Value
                     FROM Progetto
                    
                     UNION ALL
@@ -107,7 +107,10 @@
 </asp:SqlDataSource>
                 
                    
-       <asp:Chart ID="Chart1" runat="server" DataSourceID="ChartMARGINE" CssClass="w-auto justify-content-center ">
+       <asp:Chart ID="Chart1" 
+                   runat="server" 
+                   DataSourceID="ChartMARGINE" 
+                   CssClass="w-auto justify-content-center">
            <Series>
                <asp:Series Name="Series1"
                    ChartType="Doughnut"
@@ -116,7 +119,8 @@
                    IsValueShownAsLabel="false"
                    LegendText="#VALX (#PERCENT{P0})"
                    Label="#VALY"
-                   BorderWidth="0" />
+                   BorderWidth="0"
+                   />
            </Series>
 
            <ChartAreas>
