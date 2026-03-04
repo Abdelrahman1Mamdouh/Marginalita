@@ -27,8 +27,8 @@
                 SUM(CASE WHEN f.Vedi = 1 AND f.Progetto IS NOT NULL THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END) AS OreEsterne
             FROM Fake f
             INNER JOIN Dipendente d ON d.ID = f.Dipendente
-            WHERE f.Creata >= @Monday
-              AND f.Creata < DATEADD(DAY, 5, @Monday)
+            WHERE f.Creata &gt;= @Monday
+              AND f.Creata &lt; DATEADD(DAY, 5, @Monday)
             GROUP BY f.Dipendente
         ) x ON x.Dipendente = d.ID
         ORDER BY d.Nome, d.Cognome

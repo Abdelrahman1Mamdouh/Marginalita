@@ -16,7 +16,7 @@ namespace Marginalita
         {
 
             Chart Chart1 = (Chart)sender;
-
+            Chart1.Palette = ChartColorPalette.None;
             foreach (var point in Chart1.Series["Series1"].Points)
             {
                 if (point.AxisLabel == "Costi")
