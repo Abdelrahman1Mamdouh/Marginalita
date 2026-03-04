@@ -251,7 +251,7 @@ namespace Marginalita
 
         protected void ExportExcel(object sender, EventArgs e)
         {
-            string fileName = "Report_" + DateTime.Now.ToString("MMMM_yyyy") + ".xlsx";
+            string fileName = "Report_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
             Response.ClearContent();
             Response.Buffer = true;
             Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", fileName));
