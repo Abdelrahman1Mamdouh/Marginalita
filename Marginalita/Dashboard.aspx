@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="dashCard-icon dash-green">
-                            <asp:Label ID="Label3" Text="&#8599;" runat="server" />
+                            <asp:Label ID="Label3" Text="&percnt;" runat="server" />
                         </div>
                     </div>
                 </div>
@@ -90,6 +90,7 @@
                 <!-- Grafico -->
 
                 <div style="width: 35%; align-content: center; display: flex; justify-content: center;" class="dashCard">
+                    <div class="dashCard-label">Chart Margine</div>
                     <!-- Chart -->
                     <asp:SqlDataSource runat="server"
                         ID="ChartMARGINE"
