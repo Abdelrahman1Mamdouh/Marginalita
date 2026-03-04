@@ -19,7 +19,7 @@ namespace Marginalita
             Chart1.Palette = ChartColorPalette.None;
             foreach (var point in Chart1.Series["Series1"].Points)
             {
-                if (point.AxisLabel == "Costi")
+                if (point.AxisLabel == "Residuo")
                     point.Color = Color.Red;
                 else if (point.AxisLabel == "Margine")
                     point.Color = Color.Green;
