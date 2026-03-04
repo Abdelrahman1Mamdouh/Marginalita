@@ -12,7 +12,6 @@
     <asp:SqlDataSource runat="server" ID="TabellaDipendente"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="
-        Select
             Select
                 d.ID,
                 d.Nome,
