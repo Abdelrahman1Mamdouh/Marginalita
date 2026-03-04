@@ -13,9 +13,11 @@
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
         SelectCommand="
         Select
-            d.ID,
-            d.Nome,
-            d.Cognome,
+            Select
+                d.ID,
+                d.Nome,
+                d.Cognome,
+                CONCAT(d.Nome, ' ' , d.Cognome) AS Nominativo,
             CAST(ISNULL(x.OreInterne, 0) AS DECIMAL(10,2)) AS OreInterne,
             CAST(ISNULL(x.OreEsterne, 0) AS DECIMAL(10,2)) AS OreEsterne
         FROM Dipendente d
@@ -163,7 +165,7 @@
                         </asp:GridView>
                     </div>
                     <div class="bg-light p-2 rounded">
-                        <asp:DropDownList ID="AssenzeDDL" runat="server" DataSourceID="TabellaDipendente" DataTextField="Cognome" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
+                        <asp:DropDownList ID="AssenzeDDL" runat="server" DataSourceID="TabellaDipendente" DataTextField="Nominativo" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
                             <asp:ListItem Value="0">Seleziona dipendente</asp:ListItem>
                         </asp:DropDownList>
                         <asp:DropDownList ID="MotivoDDL" runat="server" DataSourceID="TabellaMotivo" DataTextField="Descrizione" DataValueField="ID" AppendDataBoundItems="true" CssClass="form-select form-select-sm mb-1">
