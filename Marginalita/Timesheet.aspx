@@ -211,7 +211,7 @@
                 </div>
             </div>
         </section>
-
+     </div>
         <div class="d-flex justify-content-end my-4">
             <asp:Button ID="Binvia" Text="Invio" OnClick="btnSalvaTutto" runat="server" CssClass="btn btn-primary shadow-sm btn-custom-size" />
         </div>
