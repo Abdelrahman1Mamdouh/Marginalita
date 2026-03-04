@@ -55,15 +55,12 @@ namespace Marginalita
                 vedi = (bool[])Session["vedi"];
             }
 
-            // Impostiamo sempre le visibilità in base a 'vedi'
             ViewProgetti.Visible = vedi[0];
             ViewSocieta.Visible = vedi[1];
             ViewDipendenti.Visible = vedi[2];
 
-            // Popoliamo i campi solo al primo caricamento per evitare di sovrascrivere input utente in postback
             if (!IsPostBack && Session["DatiProgetto"] != null)
             {
-                // Progetti
                 if (vedi[0])
                 {
                     TNomePro.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
@@ -96,15 +93,12 @@ namespace Marginalita
                     TDescritione.Text = dati.ContainsKey("Descrizione") ? dati["Descrizione"] : "";
                 }
 
-                // Societa
                 if (vedi[1])
                 {
                     TIntestazione.Text = dati.ContainsKey("Intestazione") ? dati["Intestazione"] : "";
                     TEmail.Text = dati.ContainsKey("Email") ? dati["Email"] : "";
-                    // se necessario impostare DDLSocieta.SelectedValue qui
                 }
 
-                // Dipendenti
                 if (vedi[2])
                 {
                     TLNomeDip.Text = dati.ContainsKey("Nome") ? dati["Nome"] : "";
@@ -113,11 +107,8 @@ namespace Marginalita
                 }
             }
         }
-
-        //Gestione progetti
         protected void SalProgetto(object sender, EventArgs e)
         {
-            // DProgetti Insert usa CDInizio per il parametro Durata
             DProgetti.Insert();
             Response.Redirect("Anagrafiche.aspx");
         }
