@@ -247,8 +247,6 @@
 
                     </Columns>
                 </asp:GridView>
-
-
             </div>
         </section>
     </div>
