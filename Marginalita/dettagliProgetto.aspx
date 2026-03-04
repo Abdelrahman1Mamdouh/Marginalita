@@ -177,7 +177,6 @@
                                         <asp:Series Name="Series1"
                                             ChartType="Doughnut"
                                             XValueMember="Label"
-                                            Palette ="None"
                                             YValueMembers="Value"
                                             IsValueShownAsLabel="false"
                                             LegendText="#VALX (#PERCENT{P0})"

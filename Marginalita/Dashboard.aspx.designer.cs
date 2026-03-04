@@ -33,6 +33,15 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Repeater rptTotale;
 
         /// <summary>
+        /// euroIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label euroIcon;
+
+        /// <summary>
         /// SqlDataSourceCosti control.
         /// </summary>
         /// <remarks>
@@ -60,6 +69,15 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Label lblUsersChange;
 
         /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
         /// SqlDataSourceMargini control.
         /// </summary>
         /// <remarks>
@@ -85,6 +103,15 @@ namespace Marginalita
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblGrowthChange;
+
+        /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
         /// ChartMARGINE control.

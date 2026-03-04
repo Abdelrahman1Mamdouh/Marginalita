@@ -11,7 +11,7 @@ namespace Marginalita
     public partial class Timesheet : Page
     {
         string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
-       
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,7 +22,7 @@ namespace Marginalita
 
             if (!IsPostBack)
             {
-               
+
 
                 DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
@@ -139,7 +139,7 @@ namespace Marginalita
                 GridAssenze.DataBind();
             }
 
-            
+
         }
         private void GrigliaCostiEsterni()
         {
@@ -171,7 +171,7 @@ namespace Marginalita
             TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
             TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
             TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");       
+            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");
 
             TabellaAssenze.Insert();
             GrigliaAssenze();
@@ -187,11 +187,11 @@ namespace Marginalita
             CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
             CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
             CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
-           
+
             CostiEsterni.Insert();
             GrigliaCostiEsterni();
         }
- 
+
 
         private DateTime GetTargetMonday()
         {
@@ -247,7 +247,7 @@ namespace Marginalita
             pnlCalendario.Visible = false;
         }
 
-      
+
 
         protected void ExportExcel(object sender, EventArgs e)
         {
@@ -289,15 +289,15 @@ namespace Marginalita
             if (tvp.Rows.Count == 0) return;
 
             using (var conn = new SqlConnection(stringaConnessione))
-            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn)) 
+            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 var p = cmd.Parameters.AddWithValue("@rows", tvp);
                 p.SqlDbType = SqlDbType.Structured;
                 p.TypeName = "dbo.TimesheetRow";
                 conn.Open();
-                    cmd.ExecuteNonQuery();
-                
+                cmd.ExecuteNonQuery();
+
             }
             TabellaDipendente.DataBind();
             RepSingolo.DataBind();
@@ -370,4 +370,4 @@ namespace Marginalita
             Response.Redirect("Timesheet.aspx");
         }
     }
-}  
+}

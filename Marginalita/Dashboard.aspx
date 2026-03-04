@@ -28,8 +28,8 @@
                             </div>
                         </div>
 
-                        <div class="dashCard-icon dash-blue w-auto">
-                            €
+                        <div class="dashCard-icon dash-blue">
+                            <asp:Label ID="euroIcon" Text="&#x20AC;" runat="server" />
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="dashCard-icon dash-purple">
-                            👤
+                            <asp:Label ID="Label2" Text="&#128179;" runat="server" />
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="dashCard-icon dash-green">
-                            ↗
+                            <asp:Label ID="Label3" Text="&#8599;" runat="server" />
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,6 @@
                         <Series>
                             <asp:Series Name="Series1"
                                 ChartType="Doughnut"
-                                Palette="None"
                                 XValueMember="Label"
                                 YValueMembers="Value"
                                 IsValueShownAsLabel="false"

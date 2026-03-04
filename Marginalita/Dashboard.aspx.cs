@@ -22,6 +22,7 @@ namespace Marginalita
 
         protected void Chart1_DataBound(object sender, EventArgs e)
         {
+            Chart1.Palette = ChartColorPalette.None;
             foreach (var point in Chart1.Series["Series1"].Points)
             {
                 if (point.AxisLabel == "Costi")
