@@ -68,7 +68,7 @@
     </asp:SqlDataSource>
     <asp:SqlDataSource runat="server" ID="TabellaAssenze"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze"
+        SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM V_OreAssenze"
         InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze)"
         DeleteCommand="DELETE FROM OreAssenze WHERE ID = @ID">
         <DeleteParameters>
