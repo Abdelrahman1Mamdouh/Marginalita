@@ -51,15 +51,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaDipendente;
 
         /// <summary>
-        /// Controllo DSFake.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource DSFake;
-
-        /// <summary>
         /// Controllo CostiEsterni.
         /// </summary>
         /// <remarks>
@@ -195,49 +186,40 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button InvioAssenze;
 
         /// <summary>
-        /// Controllo gestioneCostiEsterni.
+        /// Controllo gestioneVincoli.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gestioneCostiEsterni;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gestioneVincoli;
 
         /// <summary>
-        /// Controllo GridCostiEsterni.
+        /// Controllo GrigliaCostiEsterni.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridCostiEsterni;
+        protected global::System.Web.UI.WebControls.GridView GrigliaCostiEsterni;
 
         /// <summary>
-        /// Controllo TIntestazione.
+        /// Controllo DDLDipendenteVincoli.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TIntestazione;
+        protected global::System.Web.UI.WebControls.DropDownList DDLDipendenteVincoli;
 
         /// <summary>
-        /// Controllo TDescrizione.
+        /// Controllo DDLProgettiVincoli.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TDescrizione;
-
-        /// <summary>
-        /// Controllo TImporto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TImporto;
+        protected global::System.Web.UI.WebControls.DropDownList DDLProgettiVincoli;
 
         /// <summary>
         /// Controllo BExtra.
@@ -247,15 +229,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BExtra;
-
-        /// <summary>
-        /// Controllo Binvia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Binvia;
 
         /// <summary>
         /// Controllo DSMatrix.
@@ -274,15 +247,6 @@ namespace Marginalita
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView ViewFake;
-
-        /// <summary>
-        /// Controllo Mode.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Mode;
 
         /// <summary>
         /// Controllo TextBox1.

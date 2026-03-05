@@ -15,7 +15,7 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            gestioneCostiEsterni.Visible = false; 
+            //gestioneCostiEsterni.Visible = false; 
 
             if (!IsPostBack)
             {
@@ -26,7 +26,7 @@ namespace Marginalita
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
 
                 ViewFake.DataBind();
-                GrigliaCostiEsterni();
+                //GrigliaCostiEsterni();
                 GrigliaAssenze();
             }
         }
@@ -79,14 +79,14 @@ namespace Marginalita
 
             
         }
-        private void GrigliaCostiEsterni()
-        {
-            if (CostiEsterni != null && GridCostiEsterni != null)
-            {
-                CostiEsterni.DataBind();
-                GridCostiEsterni.DataBind();
-            }
-        }
+        //private void GrigliaCostiEsterni()
+        //{
+        //    if (CostiEsterni != null && GridCostiEsterni != null)
+        //    {
+        //        CostiEsterni.DataBind();
+        //        GridCostiEsterni.DataBind();
+        //    }
+        //}
 
         protected void Assenze_Click(object sender, EventArgs e)
         {
@@ -117,17 +117,17 @@ namespace Marginalita
 
         protected void Extra_Click(object sender, EventArgs e)
         {
-            string fornitore = TIntestazione.Text.Trim();
-            string descrizione = TDescrizione.Text.Trim();
-            if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
-                return;
+            //string fornitore = TIntestazione.Text.Trim();
+            //string descrizione = TDescrizione.Text.Trim();
+            //if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
+            //    return;
 
-            CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
-            CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+            //CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            //CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+            //CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
            
-            CostiEsterni.Insert();
-            GrigliaCostiEsterni();
+            //CostiEsterni.Insert();
+            //GrigliaCostiEsterni();
         }
  
 
@@ -177,7 +177,7 @@ namespace Marginalita
 
         protected void ChangeFake(object sender, EventArgs e)
         {
-            DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
+            //DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
 
             DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
                 ? Calendar1.SelectedDate
@@ -214,7 +214,7 @@ namespace Marginalita
             ViewFake.DataBind();
 
             GrigliaAssenze();
-            GrigliaCostiEsterni();
+            //GrigliaCostiEsterni();
         }
 
         private DataTable BuildTimesheetDataTableFromRepeater()
@@ -274,8 +274,8 @@ namespace Marginalita
 
         protected void Elimina_CostiEsterni(object sender, EventArgs e)
         {
-            CostiEsterni.Delete();
-            Response.Redirect("Timesheet.aspx");
+            //CostiEsterni.Delete();
+            //Response.Redirect("Timesheet.aspx");
         }
     }
 }  
