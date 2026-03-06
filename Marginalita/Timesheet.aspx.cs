@@ -15,7 +15,7 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            gestioneCostiEsterni.Visible = false;
+            //gestioneCostiEsterni.Visible = false;
 
             TabellaDipendente.SelectParameters["Monday"].DefaultValue =
             GetTargetMonday().ToString("yyyy-MM-dd");
@@ -82,14 +82,14 @@ namespace Marginalita
 
 
         }
-        //private void GrigliaCostiEsterni()
-        //{
-        //    if (CostiEsterni != null && GridCostiEsterni != null)
-        //    {
-        //        CostiEsterni.DataBind();
-        //        GridCostiEsterni.DataBind();
-        //    }
-        //}
+        private void GrigliaCostiEsterni()
+        {
+            if (CostiEsterni != null && GridCostiEsterni != null)
+            {
+                CostiEsterni.DataBind();
+                GridCostiEsterni.DataBind();
+            }
+        }
 
         protected void Assenze_Click(object sender, EventArgs e)
         {
@@ -120,17 +120,23 @@ namespace Marginalita
 
         protected void Extra_Click(object sender, EventArgs e)
         {
+            string IdDip = DDLDipendenteVincoli.SelectedValue;
+            string IdProg = DDLProgettiVincoli.SelectedValue;
+
+
+
             //string fornitore = TIntestazione.Text.Trim();
             //string descrizione = TDescrizione.Text.Trim();
             //if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
             //    return;
 
-            //CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            //CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
+            CostiEsterni.InsertParameters["DipendenteID"].DefaultValue = IdDip.ToString();
+            CostiEsterni.InsertParameters["ProgettoID"].DefaultValue = IdProg.ToString();
             //CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
-           
-            //CostiEsterni.Insert();
-            //GrigliaCostiEsterni();
+
+            CostiEsterni.Insert();
+            GrigliaCostiEsterni();
+
         }
 
 

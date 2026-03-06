@@ -52,16 +52,16 @@
     </asp:SqlDataSource>--%>
     <asp:SqlDataSource runat="server" ID="CostiEsterni"
         ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-        SelectCommand="SELECT ID, Costo, Fornitore, Descrizione FROM CostiEsterni"
-        InsertCommand="INSERT INTO CostiEsterni (Costo, Fornitore, Descrizione) VALUES (@Costo, @Fornitore, @Descrizione)"
-        DeleteCommand="DELETE FROM CostiEsterni WHERE ID = @ID">
+        SelectCommand="SELECT ID, DipendenteID, ProgettoID FROM DipendenteProgetto"
+        InsertCommand="INSERT INTO DipendenteProgetto (DipendenteID, ProgettoID) VALUES (@DipendenteID, @ProgettoID)"
+        DeleteCommand="DELETE FROM DipendenteProgetto WHERE ID=@ID">
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
         <InsertParameters>
-            <asp:Parameter Name="Costo" Type="Decimal" />
-            <asp:Parameter Name="Fornitore" Type="String" />
-            <asp:Parameter Name="Descrizione" Type="String" />
+            <asp:Parameter Name="DipendenteID" Type="Int32" />
+            <asp:Parameter Name="ProgettoID" Type="Int32" />
+            
 
         </InsertParameters>
     </asp:SqlDataSource>
@@ -190,15 +190,15 @@
                     <div class="DSCard-label"><i class="bi bi-receipt"></i>Vincoli</div>
 
                     <div class="mt-2 overflow-auto mb-3" style="max-height: 120px; width: 100%;">
-                        <asp:GridView ID="GrigliaCostiEsterni" runat="server"
+                        <asp:GridView ID="GridCostiEsterni" runat="server"
                             DataSourceID="CostiEsterni"
                             AutoGenerateColumns="False"
                             DataKeyNames="ID"
                             CssClass="table table-sm border-0 small"
                             GridLines="None">
                             <Columns>
-                                <asp:BoundField DataField="NominativoDipendente" HeaderText="Dipendente" />
-                                <asp:BoundField DataField="NomeProgetto" HeaderText="Progetto" />
+                                <asp:BoundField DataField="DipendenteID" HeaderText="Dipendente" />
+                                <asp:BoundField DataField="ProgettoID" HeaderText="Progetto" />
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:LinkButton ID="BtnDelete" runat="server" CommandName="Delete"
