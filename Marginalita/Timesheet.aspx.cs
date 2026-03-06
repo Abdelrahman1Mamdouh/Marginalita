@@ -11,16 +11,19 @@ namespace Marginalita
     public partial class Timesheet : Page
     {
         string stringaConnessione = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True";
-       
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            gestioneCostiEsterni.Visible = false;
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue =
+            GetTargetMonday().ToString("yyyy-MM-dd");
             //gestioneCostiEsterni.Visible = false; 
 
             if (!IsPostBack)
             {
-                TabellaDipendente.SelectParameters["Monday"].DefaultValue =
-                    GetTargetMonday().ToString("yyyy-MM-dd");
+
 
                 DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
@@ -77,7 +80,7 @@ namespace Marginalita
                 GridAssenze.DataBind();
             }
 
-            
+
         }
         //private void GrigliaCostiEsterni()
         //{
@@ -109,7 +112,7 @@ namespace Marginalita
             TabellaAssenze.InsertParameters["Dipendente"].DefaultValue = idDipendente.ToString();
             TabellaAssenze.InsertParameters["Motivo"].DefaultValue = motivo;
             TabellaAssenze.InsertParameters["Ore"].DefaultValue = ore.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");       
+            TabellaAssenze.InsertParameters["DataAssenze"].DefaultValue = dataSelezionata.ToString("yyyy-MM-dd");
 
             TabellaAssenze.Insert();
             GrigliaAssenze();
@@ -129,7 +132,7 @@ namespace Marginalita
             //CostiEsterni.Insert();
             //GrigliaCostiEsterni();
         }
- 
+
 
         private DateTime GetTargetMonday()
         {
@@ -157,11 +160,15 @@ namespace Marginalita
             txtDataVisualizzata.Text = CDurata.SelectedDate.ToShortDateString();
             pnlCalendario.Visible = false;
         }
+
+
+
         protected void ExportExcel(object sender, EventArgs e)
         {
+            string fileName = "Report_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", "Esempio.xls"));
+            Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", fileName));
             Response.ContentType = "application/ms-excel";
             StringWriter sw = new StringWriter();
             HtmlTextWriter htw = new HtmlTextWriter(sw);
@@ -197,15 +204,15 @@ namespace Marginalita
             if (tvp.Rows.Count == 0) return;
 
             using (var conn = new SqlConnection(stringaConnessione))
-            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn)) 
+            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 var p = cmd.Parameters.AddWithValue("@rows", tvp);
                 p.SqlDbType = SqlDbType.Structured;
                 p.TypeName = "dbo.TimesheetRow";
                 conn.Open();
-                    cmd.ExecuteNonQuery();
-                
+                cmd.ExecuteNonQuery();
+
             }
             TabellaDipendente.DataBind();
             RepSingolo.DataBind();
@@ -223,8 +230,8 @@ namespace Marginalita
 
             tvp.Columns.Add("IdDip", typeof(int));
             tvp.Columns.Add("dataAncoraggio", typeof(DateTime));
-            tvp.Columns.Add("OreInterne", typeof(decimal));
-            tvp.Columns.Add("OreEsterne", typeof(decimal));
+            tvp.Columns.Add("OreI", typeof(decimal));
+            tvp.Columns.Add("OreE", typeof(decimal));
 
             DateTime anchor = GetTargetMonday();
 
@@ -234,8 +241,8 @@ namespace Marginalita
                     continue;
 
                 HiddenField hfIdDipendente = (HiddenField)item.FindControl("HiddenDipendente");
-                TextBox txtOreInterne = (TextBox)item.FindControl("InputOreInterne");
-                TextBox txtOreEsterne = (TextBox)item.FindControl("InputOreEsterne");
+                TextBox txtOreInterne = (TextBox)item.FindControl("OreInterne");
+                TextBox txtOreEsterne = (TextBox)item.FindControl("OreEsterne");
 
                 if (hfIdDipendente == null || txtOreInterne == null || txtOreEsterne == null)
                     continue;
@@ -259,8 +266,8 @@ namespace Marginalita
                 DataRow row = tvp.NewRow();
                 row["IdDip"] = idDip;
                 row["dataAncoraggio"] = anchor;
-                row["OreInterne"] = oreI;
-                row["OreEsterne"] = oreE;
+                row["OreI"] = oreI;
+                row["OreE"] = oreE;
                 tvp.Rows.Add(row);
             }
 
@@ -278,4 +285,4 @@ namespace Marginalita
             //Response.Redirect("Timesheet.aspx");
         }
     }
-}  
+}

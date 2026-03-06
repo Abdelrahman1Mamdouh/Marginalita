@@ -5,13 +5,13 @@
     <div>
         <div class="dashboardV2">
             <section class="dashCards-grid d-flex flex-nowrap" style="height: 20%">
-
                 <!-- Card 1 -->
-                <div style="display: flex; flex-direction: column; width: 30%; justify-content: space-between;" id="card">
+                <div style="display: flex; flex-direction: column; width: 30%; justify-content: space-between; /*background-color: greenyellow*/" id="card">
                     <div class="dashCard">
                         <div class="dashCard-text">
                             <div class="dashCard-label">Budget Totale</div>
                             <div class="dashCard-value">
+
                                 <asp:SqlDataSource ID="SqlDataSourceBudget" runat="server"
                                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
                                     SelectCommand="SELECT SUM(Budget) AS TotaleBudget FROM Progetto"></asp:SqlDataSource>
@@ -22,10 +22,14 @@
                                 </asp:Repeater>
                             </div>
                             <div class="DSCard-change DSCard-up">
+                                <%-- ↑--%>
+                                <%--<asp:Label ID="lblMRRChange" runat="server" Text="8.4%" />
+                        <span class="DSCard-muted">vs last month</span>--%>
                             </div>
                         </div>
-                        <div class="dashCard-icon dash-blue w-auto">
-                            &nbsp;&nbsp;&nbsp;&euro;&nbsp;&nbsp;&nbsp;
+
+                        <div class="dashCard-icon dash-blue">
+                            <asp:Label ID="euroIcon" Text="&#x20AC;" runat="server" />
                         </div>
                     </div>
 
@@ -36,7 +40,8 @@
                             <asp:SqlDataSource ID="SqlDataSourceCosti" runat="server"
                                 ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
                                 SelectCommand="SELECT SUM(Costo) AS TotaleCosti FROM Fake"></asp:SqlDataSource>
-                            <div class="dashCard-label">Costo Totale </div>
+
+                            <div class="dashCard-label">Costo Totale</div>
                             <div class="dashCard-value">
                                 <asp:Repeater ID="Repeater1" runat="server" DataSourceID="SqlDataSourceCosti">
                                     <ItemTemplate>
@@ -45,11 +50,13 @@
                                 </asp:Repeater>
                             </div>
                             <div class="DSCard-change DSCard-up">
+                                <%--↑--%>
                                 <asp:Label ID="lblUsersChange" runat="server" Text="" />
                             </div>
                         </div>
+
                         <div class="dashCard-icon dash-purple">
-                            <i class="bi bi-person-fill"></i>
+                            <asp:Label ID="Label2" Text="&#128179;" runat="server" />
                         </div>
                     </div>
 
@@ -68,17 +75,22 @@
                                 </asp:Repeater>
                             </div>
                             <div class="DSCard-change DSCard-up">
+                                <%-- ↑--%>
                                 <asp:Label ID="lblGrowthChange" runat="server" Text="" />
+                                <%--<span class="DSCard-muted">vs last month</span>--%>
                             </div>
                         </div>
+
                         <div class="dashCard-icon dash-green">
-                            <i class="bi bi-graph-up-arrow"></i>
+                            <asp:Label ID="Label3" Text="&percnt;" runat="server" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Grafico -->
+
                 <div style="width: 35%; align-content: center; display: flex; justify-content: center;" class="dashCard">
+                    <div class="dashCard-label">Chart Margine</div>
                     <!-- Chart -->
                     <asp:SqlDataSource runat="server"
                         ID="ChartMARGINE"
@@ -91,10 +103,13 @@
                     UNION ALL
                     SELECT 'Margine' AS Label,AVG(Round(Residuo * 100 / Budget,0)) AS Value
                     FROM Progetto;"></asp:SqlDataSource>
+
+
                     <asp:Chart ID="Chart1"
                         runat="server"
                         DataSourceID="ChartMARGINE"
-                        CssClass="w-auto justify-content-center">
+                        CssClass="w-auto justify-content-center"
+                        OnDataBound="Chart1_DataBound">
                         <Series>
                             <asp:Series Name="Series1"
                                 ChartType="Doughnut"
@@ -105,6 +120,7 @@
                                 Label="#VALY"
                                 BorderWidth="0" />
                         </Series>
+
                         <ChartAreas>
                             <asp:ChartArea Name="ChartArea1">
                                 <Area3DStyle Enable3D="true" />
@@ -115,10 +131,11 @@
                             <asp:Legend Enabled="true" />
                         </Legends>
                     </asp:Chart>
+
                 </div>
 
                 <!-- Card 4 -->
-                <div style="width: 35%;">
+                <div style="width: 35%; /*background-color: mediumvioletred*/">
                     <div class="dashCard">
                         <div class="dashCard-text">
                             <div class="dashCard-label">Report</div>
@@ -146,6 +163,7 @@
                                     <asp:BoundField DataField="Nome" HeaderText="Progetto" />
                                     <asp:BoundField DataField="GiorniRimanenti" HeaderText="GiorniRimansti" />
                                     <asp:BoundField DataField="MargineIntero" HeaderText="Margine" />
+                                    <%--<asp:BoundField DataField="Fine" HeaderText="Data Scadenza" DataFormatString="{0:dd/MM/yyyy}" />--%>
                                 </Columns>
                             </asp:GridView>
                         </div>
