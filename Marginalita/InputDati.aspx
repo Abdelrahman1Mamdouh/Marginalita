@@ -15,18 +15,18 @@
             DeleteCommand="UPDATE Progetto SET Vedi = @Vedi WHERE ID = @ID">
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
-                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" Type="Decimal"/>
                 <asp:ControlParameter Name="Inizio" ControlID="CDInizio" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
                 <asp:ControlParameter Name="Societa" ControlID="DDLSocieta" PropertyName="SelectedValue" />
                 <asp:ControlParameter Name="Margine" ControlID="DDLMargine" PropertyName="SelectedValue" />
-                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Residuo" ControlID="TBudget" PropertyName="Text" Type="Decimal"/>
             </InsertParameters>
             <UpdateParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Nome" ControlID="TNomePro" PropertyName="Text" />
-                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" />
+                <asp:ControlParameter Name="Budget" ControlID="TBudget" PropertyName="Text" Type="Decimal"/>
                 <asp:ControlParameter Name="Inizio" ControlID="CDInizio" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Fine" ControlID="CDFine" PropertyName="SelectedDate" />
                 <asp:ControlParameter Name="Descrizione" ControlID="TDescritione" PropertyName="Text" />
@@ -72,13 +72,13 @@
             <InsertParameters>
                 <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
-                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
+                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" Type="Decimal" />
             </InsertParameters>
             <UpdateParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
                 <asp:ControlParameter Name="Nome" ControlID="TLNomeDip" PropertyName="Text" />
                 <asp:ControlParameter Name="Cognome" ControlID="TCognome" PropertyName="Text" />
-                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" />
+                <asp:ControlParameter Name="CostoOrario" ControlID="TCosto" PropertyName="Text" Type="Decimal" />
             </UpdateParameters>
             <DeleteParameters>
                 <asp:ControlParameter Name="ID" ControlID="HID" PropertyName="Value" />
