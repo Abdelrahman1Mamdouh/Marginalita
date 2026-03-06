@@ -176,22 +176,17 @@
                 <asp:Label ID="Label1"
                     Text="Dashboard Progetti"
                     runat="server" />
-
                 <asp:LinkButton ID="LinkButton1"
                     Text="+ Aggiungi"
                     runat="server"
                     CssClass="btn btn-dark"
                     OnClick="Aggiungi_Progetti">
-
                 </asp:LinkButton>
             </div>
-
-
         </section>
 
         <section class="mt-3" style="width: 100%">
             <div class="border rounded-3 shadow-sm overflow-hidden">
-
                 <asp:SqlDataSource ID="SqlDGS" runat="server"
                     ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
                     SelectCommand="SELECT P.ID, 
@@ -201,22 +196,15 @@
                                              CAST(V.Margine AS INT) AS MargineIntero
                                              FROM Progetto AS P
                                              JOIN V_Margini AS V ON V.ID = P.ID"></asp:SqlDataSource>
-
                 <asp:GridView ID="GridView1" runat="server"
                     DataSourceID="SqlDGS"
                     AutoGenerateColumns="False"
                     CssClass="table table-striped w-100 text-center">
-
                     <HeaderStyle CssClass="table-dark" />
-
                     <Columns>
-
-
-
                         <asp:BoundField DataField="Nome" HeaderText="Nome" />
                         <asp:BoundField DataField="Budget" HeaderText="Budget" />
                         <asp:BoundField DataField="Descrizione" HeaderText="Descrizione" />
-
                         <asp:TemplateField HeaderText="Margini">
                             <ItemTemplate>
                                 <div class="progress" role="progressbar" style="height: 20px;">
@@ -229,22 +217,18 @@
                                 </div>
                             </ItemTemplate>
                         </asp:TemplateField>
-
                         <asp:TemplateField HeaderText="Dettagli">
                             <ItemTemplate>
-
                                 <asp:LinkButton ID="btnVisualizza"
                                     runat="server"
                                     CssClass="btn btn-outline-primary"
                                     OnClick="btnVisualizza_Click"
                                     CommandArgument='<%# Eval("ID") %>'
                                     PostBackUrl='<%# "dettagliProgetto.aspx?id=" + Eval("ID") %>'> 
-                                             <i class="bi bi-eye"></i> Visualizza
+                                  <i class="bi bi-eye"></i> Visualizza
                                 </asp:LinkButton>
-
                             </ItemTemplate>
                         </asp:TemplateField>
-
                     </Columns>
                 </asp:GridView>
             </div>

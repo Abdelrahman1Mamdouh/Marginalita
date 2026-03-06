@@ -56,6 +56,11 @@ namespace Marginalita
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
+        /// Controllo CostiEsterni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource CostiEsterni;
 
@@ -186,49 +191,41 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button InvioAssenze;
 
         /// <summary>
-        /// gestioneCostiEsterni control.
+        /// Controllo gestioneVincoli.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gestioneCostiEsterni;
-
-        /// <summary>
-        /// GridCostiEsterni control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridCostiEsterni;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gestioneVincoli;
 
         /// <summary>
         /// TIntestazione control.
+        /// Controllo GrigliaCostiEsterni.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TIntestazione;
+        protected global::System.Web.UI.WebControls.GridView GrigliaCostiEsterni;
 
         /// <summary>
-        /// TDescrizione control.
+        /// Controllo DDLDipendenteVincoli.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TDescrizione;
+        protected global::System.Web.UI.WebControls.DropDownList DDLDipendenteVincoli;
 
         /// <summary>
-        /// TImporto control.
+        /// Controllo DDLProgettiVincoli.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TImporto;
+        protected global::System.Web.UI.WebControls.DropDownList DDLProgettiVincoli;
 
         /// <summary>
         /// BExtra control.
@@ -250,6 +247,7 @@ namespace Marginalita
 
         /// <summary>
         /// DSMatrix control.
+        /// Controllo DSMatrix.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -277,6 +275,7 @@ namespace Marginalita
 
         /// <summary>
         /// TextBox1 control.
+        /// Controllo TextBox1.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

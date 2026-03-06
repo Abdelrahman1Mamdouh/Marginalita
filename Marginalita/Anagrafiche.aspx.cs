@@ -56,8 +56,6 @@ namespace Marginalita
             Session["vedi"] = vedi;
             Response.Redirect("InputDati.aspx");
         }
-
-        // Utility: prova a trovare una Label ricorsivamente nella gerarchia del container
         private Label FindLabelRecursive(Control container, string id)
         {
             if (container == null) return null;
