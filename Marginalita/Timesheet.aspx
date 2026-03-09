@@ -61,7 +61,7 @@
         <InsertParameters>
             <asp:Parameter Name="DipendenteID" Type="Int32" />
             <asp:Parameter Name="ProgettoID" Type="Int32" />
-            
+
 
         </InsertParameters>
     </asp:SqlDataSource>
@@ -70,6 +70,7 @@
         SelectCommand="SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM V_OreAssenze"
         InsertCommand="INSERT INTO OreAssenze (Dipendente, Motivo, Ore, DataAssenze) VALUES (@Dipendente, @Motivo, @Ore, @DataAssenze)"
         DeleteCommand="DELETE FROM OreAssenze WHERE ID = @ID">
+
         <DeleteParameters>
             <asp:Parameter Name="ID" Type="Int32" />
         </DeleteParameters>
@@ -116,9 +117,9 @@
                                             <td class="border-0 text-center">
                                                 <asp:UpdatePanel ID="upOreInterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
                                                     <ContentTemplate>
-                                                        <asp:TextBox runat="server" ID="Ore"
+                                                        <asp:TextBox runat="server" ID="OreInterne"
                                                             Text='<%# Eval("OreInterne","{0:0.##}") %>'
-                                                            TextMode="Number" min="0" max="40" step="0.01"
+                                                            TextMode="Number"
                                                             CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-interne"
                                                             Style="width: 70px;"
                                                             OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
@@ -126,14 +127,14 @@
                                                 </asp:UpdatePanel>
                                             </td>
                                             <td class="border-0 text-center">
-                                                <asp:UpdatePanel ID="upOreEsterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                                <asp:UpdatePanel ID="upOreEsterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true" Visible="false">
                                                     <ContentTemplate>
                                                         <asp:TextBox runat="server" ID="OreEsterne"
                                                             Text='<%# Eval("OreEsterne","{0:0.##}") %>'
-                                                            TextMode="Number" min="0" max="40" step="0.01"
+                                                            TextMode="Number"
                                                             CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-esterne"
                                                             Style="width: 70px;"
-                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" Visible="false" />
+                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </td>
@@ -241,7 +242,15 @@
                             Style="width: 100% !important; display: block;" />
                     </div>
                 </div>
+
             </div>
+        </section>
+    </div>
+
+    <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
+        <br />
+        <asp:Button ID="SalProg" runat="server" Text="Invio" OnClick="btnSalvaTutto"
+            CssClass="btn btn-success btn-custom-size shadow-sm" />
     </div>
 
     <section class="DSCard-card p-4 mt-5">
@@ -266,12 +275,13 @@
     </section>
     <div>
         <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
-            <%--                <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
-                    OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
-                    <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
-                    <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
-                    <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
-                </asp:DropDownList>--%>
+            <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
+                OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
+                <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
+                <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
+                <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
+            </asp:DropDownList>
+
             <div class="input-group input-group-sm w-auto" style="position: relative;">
                 <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true"
                     CssClass="form-control" placeholder="Mese" Style="width: 100px;" />
