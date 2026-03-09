@@ -15,23 +15,25 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //gestioneCostiEsterni.Visible = false;
+
+
+            DateTime anchor = GetSelectedAnchorDate();
 
             TabellaDipendente.SelectParameters["Monday"].DefaultValue =
-            GetTargetMonday().ToString("yyyy-MM-dd");
-            //gestioneCostiEsterni.Visible = false; 
+                anchor.ToString("yyyy-MM-dd");
 
             if (!IsPostBack)
             {
-
-
                 DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
-                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+                TextBox1.Text = anchor.ToString("MM/yyyy");
 
+                RepSingolo.DataBind();
                 ViewFake.DataBind();
-                //GrigliaCostiEsterni();
+                GrigliaCostiEsterni();
                 GrigliaAssenze();
             }
+
         }
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
@@ -42,12 +44,14 @@ namespace Marginalita
             TextBox txtInterne = (TextBox)riga.FindControl("OreInterne");
             TextBox txtEsterne = (TextBox)riga.FindControl("OreEsterne");
 
+
+
             decimal oreI = TryParseDecimal(txtInterne.Text);
             decimal oreE = TryParseDecimal(txtEsterne.Text);
 
             decimal totale = oreI + oreE;
 
-            if (totale > 40)
+            if (totale > 160)
             {
                 txtInterne.ForeColor = System.Drawing.Color.Red;
                 txtEsterne.ForeColor = System.Drawing.Color.Red;
@@ -72,7 +76,7 @@ namespace Marginalita
                 System.Globalization.CultureInfo.InvariantCulture, out decimal result);
 
             return result;
-        } 
+        }
         private void GrigliaAssenze()
         {
             if (GridAssenze != null && TabellaAssenze != null)
@@ -190,13 +194,17 @@ namespace Marginalita
 
         protected void ChangeFake(object sender, EventArgs e)
         {
-            //DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
+            DateTime anchor = GetSelectedAnchorDate();
 
-            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
-                ? Calendar1.SelectedDate
-                : DateTime.Today;
-
+            DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
             DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TextBox1.Text = anchor.ToString("MM/yyyy");
+            Panel1.Visible = false;
+
+            RepSingolo.DataBind();
             ViewFake.DataBind();
         }
         protected void ApriCalendario(object sender, EventArgs e)
@@ -220,6 +228,11 @@ namespace Marginalita
                 cmd.ExecuteNonQuery();
 
             }
+            DateTime anchor = GetSelectedAnchorDate();
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+            DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
             TabellaDipendente.DataBind();
             RepSingolo.DataBind();
 
@@ -239,7 +252,9 @@ namespace Marginalita
             tvp.Columns.Add("OreI", typeof(decimal));
             tvp.Columns.Add("OreE", typeof(decimal));
 
-            DateTime anchor = GetTargetMonday();
+            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today;
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {
@@ -262,7 +277,7 @@ namespace Marginalita
                         System.Globalization.CultureInfo.InvariantCulture, out oreI);
 
                 decimal oreE = 0;
-                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))
+                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))     
                     decimal.TryParse(txtOreEsterne.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
                         System.Globalization.CultureInfo.InvariantCulture, out oreE);
 
@@ -289,6 +304,14 @@ namespace Marginalita
         {
             //CostiEsterni.Delete();
             //Response.Redirect("Timesheet.aspx");
+        }
+
+        private DateTime GetSelectedAnchorDate()
+        {
+            if (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+                return Calendar1.SelectedDate.Date;
+
+            return DateTime.Today.Date;
         }
     }
 }
