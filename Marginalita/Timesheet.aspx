@@ -28,8 +28,8 @@
                 SUM(CASE WHEN f.Vedi = 1 AND f.Progetto IS NOT NULL THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END) AS OreEsterne
             FROM Fake f
             INNER JOIN Dipendente d ON d.ID = f.Dipendente
-            WHERE f.Creata &gt;= @Monday
-              AND f.Creata &lt; DATEADD(DAY, 5, @Monday)
+            WHERE f.Creata >= DATEFROMPARTS(YEAR(@Monday), MONTH(@Monday), 1)
+            AND f.Creata < DATEADD(DAY, 1, EOMONTH(@Monday))
             GROUP BY f.Dipendente
         ) x ON x.Dipendente = d.ID
         ORDER BY d.Nome, d.Cognome
@@ -90,7 +90,7 @@
         <section class="DSCard-grid">
             <div id="divOre" class="DSCard-card p-3">
                 <div class="DSCard-text w-100">
-                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Settimanali</div>
+                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Mensili</div>
                     <div class="mt-3 overflow-auto" style="max-height: 250px;">
                         <table class="table table-sm border-0">
                             <thead>
@@ -275,12 +275,12 @@
     </section>
     <div>
         <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
-            <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
-                OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
-                <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
-                <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
-                <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
-            </asp:DropDownList>
+                            <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
+                    OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
+                    <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
+                    <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
+                    <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
+                </asp:DropDownList>
 
             <div class="input-group input-group-sm w-auto" style="position: relative;">
                 <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true"

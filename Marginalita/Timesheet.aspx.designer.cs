@@ -232,6 +232,16 @@ namespace Marginalita
 
         /// <summary>
         /// Controllo SalProg.
+        /// SalProg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SalProg;
+
+        /// <summary>
+        /// DSMatrix control.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -263,11 +273,17 @@ namespace Marginalita
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// Mode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList Mode;
 
         /// <summary>
         /// Controllo TextBox1.
+        /// TextBox1 control.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.

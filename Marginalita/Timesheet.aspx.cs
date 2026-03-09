@@ -17,17 +17,18 @@ namespace Marginalita
         {
 
 
-            TabellaDipendente.SelectParameters["Monday"].DefaultValue =
-            GetTargetMonday().ToString("yyyy-MM-dd");
+            DateTime anchor = GetSelectedAnchorDate();
 
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue =
+                anchor.ToString("yyyy-MM-dd");
 
             if (!IsPostBack)
             {
-
-
                 DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
-                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+                TextBox1.Text = anchor.ToString("MM/yyyy");
 
+                RepSingolo.DataBind();
                 ViewFake.DataBind();
                 GrigliaCostiEsterni();
                 GrigliaAssenze();
@@ -44,6 +45,8 @@ namespace Marginalita
             TextBox txtInterne = (TextBox)riga.FindControl("OreInterne");
             TextBox txtEsterne = (TextBox)riga.FindControl("OreEsterne");
             HiddenField HID = (HiddenField)riga.FindControl("HiddenDipendente");
+
+
 
 
 
@@ -76,7 +79,7 @@ namespace Marginalita
 
             decimal totale = oreI + oreE + oreAssenze;
 
-            if (totale > 40)
+            if (totale > 160)
             {
                 txtInterne.ForeColor = System.Drawing.Color.Red;
                 txtEsterne.ForeColor = System.Drawing.Color.Red;
@@ -219,13 +222,17 @@ namespace Marginalita
 
         protected void ChangeFake(object sender, EventArgs e)
         {
+            DateTime anchor = GetSelectedAnchorDate();
+
             DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
-
-            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
-                ? Calendar1.SelectedDate
-                : DateTime.Today;
-
             DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TextBox1.Text = anchor.ToString("MM/yyyy");
+            Panel1.Visible = false;
+
+            RepSingolo.DataBind();
             ViewFake.DataBind();
         }
         protected void ApriCalendario(object sender, EventArgs e)
@@ -249,6 +256,11 @@ namespace Marginalita
                 cmd.ExecuteNonQuery();
 
             }
+            DateTime anchor = GetSelectedAnchorDate();
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+            DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
             TabellaDipendente.DataBind();
             RepSingolo.DataBind();
 
@@ -268,7 +280,9 @@ namespace Marginalita
             tvp.Columns.Add("OreI", typeof(decimal));
             tvp.Columns.Add("OreE", typeof(decimal));
 
-            DateTime anchor = GetTargetMonday();
+            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today;
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {
@@ -291,7 +305,7 @@ namespace Marginalita
                         System.Globalization.CultureInfo.InvariantCulture, out oreI);
 
                 decimal oreE = 0;
-                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))
+                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))     
                     decimal.TryParse(txtOreEsterne.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
                         System.Globalization.CultureInfo.InvariantCulture, out oreE);
 
@@ -314,10 +328,18 @@ namespace Marginalita
             Response.Redirect("Timesheet.aspx");
         }
 
-        //protected void Elimina_CostiEsterni(object sender, EventArgs e)
-        //{
-        //    CostiEsterni.Delete();
-        //    Response.Redirect("Timesheet.aspx");
-        //}
+        protected void Elimina_CostiEsterni(object sender, EventArgs e)
+        {
+            //CostiEsterni.Delete();
+            //Response.Redirect("Timesheet.aspx");
+        }
+
+        private DateTime GetSelectedAnchorDate()
+        {
+            if (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+                return Calendar1.SelectedDate.Date;
+
+            return DateTime.Today.Date;
+        }
     }
 }
