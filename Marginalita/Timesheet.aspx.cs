@@ -39,22 +39,53 @@ namespace Marginalita
         {
             TextBox tbModificata = (TextBox)sender;
 
+
             RepeaterItem riga = (RepeaterItem)tbModificata.NamingContainer;
 
             TextBox txtInterne = (TextBox)riga.FindControl("OreInterne");
             TextBox txtEsterne = (TextBox)riga.FindControl("OreEsterne");
+            HiddenField HID = (HiddenField)riga.FindControl("HiddenDipendente");
+
+
 
 
 
             decimal oreI = TryParseDecimal(txtInterne.Text);
             decimal oreE = TryParseDecimal(txtEsterne.Text);
+            int ID = Int32.Parse(HID.Value);
 
-            decimal totale = oreI + oreE;
+            TabellaAssenze.SelectCommand = $"SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze WHERE Dipendente = {ID.ToString()}";
+
+
+
+
+            var dv = (DataView)TabellaAssenze.Select(DataSourceSelectArguments.Empty);
+            decimal oreAssenze = 0;
+            if (dv != null)
+            {
+                foreach (DataRowView row in dv)
+                {
+                    oreAssenze += Convert.ToDecimal(row["Ore"]);
+                }
+
+
+
+            }
+            TabellaAssenze.SelectCommand = "SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM V_OreAssenze";
+
+            GridAssenze.DataBind();
+
+
+
+            decimal totale = oreI + oreE + oreAssenze;
 
             if (totale > 160)
             {
                 txtInterne.ForeColor = System.Drawing.Color.Red;
                 txtEsterne.ForeColor = System.Drawing.Color.Red;
+
+                txtInterne.Text = (40 - (oreE + oreAssenze)).ToString();
+                txtEsterne.Text = (40 - (oreI + oreAssenze)).ToString();
 
             }
             else
@@ -62,9 +93,6 @@ namespace Marginalita
                 txtInterne.ForeColor = System.Drawing.Color.Black;
                 txtEsterne.ForeColor = System.Drawing.Color.Black;
             }
-
-            txtInterne.Text = oreI.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
-            txtEsterne.Text = oreE.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private decimal TryParseDecimal(string input)
@@ -175,7 +203,7 @@ namespace Marginalita
 
         protected void ExportExcel(object sender, EventArgs e)
         {
-            string fileName = "Report_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
+            string fileName = $"Report_{DSMatrix.SelectParameters["Mode"].DefaultValue}_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
             Response.ClearContent();
             Response.Buffer = true;
             Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", fileName));
