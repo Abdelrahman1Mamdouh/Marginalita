@@ -258,11 +258,11 @@ namespace Marginalita
             string SP;
             if (mod)
             {
-                SP = "dbo.DivideAndConquer";
+                SP = "dbo.Mensile";
             }
             else
             {
-                SP = "dbo.DivideAndConquer2";
+                SP = "dbo.Settimanale";
             }
 
             using (var conn = new SqlConnection(stringaConnessione))
