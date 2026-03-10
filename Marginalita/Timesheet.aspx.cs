@@ -34,6 +34,8 @@ namespace Marginalita
                 GrigliaAssenze();
             }
 
+            ModSet.Checked = true;
+
         }
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
@@ -75,17 +77,27 @@ namespace Marginalita
 
             GridAssenze.DataBind();
 
+            bool mod= Modalita.Checked;
+            int maxOre;
 
+            if (mod)
+            {
+                maxOre = 160;
+            }
+            else
+            {
+                maxOre = 40;
+            }
 
             decimal totale = oreI + oreE + oreAssenze;
 
-            if (totale > 160)
+            if (totale > maxOre)
             {
                 txtInterne.ForeColor = System.Drawing.Color.Red;
                 txtEsterne.ForeColor = System.Drawing.Color.Red;
 
-                txtInterne.Text = (40 - (oreE + oreAssenze)).ToString();
-                txtEsterne.Text = (40 - (oreI + oreAssenze)).ToString();
+                txtInterne.Text = (maxOre - (oreE + oreAssenze)).ToString();
+                //txtEsterne.Text = (maxOre - (oreI + oreAssenze)).ToString();
 
             }
             else
@@ -156,15 +168,9 @@ namespace Marginalita
             string IdProg = DDLProgettiVincoli.SelectedValue;
 
 
-
-            //string fornitore = TIntestazione.Text.Trim();
-            //string descrizione = TDescrizione.Text.Trim();
-            //if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
-            //    return;
-
             CostiEsterni.InsertParameters["DipendenteID"].DefaultValue = IdDip.ToString();
             CostiEsterni.InsertParameters["ProgettoID"].DefaultValue = IdProg.ToString();
-            //CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+    
 
             CostiEsterni.Insert();
             GrigliaCostiEsterni();
@@ -242,11 +248,25 @@ namespace Marginalita
 
         protected void btnSalvaTutto(object sender, EventArgs e)
         {
-            var tvp = BuildTimesheetDataTableFromRepeater();
+            bool mod = Modalita.Checked;
+
+            var tvp = BuildTimesheetDataTableFromRepeater(mod);
             if (tvp.Rows.Count == 0) return;
 
+
+            
+            string SP;
+            if (mod)
+            {
+                SP = "dbo.DivideAndConquer";
+            }
+            else
+            {
+                SP = "dbo.DivideAndConquer2";
+            }
+
             using (var conn = new SqlConnection(stringaConnessione))
-            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn))
+            using (var cmd = new SqlCommand(SP, conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 var p = cmd.Parameters.AddWithValue("@rows", tvp);
@@ -271,7 +291,7 @@ namespace Marginalita
             //GrigliaCostiEsterni();
         }
 
-        private DataTable BuildTimesheetDataTableFromRepeater()
+        private DataTable BuildTimesheetDataTableFromRepeater(bool mod)
         {
             DataTable tvp = new DataTable();
 
@@ -280,9 +300,20 @@ namespace Marginalita
             tvp.Columns.Add("OreI", typeof(decimal));
             tvp.Columns.Add("OreE", typeof(decimal));
 
-            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            DateTime anchor;
+
+            if (mod)
+            {
+                anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
             ? Calendar1.SelectedDate
             : DateTime.Today;
+            }
+            else
+            {
+                anchor = GetTargetMonday();
+            }
+
+            
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {

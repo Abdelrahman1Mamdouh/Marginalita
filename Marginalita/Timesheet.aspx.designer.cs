@@ -78,33 +78,6 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.SqlDataSource TabellaMotivo;
 
         /// <summary>
-        /// Controllo OreSett.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label OreSett;
-
-        /// <summary>
-        /// Controllo OreEst.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label OreEst;
-
-        /// <summary>
-        /// Controllo RepSingolo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater RepSingolo;
-
-        /// <summary>
         /// Controllo GridAssenze.
         /// </summary>
         /// <remarks>
@@ -231,17 +204,52 @@ namespace Marginalita
         protected global::System.Web.UI.WebControls.Button BExtra;
 
         /// <summary>
-        /// Controllo SalProg.
-        /// SalProg control.
+        /// Controllo OreSett.
         /// </summary>
         /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalProg;
+        protected global::System.Web.UI.WebControls.Label OreSett;
 
         /// <summary>
-        /// DSMatrix control.
+        /// Controllo OreEst.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label OreEst;
+
+        /// <summary>
+        /// Controllo RepSingolo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater RepSingolo;
+
+        /// <summary>
+        /// Controllo ModSet.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton ModSet;
+
+        /// <summary>
+        /// Controllo Modalita.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton Modalita;
+
+        /// <summary>
+        /// Controllo SalProg.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
@@ -273,17 +281,11 @@ namespace Marginalita
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// Mode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList Mode;
 
         /// <summary>
         /// Controllo TextBox1.
-        /// TextBox1 control.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
