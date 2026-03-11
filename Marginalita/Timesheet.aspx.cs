@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Web.UI;
+using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
 namespace Marginalita
@@ -15,41 +16,120 @@ namespace Marginalita
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            gestioneCostiEsterni.Visible = false;
+
+
+            DateTime anchor = GetSelectedAnchorDate();
 
             TabellaDipendente.SelectParameters["Monday"].DefaultValue =
-            GetTargetMonday().ToString("yyyy-MM-dd");
+                anchor.ToString("yyyy-MM-dd");
 
             if (!IsPostBack)
             {
+                DSMatrix.SelectParameters["Mode"].DefaultValue = "Assegnazione";
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+                TextBox1.Text = anchor.ToString("MM/yyyy");
 
-
-                DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
-                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = DateTime.Today.ToString("yyyy-MM-dd");
-
+                RepSingolo.DataBind();
                 ViewFake.DataBind();
                 GrigliaCostiEsterni();
                 GrigliaAssenze();
             }
+
+            ModSet.Checked = true;
+
         }
+
+        protected void AssenzeOre_TextChanged(object sender, EventArgs e)
+        {
+            int maxOre;
+            string OrAs = OreAssenze.Text;  
+
+            if (OrAs != "")
+            {
+                maxOre = 8;
+                int.TryParse(OrAs, out int oreAssenze);
+                if (oreAssenze > maxOre)
+                {
+                    OreAssenze.ForeColor = System.Drawing.Color.Red;
+
+
+                    OreAssenze.Text = maxOre.ToString();
+                    ;
+
+                }
+                else
+                {
+                    OreAssenze.ForeColor = System.Drawing.Color.Black;
+
+                }
+
+            }
+
+        }
+
+
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
-            TextBox tbModificata = (TextBox)sender;
+            int maxOre;
+          TextBox tbModificata = (TextBox)sender;
+
 
             RepeaterItem riga = (RepeaterItem)tbModificata.NamingContainer;
 
             TextBox txtInterne = (TextBox)riga.FindControl("OreInterne");
             TextBox txtEsterne = (TextBox)riga.FindControl("OreEsterne");
+            HiddenField HID = (HiddenField)riga.FindControl("HiddenDipendente");
+
+
+
+
 
             decimal oreI = TryParseDecimal(txtInterne.Text);
             decimal oreE = TryParseDecimal(txtEsterne.Text);
+            int ID = Int32.Parse(HID.Value);
 
-            decimal totale = oreI + oreE;
+            TabellaAssenze.SelectCommand = $"SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM OreAssenze WHERE Dipendente = {ID.ToString()}";
 
-            if (totale > 40)
+
+
+
+            var dv = (DataView)TabellaAssenze.Select(DataSourceSelectArguments.Empty);
+            decimal oreAssenze = 0;
+            if (dv != null)
+            {
+                foreach (DataRowView row in dv)
+                {
+                    oreAssenze += Convert.ToDecimal(row["Ore"]);
+                }
+
+
+
+            }
+            TabellaAssenze.SelectCommand = "SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM V_OreAssenze";
+
+            GridAssenze.DataBind();
+            
+            bool mod = Modalita.Checked;
+            
+
+            if (mod)
+            {
+                maxOre = 160;
+            }
+            else
+            {
+                maxOre = 40;
+            }
+
+            decimal totale = oreI + oreE + oreAssenze;
+
+            if (totale > maxOre)
             {
                 txtInterne.ForeColor = System.Drawing.Color.Red;
                 txtEsterne.ForeColor = System.Drawing.Color.Red;
+
+                txtInterne.Text = (maxOre - (oreE + oreAssenze)).ToString();
+                //txtEsterne.Text = (maxOre - (oreI + oreAssenze)).ToString();
 
             }
             else
@@ -57,10 +137,8 @@ namespace Marginalita
                 txtInterne.ForeColor = System.Drawing.Color.Black;
                 txtEsterne.ForeColor = System.Drawing.Color.Black;
             }
-
-            txtInterne.Text = oreI.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
-            txtEsterne.Text = oreE.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
         }
+        
 
         private decimal TryParseDecimal(string input)
         {
@@ -72,66 +150,6 @@ namespace Marginalita
 
             return result;
         }
-
-        //protected void InputOre_TextChanged(object sender, EventArgs e)
-        //{
-        //    TextBox tb = (TextBox)sender;
-        //    string s = (tb.Text ?? "").Trim();
-
-        //    if (string.IsNullOrWhiteSpace(s))
-        //    {
-        //        tb.ForeColor = Color.Black;
-        //        return;
-        //    }
-
-        //    if (!decimal.TryParse(s.Replace(",", "."),
-        //        System.Globalization.NumberStyles.Any,
-        //        System.Globalization.CultureInfo.InvariantCulture, out decimal oreInserite))
-        //    {
-        //        tb.ForeColor = Color.Red;
-        //        return;
-        //    }
-
-
-        //    if (oreInserite < 0) oreInserite = 0;
-        //    if (oreInserite > 40) oreInserite = 40;
-
-        //    tb.Text = oreInserite.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
-        //    tb.ForeColor = (oreInserite == 40) ? Color.Red : Color.Black;
-        //}
-
-        //protected void RepDipendenti_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        TextBox txtOre = (TextBox)e.Item.FindControl("InputOre");
-        //        HiddenField idDipendenteHidden = (HiddenField)e.Item.FindControl("HiddenDipendente");
-
-        //        string idProgettoFisso = "10";
-
-        //        if (idDipendenteHidden != null)
-        //        {
-        //            txtOre.Text = RecuperaOreDalDatabase(idProgettoFisso, idDipendenteHidden.Value);
-        //        }
-        //    }
-        //}
-
-        //private string RecuperaOreDalDatabase(string idProgetto, string idDipendente)
-        //{
-        //    using (SqlConnection connessione = new SqlConnection(stringaConnessione))
-        //    {
-        //        string sql = "SELECT Ore FROM Fake WHERE Progetto = @p AND Dipendente = @d";
-        //        SqlCommand comando = new SqlCommand(sql, connessione);
-        //        comando.Parameters.AddWithValue("@p", idProgetto);
-        //        comando.Parameters.AddWithValue("@d", idDipendente);
-        //        connessione.Open();
-        //        object risultato = comando.ExecuteScalar();
-        //        return risultato != null ? risultato.ToString() : "";
-        //    }
-        //}
-
-
-
         private void GrigliaAssenze()
         {
             if (GridAssenze != null && TabellaAssenze != null)
@@ -175,21 +193,31 @@ namespace Marginalita
 
             TabellaAssenze.Insert();
             GrigliaAssenze();
+
+         
+                AssenzeDDL.SelectedIndex = 0;
+               MotivoDDL.SelectedIndex = 0;
+                OreAssenze.Text = string.Empty;
+                CDurata.SelectedDate = DateTime.MinValue;
+                txtDataVisualizzata.Text = string.Empty;
+                 pnlCalendario.Visible = false;
+            
+
         }
 
         protected void Extra_Click(object sender, EventArgs e)
         {
-            string fornitore = TIntestazione.Text.Trim();
-            string descrizione = TDescrizione.Text.Trim();
-            if (!decimal.TryParse(TImporto.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal importo))
-                return;
+            string IdDip = DDLDipendenteVincoli.SelectedValue;
+            string IdProg = DDLProgettiVincoli.SelectedValue;
 
-            CostiEsterni.InsertParameters["Costo"].DefaultValue = importo.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            CostiEsterni.InsertParameters["Fornitore"].DefaultValue = fornitore;
-            CostiEsterni.InsertParameters["Descrizione"].DefaultValue = descrizione;
+
+            CostiEsterni.InsertParameters["DipendenteID"].DefaultValue = IdDip.ToString();
+            CostiEsterni.InsertParameters["ProgettoID"].DefaultValue = IdProg.ToString();
+    
 
             CostiEsterni.Insert();
             GrigliaCostiEsterni();
+
         }
 
 
@@ -210,33 +238,6 @@ namespace Marginalita
             }
             return TL.Date;
         }
-
-        //private decimal GetWeeklyHoursFromFake(int idDipendente)
-        //{
-        //    using (SqlConnection conn = new SqlConnection(stringaConnessione))
-        //    {
-        //        DateTime monday = GetTargetMonday();
-
-        //        string sql = @"
-        //    SELECT ISNULL(SUM(f.Costo / NULLIF(d.CostoOrario,0)),0)
-        //    FROM Fake f
-        //    INNER JOIN Dipendente d ON d.ID = f.Dipendente
-        //    WHERE f.Dipendente = @d
-        //      AND f.Progetto IS NOT NULL
-        //      AND f.Creata >= @monday
-        //      AND f.Creata < DATEADD(DAY, 5, @monday);";
-
-        //        using (SqlCommand cmd = new SqlCommand(sql, conn))
-        //        {
-        //            cmd.Parameters.AddWithValue("@d", idDipendente);
-        //            cmd.Parameters.AddWithValue("@monday", monday);
-        //            conn.Open();
-        //            return Convert.ToDecimal(cmd.ExecuteScalar());
-        //        }
-        //    }
-        //}
-
-
         protected void btnApriCalendario_Click(object sender, EventArgs e)
         {
             pnlCalendario.Visible = !pnlCalendario.Visible;
@@ -251,7 +252,7 @@ namespace Marginalita
 
         protected void ExportExcel(object sender, EventArgs e)
         {
-            string fileName = "Report_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
+            string fileName = $"Report_{DSMatrix.SelectParameters["Mode"].DefaultValue}_" + DateTime.Now.ToString("MMMM_yyyy") + ".xls";
             Response.ClearContent();
             Response.Buffer = true;
             Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", fileName));
@@ -270,13 +271,17 @@ namespace Marginalita
 
         protected void ChangeFake(object sender, EventArgs e)
         {
+            DateTime anchor = GetSelectedAnchorDate();
+
             DSMatrix.SelectParameters["Mode"].DefaultValue = Mode?.SelectedValue;
-
-            DateTime anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
-                ? Calendar1.SelectedDate
-                : DateTime.Today;
-
             DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+            TextBox1.Text = anchor.ToString("MM/yyyy");
+            Panel1.Visible = false;
+
+            RepSingolo.DataBind();
             ViewFake.DataBind();
         }
         protected void ApriCalendario(object sender, EventArgs e)
@@ -286,31 +291,59 @@ namespace Marginalita
 
         protected void btnSalvaTutto(object sender, EventArgs e)
         {
-            var tvp = BuildTimesheetDataTableFromRepeater();
-            if (tvp.Rows.Count == 0) return;
+            HideMessage();
 
-            using (var conn = new SqlConnection(stringaConnessione))
-            using (var cmd = new SqlCommand("dbo.DivideAndConquer", conn))
+            try
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                var p = cmd.Parameters.AddWithValue("@rows", tvp);
-                p.SqlDbType = SqlDbType.Structured;
-                p.TypeName = "dbo.TimesheetRow";
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                bool mod = Modalita.Checked;
 
+                var tvp = BuildTimesheetDataTableFromRepeater(mod);
+                if (tvp.Rows.Count == 0)
+                {
+                    ShowMessage("Inserisci almeno un valore ore prima di inviare.");
+                    return;
+                }
+
+                string SP = mod ? "dbo.Mensile" : "dbo.Settimanale";
+
+                using (var conn = new SqlConnection(stringaConnessione))
+                using (var cmd = new SqlCommand(SP, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var p = cmd.Parameters.AddWithValue("@rows", tvp);
+                    p.SqlDbType = SqlDbType.Structured;
+                    p.TypeName = "dbo.TimesheetRow";
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                DateTime anchor = GetSelectedAnchorDate();
+
+                TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+                TabellaDipendente.DataBind();
+                RepSingolo.DataBind();
+                DSMatrix.DataBind();
+                ViewFake.DataBind();
+                GrigliaAssenze();
+                GrigliaCostiEsterni();
+
+                ShowMessage("Salvataggio completato con successo.", true);
             }
-            TabellaDipendente.DataBind();
-            RepSingolo.DataBind();
-
-            DSMatrix.DataBind();
-            ViewFake.DataBind();
-
-            GrigliaAssenze();
-            GrigliaCostiEsterni();
+            catch (SqlException ex)
+            {
+                ShowMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Errore imprevisto: " + ex.Message);
+            }
         }
 
-        private DataTable BuildTimesheetDataTableFromRepeater()
+        private DataTable BuildTimesheetDataTableFromRepeater(bool mod)
         {
             DataTable tvp = new DataTable();
 
@@ -319,7 +352,22 @@ namespace Marginalita
             tvp.Columns.Add("OreI", typeof(decimal));
             tvp.Columns.Add("OreE", typeof(decimal));
 
-            DateTime anchor = GetTargetMonday();
+            DateTime anchor;
+
+            if (mod)
+            {
+                anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today;
+            }
+            else
+            {
+                anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today; //change later to GetTargetMonday()
+            }
+
+            
 
             foreach (RepeaterItem item in RepSingolo.Items)
             {
@@ -342,7 +390,7 @@ namespace Marginalita
                         System.Globalization.CultureInfo.InvariantCulture, out oreI);
 
                 decimal oreE = 0;
-                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))
+                if (!string.IsNullOrWhiteSpace(txtOreEsterne.Text))     
                     decimal.TryParse(txtOreEsterne.Text.Replace(",", "."), System.Globalization.NumberStyles.Any,
                         System.Globalization.CultureInfo.InvariantCulture, out oreE);
 
@@ -361,14 +409,39 @@ namespace Marginalita
         }
         protected void Elimina_Assenza(object sender, EventArgs e)
         {
-            TabellaAssenze.Delete();
-            Response.Redirect("Timesheet.aspx");
+            //TabellaAssenze.Delete();
+            //Response.Redirect("Timesheet.aspx");
         }
 
         protected void Elimina_CostiEsterni(object sender, EventArgs e)
         {
-            CostiEsterni.Delete();
-            Response.Redirect("Timesheet.aspx");
+            //CostiEsterni.Delete();
+            //Response.Redirect("Timesheet.aspx");
+        }
+
+        private DateTime GetSelectedAnchorDate()
+        {
+            if (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+                return Calendar1.SelectedDate.Date;
+
+            return DateTime.Today.Date;
+        }
+
+
+        private void ShowMessage(string message, bool success = false)
+        {
+            pnlEsito.Visible = true;
+            pnlEsito.CssClass = success
+                ? "alert alert-success mb-0 py-2 px-3"
+                : "alert alert-warning mb-0 py-2 px-3";
+
+            lblEsito.Text = message;
+        }
+
+        private void HideMessage()
+        {
+            pnlEsito.Visible = false;
+            lblEsito.Text = "";
         }
     }
 }
