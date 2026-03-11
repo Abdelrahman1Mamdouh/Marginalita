@@ -310,7 +310,9 @@ namespace Marginalita
             }
             else
             {
-                anchor = GetTargetMonday();
+                anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today; //change later to GetTargetMonday()
             }
 
             

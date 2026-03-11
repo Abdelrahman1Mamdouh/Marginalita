@@ -66,7 +66,7 @@
                             <div class="dashCard-label">Margine Totale</div>
                             <asp:SqlDataSource ID="SqlDataSourceMargini" runat="server"
                                 ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True;TrustServerCertificate=True"
-                                SelectCommand="SELECT AVG(CAST(Margine AS INT)) AS TotaleMargini FROM V_Margini"></asp:SqlDataSource>
+                                SelectCommand="SELECT CAST((SUM(Residuo) * 100 / SUM(Budget)) AS dECIMAL(18,2)) AS TotaleMargini FROM V_Margini"></asp:SqlDataSource>
                             <div class="dashCard-value">
                                 <asp:Repeater ID="Repeater2" runat="server" DataSourceID="SqlDataSourceMargini">
                                     <ItemTemplate>
@@ -97,11 +97,11 @@
                         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
                         ProviderName="System.Data.SqlClient"
                         SelectCommand="
-                    SELECT 'Costi' AS Label,AVG(Round((Budget - Residuo)*100 / Budget,0)) AS Value
+                    SELECT 'Costi' AS Label,((SUM(Budget) - SUM(Residuo))*100 / SUM(Budget)) AS Value
                     FROM Progetto
                    
                     UNION ALL
-                    SELECT 'Margine' AS Label,AVG(Round(Residuo * 100 / Budget,0)) AS Value
+                    SELECT 'Margine' AS Label,(SUM(Residuo) * 100 / SUM(Budget)) AS Value
                     FROM Progetto;"></asp:SqlDataSource>
 
 
