@@ -258,11 +258,11 @@ namespace Marginalita
             string SP;
             if (mod)
             {
-                SP = "dbo.DivideAndConquer";
+                SP = "dbo.Mensile";
             }
             else
             {
-                SP = "dbo.DivideAndConquer2";
+                SP = "dbo.Settimanale";
             }
 
             using (var conn = new SqlConnection(stringaConnessione))
@@ -310,7 +310,9 @@ namespace Marginalita
             }
             else
             {
-                anchor = GetTargetMonday();
+                anchor = (Calendar1 != null && Calendar1.SelectedDate != DateTime.MinValue)
+            ? Calendar1.SelectedDate
+            : DateTime.Today; //change later to GetTargetMonday()
             }
 
             
