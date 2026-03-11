@@ -105,7 +105,7 @@
                             <asp:ListItem Value="">Seleziona motivo</asp:ListItem>
                         </asp:DropDownList>
                         <div class="d-flex gap-1 mb-1">
-                            <asp:TextBox runat="server" ID="OreAssenze" TextMode="Number" placeholder="Ore" CssClass="form-control form-control-sm" />
+                            <asp:TextBox runat="server" ID="OreAssenze" TextMode="Number" placeholder="Ore" CssClass="form-control form-control-sm" OnTextChanged="AssenzeOre_TextChanged" AutoPostBack="true" />
                             <asp:TextBox ID="txtDataVisualizzata" runat="server" ReadOnly="true" placeholder="Data" CssClass="form-control form-control-sm" />
                             <asp:LinkButton ID="btnApriCalendario" runat="server" OnClick="btnApriCalendario_Click" CssClass="btn btn-outline-secondary btn-sm">
                                 <i class="bi bi-calendar"></i>
@@ -180,7 +180,7 @@
 
             <div id="divOre" class="DSCard-card p-3">
                 <div class="DSCard-text w-100">
-                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Mensili</div>
+                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore</div>
                     <div class="mt-3 overflow-auto" style="max-height: 250px;">
                         <table class="table table-sm border-0">
                             <thead>
