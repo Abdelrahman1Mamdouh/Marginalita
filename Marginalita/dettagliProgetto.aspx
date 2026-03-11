@@ -51,7 +51,7 @@
         ConnectionString="Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\dgs.mdf;Integrated Security=True"
         ProviderName="System.Data.SqlClient"
         SelectCommand="
-                        SELECT 'Residuo' AS Label,Round((Budget - Residuo)*100 / Budget,0) AS Value
+                        SELECT 'Costi' AS Label,Round((Budget - Residuo)*100 / Budget,0) AS Value
                         FROM Progetto
                         WHERE ID = @ID
                         UNION ALL

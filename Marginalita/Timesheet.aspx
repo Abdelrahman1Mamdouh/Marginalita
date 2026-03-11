@@ -28,11 +28,11 @@
                 SUM(CASE WHEN f.Vedi = 1 AND f.Progetto IS NOT NULL THEN (f.Costo / NULLIF(d.CostoOrario,0)) ELSE 0 END) AS OreEsterne
             FROM Fake f
             INNER JOIN Dipendente d ON d.ID = f.Dipendente
-            WHERE f.Creata >= DATEFROMPARTS(YEAR(@Monday), MONTH(@Monday), 1)
-            AND f.Creata < DATEADD(DAY, 1, EOMONTH(@Monday))
+            WHERE f.Creata &gt; = DATEFROMPARTS(YEAR(@Monday), MONTH(@Monday), 1)
+            AND f.Creata &lt; DATEADD(DAY, 1, EOMONTH(@Monday))
             GROUP BY f.Dipendente
         ) x ON x.Dipendente = d.ID
-        ORDER BY d.Nome, d.Cognome
+        ORDER BY d.ID
     ">
         <SelectParameters>
             <asp:Parameter Name="Monday" Type="DateTime" />
@@ -78,7 +78,7 @@
 
     <div class="container-fluid mt-4">
         <section class="DSCard-grid">
-         
+
 
             <div id="gestioneAssenze" class="DSCard-card p-3">
                 <div class="DSCard-text w-100">
@@ -178,64 +178,64 @@
 
             </div>
 
-               <div id="divOre" class="DSCard-card p-3">
-       <div class="DSCard-text w-100">
-           <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Mensili</div>
-           <div class="mt-3 overflow-auto" style="max-height: 250px;">
-               <table class="table table-sm border-0">
-                   <thead>
-                       <tr>
-                           <th class="border-0">Dipendente</th>
-                           <th class="border-0 text-center" style="width: 70px;">
-                               <small>
-                                   <asp:Label ID="OreSett" Text="Ore" runat="server" /></small>
-                           </th>
-                           <th class="border-0 text-center" style="width: 70px;">
-                               <small>
-                                   <asp:Label ID="OreEst" Text="Ore esterne" runat="server" Visible="false" /></small>
-                           </th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <asp:Repeater ID="RepSingolo" runat="server" DataSourceID="TabellaDipendente">
-                           <ItemTemplate>
-                               <tr>
-                                   <td class="align-middle border-0">
-                                       <strong><%# Eval("Nome") %> <%# Eval("Cognome") %></strong>
-                                       <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
-                                   </td>
-                                   <td class="border-0 text-center">
-                                       <asp:UpdatePanel ID="upOreInterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                                           <ContentTemplate>
-                                               <asp:TextBox runat="server" ID="OreInterne"
-                                                   Text='<%# Eval("OreInterne","{0:0.##}") %>'
-                                                   TextMode="Number"
-                                                   CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-interne"
-                                                   Style="width: 70px;"
-                                                   OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
-                                           </ContentTemplate>
-                                       </asp:UpdatePanel>
-                                   </td>
-                                   <td class="border-0 text-center">
-                                       <asp:UpdatePanel ID="upOreEsterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true" Visible="false">
-                                           <ContentTemplate>
-                                               <asp:TextBox runat="server" ID="OreEsterne"
-                                                   Text='<%# Eval("OreEsterne","{0:0.##}") %>'
-                                                   TextMode="Number"
-                                                   CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-esterne"
-                                                   Style="width: 70px;"
-                                                   OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
-                                           </ContentTemplate>
-                                       </asp:UpdatePanel>
-                                   </td>
-                               </tr>
-                           </ItemTemplate>
-                       </asp:Repeater>
-                   </tbody>
-               </table>
-           </div>
-       </div>
-   </div>
+            <div id="divOre" class="DSCard-card p-3">
+                <div class="DSCard-text w-100">
+                    <div class="DSCard-label"><i class="bi bi-person-badge"></i>Ore Mensili</div>
+                    <div class="mt-3 overflow-auto" style="max-height: 250px;">
+                        <table class="table table-sm border-0">
+                            <thead>
+                                <tr>
+                                    <th class="border-0">Dipendente</th>
+                                    <th class="border-0 text-center" style="width: 70px;">
+                                        <small>
+                                            <asp:Label ID="OreSett" Text="Ore" runat="server" /></small>
+                                    </th>
+                                    <th class="border-0 text-center" style="width: 70px;">
+                                        <small>
+                                            <asp:Label ID="OreEst" Text="Ore esterne" runat="server" Visible="false" /></small>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <asp:Repeater ID="RepSingolo" runat="server" DataSourceID="TabellaDipendente">
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td class="align-middle border-0">
+                                                <strong><%# Eval("Nome") %> <%# Eval("Cognome") %></strong>
+                                                <asp:HiddenField ID="HiddenDipendente" runat="server" Value='<%# Eval("ID") %>' />
+                                            </td>
+                                            <td class="border-0 text-center">
+                                                <asp:UpdatePanel ID="upOreInterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox runat="server" ID="OreInterne"
+                                                            Text='<%# Eval("OreInterne","{0:0.##}") %>'
+                                                            TextMode="Number"
+                                                            CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-interne"
+                                                            Style="width: 70px;"
+                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                            <td class="border-0 text-center">
+                                                <asp:UpdatePanel ID="upOreEsterne" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true" Visible="false">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox runat="server" ID="OreEsterne"
+                                                            Text='<%# Eval("OreEsterne","{0:0.##}") %>'
+                                                            TextMode="Number"
+                                                            CssClass="form-control form-control-sm text-center d-inline-block ore-input ore-esterne"
+                                                            Style="width: 70px;"
+                                                            OnTextChanged="InputOre_TextChanged" AutoPostBack="true" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
         </section>
     </div>
@@ -243,7 +243,7 @@
     <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
         <br />
 
-     
+
 
 
         <asp:RadioButton ID="ModSet" Text="Settimanale" GroupName="scarico" runat="server" />
@@ -251,17 +251,17 @@
 
         <asp:Button ID="SalProg" runat="server" Text="Invio" OnClick="btnSalvaTutto"
             CssClass="btn btn-success btn-custom-size shadow-sm" />
-        
+
     </div>
 
-   <div class="mt-3">
-    <asp:Panel ID="pnlEsito" runat="server" Visible="false"
-        CssClass="alert border-0 shadow-sm"
-        Style="background-color: #fff3cd; color: #856404; border-left: 5px solid #f0ad4e;"
-        role="alert">
-        <asp:Label ID="lblEsito" runat="server" />
-    </asp:Panel>
-</div>
+    <div class="mt-3">
+        <asp:Panel ID="pnlEsito" runat="server" Visible="false"
+            CssClass="alert border-0 shadow-sm"
+            Style="background-color: #fff3cd; color: #856404; border-left: 5px solid #f0ad4e;"
+            role="alert">
+            <asp:Label ID="lblEsito" runat="server" />
+        </asp:Panel>
+    </div>
 
     <section class="DSCard-card p-4 mt-5">
         <asp:SqlDataSource ID="DSMatrix" runat="server"
@@ -285,12 +285,13 @@
     </section>
     <div>
         <div style="clear: both; display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 15px; border-top: 1px solid #eee;">
-                            <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
-                    OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
-                    <asp:ListItem Value="OreInterne">Ore Interne</asp:ListItem>
-                    <asp:ListItem Value="OreEsterne">Ore Esterne</asp:ListItem>
-                    <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
-                </asp:DropDownList>
+            <asp:DropDownList ID="Mode" runat="server" AutoPostBack="true"
+                OnSelectedIndexChanged="ChangeFake" CssClass="form-select form-select-sm w-auto">
+                <asp:ListItem Value="Assegnazione">Assegnazione</asp:ListItem>
+                <asp:ListItem Value="Calendario">Calendario</asp:ListItem>
+
+                <asp:ListItem Value="Progetti">Progetti</asp:ListItem>
+            </asp:DropDownList>
 
             <div class="input-group input-group-sm w-auto" style="position: relative;">
                 <asp:TextBox ID="TextBox1" runat="server" ReadOnly="true"

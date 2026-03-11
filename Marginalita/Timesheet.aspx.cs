@@ -24,7 +24,7 @@ namespace Marginalita
 
             if (!IsPostBack)
             {
-                DSMatrix.SelectParameters["Mode"].DefaultValue = "OreInterne";
+                DSMatrix.SelectParameters["Mode"].DefaultValue = "Assegnazione";
                 DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
                 TextBox1.Text = anchor.ToString("MM/yyyy");
 
