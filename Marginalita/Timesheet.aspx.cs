@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Web.UI;
+using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
 namespace Marginalita
@@ -37,9 +38,40 @@ namespace Marginalita
             ModSet.Checked = true;
 
         }
+
+        protected void AssenzeOre_TextChanged(object sender, EventArgs e)
+        {
+            int maxOre;
+            string OrAs = OreAssenze.Text;  
+
+            if (OrAs != "")
+            {
+                maxOre = 8;
+                int.TryParse(OrAs, out int oreAssenze);
+                if (oreAssenze > maxOre)
+                {
+                    OreAssenze.ForeColor = System.Drawing.Color.Red;
+
+
+                    OreAssenze.Text = maxOre.ToString();
+                    ;
+
+                }
+                else
+                {
+                    OreAssenze.ForeColor = System.Drawing.Color.Black;
+
+                }
+
+            }
+
+        }
+
+
         protected void InputOre_TextChanged(object sender, EventArgs e)
         {
-            TextBox tbModificata = (TextBox)sender;
+            int maxOre;
+          TextBox tbModificata = (TextBox)sender;
 
 
             RepeaterItem riga = (RepeaterItem)tbModificata.NamingContainer;
@@ -76,9 +108,9 @@ namespace Marginalita
             TabellaAssenze.SelectCommand = "SELECT ID, Ore, DataAssenze, Dipendente, Motivo FROM V_OreAssenze";
 
             GridAssenze.DataBind();
-
-            bool mod= Modalita.Checked;
-            int maxOre;
+            
+            bool mod = Modalita.Checked;
+            
 
             if (mod)
             {
@@ -106,6 +138,7 @@ namespace Marginalita
                 txtEsterne.ForeColor = System.Drawing.Color.Black;
             }
         }
+        
 
         private decimal TryParseDecimal(string input)
         {
@@ -160,6 +193,16 @@ namespace Marginalita
 
             TabellaAssenze.Insert();
             GrigliaAssenze();
+
+         
+                AssenzeDDL.SelectedIndex = 0;
+               MotivoDDL.SelectedIndex = 0;
+                OreAssenze.Text = string.Empty;
+                CDurata.SelectedDate = DateTime.MinValue;
+                txtDataVisualizzata.Text = string.Empty;
+                 pnlCalendario.Visible = false;
+            
+
         }
 
         protected void Extra_Click(object sender, EventArgs e)
