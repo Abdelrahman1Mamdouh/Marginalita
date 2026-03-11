@@ -248,47 +248,56 @@ namespace Marginalita
 
         protected void btnSalvaTutto(object sender, EventArgs e)
         {
-            bool mod = Modalita.Checked;
+            HideMessage();
 
-            var tvp = BuildTimesheetDataTableFromRepeater(mod);
-            if (tvp.Rows.Count == 0) return;
-
-
-            
-            string SP;
-            if (mod)
+            try
             {
-                SP = "dbo.Mensile";
+                bool mod = Modalita.Checked;
+
+                var tvp = BuildTimesheetDataTableFromRepeater(mod);
+                if (tvp.Rows.Count == 0)
+                {
+                    ShowMessage("Inserisci almeno un valore ore prima di inviare.");
+                    return;
+                }
+
+                string SP = mod ? "dbo.Mensile" : "dbo.Settimanale";
+
+                using (var conn = new SqlConnection(stringaConnessione))
+                using (var cmd = new SqlCommand(SP, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var p = cmd.Parameters.AddWithValue("@rows", tvp);
+                    p.SqlDbType = SqlDbType.Structured;
+                    p.TypeName = "dbo.TimesheetRow";
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                DateTime anchor = GetSelectedAnchorDate();
+
+                TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+                DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
+
+                TabellaDipendente.DataBind();
+                RepSingolo.DataBind();
+                DSMatrix.DataBind();
+                ViewFake.DataBind();
+                GrigliaAssenze();
+                GrigliaCostiEsterni();
+
+                ShowMessage("Salvataggio completato con successo.", true);
             }
-            else
+            catch (SqlException ex)
             {
-                SP = "dbo.Settimanale";
+                ShowMessage(ex.Message);
             }
-
-            using (var conn = new SqlConnection(stringaConnessione))
-            using (var cmd = new SqlCommand(SP, conn))
+            catch (Exception ex)
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                var p = cmd.Parameters.AddWithValue("@rows", tvp);
-                p.SqlDbType = SqlDbType.Structured;
-                p.TypeName = "dbo.TimesheetRow";
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
+                ShowMessage("Errore imprevisto: " + ex.Message);
             }
-            DateTime anchor = GetSelectedAnchorDate();
-
-            TabellaDipendente.SelectParameters["Monday"].DefaultValue = anchor.ToString("yyyy-MM-dd");
-            DSMatrix.SelectParameters["AnchorDate"].DefaultValue = anchor.ToString("yyyy-MM-dd");
-
-            TabellaDipendente.DataBind();
-            RepSingolo.DataBind();
-
-            DSMatrix.DataBind();
-            ViewFake.DataBind();
-
-            GrigliaAssenze();
-            //GrigliaCostiEsterni();
         }
 
         private DataTable BuildTimesheetDataTableFromRepeater(bool mod)
@@ -373,6 +382,23 @@ namespace Marginalita
                 return Calendar1.SelectedDate.Date;
 
             return DateTime.Today.Date;
+        }
+
+
+        private void ShowMessage(string message, bool success = false)
+        {
+            pnlEsito.Visible = true;
+            pnlEsito.CssClass = success
+                ? "alert alert-success mb-0 py-2 px-3"
+                : "alert alert-warning mb-0 py-2 px-3";
+
+            lblEsito.Text = message;
+        }
+
+        private void HideMessage()
+        {
+            pnlEsito.Visible = false;
+            lblEsito.Text = "";
         }
     }
 }

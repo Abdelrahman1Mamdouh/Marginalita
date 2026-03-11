@@ -251,7 +251,17 @@
 
         <asp:Button ID="SalProg" runat="server" Text="Invio" OnClick="btnSalvaTutto"
             CssClass="btn btn-success btn-custom-size shadow-sm" />
+        
     </div>
+
+   <div class="mt-3">
+    <asp:Panel ID="pnlEsito" runat="server" Visible="false"
+        CssClass="alert border-0 shadow-sm"
+        Style="background-color: #fff3cd; color: #856404; border-left: 5px solid #f0ad4e;"
+        role="alert">
+        <asp:Label ID="lblEsito" runat="server" />
+    </asp:Panel>
+</div>
 
     <section class="DSCard-card p-4 mt-5">
         <asp:SqlDataSource ID="DSMatrix" runat="server"
